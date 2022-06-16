@@ -1,9 +1,9 @@
 <template>
-  <router-view></router-view>
+  <div>
+editor
+  </div>
 </template>
-
 <script setup>
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 </style>
