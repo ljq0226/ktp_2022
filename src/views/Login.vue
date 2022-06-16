@@ -55,7 +55,8 @@
 </template>
 <script setup>
 import {ref,reactive} from 'vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const user = reactive({
   username: "",
   password: "",
@@ -69,6 +70,7 @@ const autoLogin_Status = ()=> {
 
 }
 const login = ()=> {
+  router.push('/homepage')
   
 }
 
