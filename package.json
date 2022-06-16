@@ -1,0 +1,27 @@
+{
+  "name": "my-vue-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "prettier": "prettier --write ."
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "element-plus": "^2.2.5",
+    "pinia": "^2.0.14",
+    "qs": "^6.10.5",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.16"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "dart-sass": "^1.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "sass": "^1.52.3",
+    "unplugin-auto-import": "^0.8.8",
+    "unplugin-vue-components": "^0.19.6",
+    "vite": "^2.9.9"
+  }
+}
