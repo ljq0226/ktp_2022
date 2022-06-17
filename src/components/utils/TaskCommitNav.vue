@@ -1,9 +1,5 @@
 <template>
-  <div>
-taskcommitnav
-  </div>
+  <div>taskcommitnav</div>
 </template>
-<script setup>
-</script>
-<style lang="scss" scoped>
-</style>
+<script setup></script>
+<style lang="scss" scoped></style>

@@ -1,9 +1,5 @@
 <template>
-  <div>
-personaldeliver
-  </div>
+  <div>personaldeliver</div>
 </template>
-<script setup>
-</script>
-<style lang="scss" scoped>
-</style>
+<script setup></script>
+<style lang="scss" scoped></style>

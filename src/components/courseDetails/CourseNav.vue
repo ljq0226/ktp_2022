@@ -3,23 +3,23 @@
     <div class="left">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item :to="{ path: '/homepage' }"
-        >课堂
+          >课堂
         </el-breadcrumb-item>
         <el-breadcrumb-item>
-          <router-link style="cursor: pointer;"
-                  :to="{
-            path: `/course/${course.cno}`,
-          }"
-          >{{ course.courseName }}</router-link>
-
+          <router-link
+            style="cursor: pointer"
+            :to="{
+              path: `/course/${course.cno}`,
+            }"
+            >{{ course.courseName }}</router-link
+          >
         </el-breadcrumb-item>
-
       </el-breadcrumb>
 
       <div>
         <ul class="ul-icon">
           <li>
-            <img src="../../assets/img/tool_icon.png" alt="工具"/>
+            <img src="../../assets/img/tool_icon.png" alt="工具" />
           </li>
 
           <li>
@@ -29,23 +29,32 @@
           <li>
             <el-dropdown trigger="click">
               <span class="el-dropdown-link">
-                <div class="avatar"><img :src="avatar"/></div>
+                <div class="avatar"><img :src="avatar" /></div>
               </span>
-              <el-dropdown-menu >
+              <el-dropdown-menu>
                 <el-dropdown-item>
-                  <div class="title-icon" style="background-position: 50% 56%"/>
+                  <div
+                    class="title-icon"
+                    style="background-position: 50% 56%"
+                  />
                   开通VIP
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <div class="title-icon" style="background-position: 50% 30%"/>
+                  <div
+                    class="title-icon"
+                    style="background-position: 50% 30%"
+                  />
                   机构账号绑定
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <div class="title-icon" style="background-position: 50% 2%"/>
+                  <div class="title-icon" style="background-position: 50% 2%" />
                   <span @click="gotoProfile">个人设置</span>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <div class="title-icon" style="background-position: 50% 83%"/>
+                  <div
+                    class="title-icon"
+                    style="background-position: 50% 83%"
+                  />
                   <span @click="logout">退出账号</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -58,25 +67,18 @@
 </template>
 
 <script setup>
-import {ref,reactive,onMounted,defineProps} from 'vue'
-const course = reactive({})
-const avatar = ref('')
+import { ref, reactive, onMounted, defineProps } from "vue";
+const course = reactive({});
+const avatar = ref("");
 
-const props = defineProps({cno:String})
+const props = defineProps({ cno: String });
 
-onMounted(()=>{
+onMounted(() => {});
 
-})
-
-const logout = ()=> {
-
-}
-const gotoProfile = ()=> {
-  
-}
+const logout = () => {};
+const gotoProfile = () => {};
 </script>
 <style lang="scss" scoped>
-
 .avatar {
   text-align: center;
   display: table-cell;
@@ -88,7 +90,7 @@ const gotoProfile = ()=> {
   cursor: pointer;
 }
 
-.avatar>img {
+.avatar > img {
   width: 35px;
   height: 35px;
   background-repeat: no-repeat;
@@ -100,7 +102,7 @@ const gotoProfile = ()=> {
   margin: 5px 6px 0 0;
   width: 25px;
   height: 25px;
-  background-image: url('../../assets/img/user-info-icon-bg.png');
+  background-image: url("../../assets/img/user-info-icon-bg.png");
 }
 
 .ul-icon li:nth-child(3) {
@@ -156,5 +158,4 @@ const gotoProfile = ()=> {
   z-index: 5;
   display: flex;
 }
-
 </style>

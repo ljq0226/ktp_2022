@@ -16,11 +16,11 @@
           :to="{
             path: `/course/${course.cno}`,
           }"
-          >{{ course.courseName }}</router-link>
+          >{{ course.courseName }}</router-link
+        >
       </div>
 
       <div class="courseInfo">
-
         <el-dropdown trigger="click">
           <div class="addCode">
             <img src="../../assets/img/addCode.png" alt="加课码" />
@@ -32,16 +32,11 @@
               style="margin-top: 4px"
             ></i>
           </div>
-          <el-dropdown-menu  v-if="this.$store.state.role === '2'">
-            <el-dropdown-item
-              @click="addCodeReset()"
-              >重置</el-dropdown-item>
+          <el-dropdown-menu v-if="this.$store.state.role === '2'">
+            <el-dropdown-item @click="addCodeReset()">重置</el-dropdown-item>
           </el-dropdown-menu>
 
-          <el-dropdown-menu>
-
-          </el-dropdown-menu>
-
+          <el-dropdown-menu> </el-dropdown-menu>
         </el-dropdown>
 
         <div class="semester">
@@ -73,14 +68,10 @@
           <span class="el-dropdown-link">
             <i class="el-icon-more iconMore"></i>
           </span>
-          <el-dropdown-menu >
+          <el-dropdown-menu>
             <el-dropdown-item>详细</el-dropdown-item>
-            <el-dropdown-item @click="deleteCourse()"
-              >删除</el-dropdown-item
-            >
-            <el-dropdown-item @click="fileCourse()"
-              >归档</el-dropdown-item
-            >
+            <el-dropdown-item @click="deleteCourse()">删除</el-dropdown-item>
+            <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -88,7 +79,7 @@
           <span class="el-dropdown-link">
             <i class="el-icon-more iconMore"></i>
           </span>
-          <el-dropdown-menu >
+          <el-dropdown-menu>
             <el-dropdown-item @click="dropOut()">退课</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -98,36 +89,29 @@
 </template>
 
 <script setup>
-import {ref,reactive,defineProps,onMounted} from 'vue'
-const props = defineProps({course:Object,role:String})
-const bg = ref('')
-const homework = reactive([])
-const getTermYear = computed(()=>`${course.semesterYear}-${parseInt(course.semesterYear) + 1}`)
+import { ref, reactive, defineProps, onMounted } from "vue";
+const props = defineProps({ course: Object, role: String });
+const bg = ref("");
+const homework = reactive([]);
+const getTermYear = computed(
+  () => `${course.semesterYear}-${parseInt(course.semesterYear) + 1}`
+);
 
-onMounted(()=>{
-  bg.value =  require(`../../assets/file/${Math.floor(Math.random()*31) + 1}.jpg`)
-})
+onMounted(() => {
+  bg.value = require(`../../assets/file/${
+    Math.floor(Math.random() * 31) + 1
+  }.jpg`);
+});
 
-const detailCourse = ()=>{
-
-}
- //退课
-const dropOut=()=> {
-
-}
- // 归档课程
-const fileCourse=()=> {
-
-}
-  // 删除课程
-const deleteCourse=()=> {
-
-}
- // 重置加课码 启用加课码
-const addCodeReset=()=> {
-
-}
-
+const detailCourse = () => {};
+//退课
+const dropOut = () => {};
+// 归档课程
+const fileCourse = () => {};
+// 删除课程
+const deleteCourse = () => {};
+// 重置加课码 启用加课码
+const addCodeReset = () => {};
 </script>
 <style lang="scss" scoped>
 .iconMore {

@@ -1,45 +1,58 @@
 <template>
   <div class="container">
-    <Navigation/>
+    <Navigation />
     <div class="main">
       <div class="nav">
         <!--没有置顶课程就展示全部课程-->
         <p v-if="topList.length === 0">全部课程</p>
         <ul>
           <!--课程排序-->
-          <li v-if="role === `1` || role === `2`"
-              class="sortFile"
-              @click="SFDialog = true;selectSF(0);">
-            <i class="el-icon-tickets"/>课程排序
+          <li
+            v-if="role === `1` || role === `2`"
+            class="sortFile"
+            @click="
+              SFDialog = true;
+              selectSF(0);
+            "
+          >
+            <i class="el-icon-tickets" />课程排序
           </li>
           <!--归档管理-->
-          <li class="sortFile"
-              @click="SFDialog = true;selectSF(1);"
-              v-if="role === `1` || role === `2`">
-            <i class="el-icon-printer"/>归档管理
+          <li
+            class="sortFile"
+            @click="
+              SFDialog = true;
+              selectSF(1);
+            "
+            v-if="role === `1` || role === `2`"
+          >
+            <i class="el-icon-printer" />归档管理
           </li>
           <!--加入、创建课程-->
           <li>
-            <el-button type="primary" style="height: 40px"
-                       v-if="role === `1` || role === `2`"
-                       @click="createCourseDialog = true"
-            >+ 创建课程
+            <el-button
+              type="primary"
+              style="height: 40px"
+              v-if="role === `1` || role === `2`"
+              @click="createCourseDialog = true"
+              >+ 创建课程
             </el-button>
-            <el-button type="primary" style="height: 40px"
-                       v-else
-                       @click="joinCourseDialog = true"
-            >+ 加入课程
+            <el-button
+              type="primary"
+              style="height: 40px"
+              v-else
+              @click="joinCourseDialog = true"
+              >+ 加入课程
             </el-button>
           </li>
           <!--发布活动-->
           <li v-if="role === `1` || role === `2`">
             <el-button
-                type="primary"
-                style="height: 40px"
-                @click="quickReleaseDialog = true"
-            >+ 快速发布活动
-            </el-button
-            >
+              type="primary"
+              style="height: 40px"
+              @click="quickReleaseDialog = true"
+              >+ 快速发布活动
+            </el-button>
           </li>
         </ul>
       </div>
@@ -54,23 +67,19 @@
             :course="course"
             class="courseCard"
             :role="'0'"
-        />
+          />
         </div>
-        <div  v-if="role === `3`">
- <courseCard
-           
+        <div v-if="role === `3`">
+          <courseCard
             @childDropOut="childDropOut"
             v-for="course in courses"
             :key="course.cno"
             :course="course"
             class="courseCard"
             :role="'1'"
-        />
-
+          />
         </div>
-        
 
-       
         <div class="addCourse" v-if="role === `2`">
           <div class="addBg"></div>
           <div class="addfont">
@@ -114,87 +123,83 @@
     </el-dialog>
 
     <!-- 创建课程模态框 -->
-    <el-dialog v-if="role === `1` || role === `2`"
-               :visible="createCourseDialog" width="660px" top="30vh">
+    <el-dialog
+      v-if="role === `1` || role === `2`"
+      :visible="createCourseDialog"
+      width="660px"
+      top="30vh"
+    >
       <p class="createCourseTitle">新建课程</p>
       <div class="createCourse">
         <el-input
-            class="createCourseInput"
-            v-model="createCourse.courseName"
-            placeholder="请输入课程名称"
-            maxlength="20"
+          class="createCourseInput"
+          v-model="createCourse.courseName"
+          placeholder="请输入课程名称"
+          maxlength="20"
         />
         <el-input
-            class="createCourseInput"
-            placeholder="请输入班级名称(选填)"
-            maxlength="20"
+          class="createCourseInput"
+          placeholder="请输入班级名称(选填)"
+          maxlength="20"
         />
         <div class="selectSemester">
           <p>选择学期:</p>
           <el-date-picker
-              v-model="createCourse.semesterYear"
-              type="year"
-              placeholder="选择学年"
+            v-model="createCourse.semesterYear"
+            type="year"
+            placeholder="选择学年"
           >
           </el-date-picker>
 
           <el-select v-model="createCourse.semester">
             <el-option
-                v-for="item in optionSemester"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              v-for="item in optionSemester"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             >
             </el-option>
           </el-select>
         </div>
       </div>
 
-      <div  class="createCourseFooter">
+      <div class="createCourseFooter">
         <el-button style="width: 100px" @click="createCourseDialog = false"
-        >取消
-        </el-button
-        >
+          >取消
+        </el-button>
         <el-button
-            type="primary"
-            :disabled="createCourse.courseName.length<=0"
-            style="width: 100px"
-            @click="create()"
-        >创建
-        </el-button
-        >
+          type="primary"
+          :disabled="createCourse.courseName.length <= 0"
+          style="width: 100px"
+          @click="create()"
+          >创建
+        </el-button>
       </div>
     </el-dialog>
 
     <!-- 归档课程 模态框 -->
     <el-dialog :visible="fileCourseDialog" width="450px" top="30vh">
-      <p  class="joinCourseTitle">
-        确定要归档"{{ this.course.name }}"吗?
-      </p>
+      <p class="joinCourseTitle">确定要归档"{{ this.course.name }}"吗?</p>
 
       <div class="file-tips">
         <p>您可以在“课堂”-“归档管理”中查看此课程</p>
-        <p>
-          【归档】，学生的课程也会一起被归档
-        </p>
+        <p>【归档】，学生的课程也会一起被归档</p>
       </div>
 
-      <div  class="joinCourseFooter">
+      <div class="joinCourseFooter">
         <el-button @click="fileCourseDialog = false" style="width: 100px"
-        >取消
-        </el-button
-        >
+          >取消
+        </el-button>
 
         <el-button style="width: 100px" @click="courseArchive"
-        >归档全部
-        </el-button
-        >
+          >归档全部
+        </el-button>
       </div>
     </el-dialog>
 
     <!-- 删除课程 模态框 -->
     <el-dialog :visible="deleteCourseDialog" width="450px" top="30vh">
-      <p  class="joinCourseTitle">
+      <p class="joinCourseTitle">
         确定要删除"{{ this.deleteCourseObj.courseName }}"吗?
       </p>
 
@@ -205,48 +210,46 @@
       </div>
       <div class="joinCourseFooter">
         <el-button @click="deleteCourseDialog = false" style="width: 100px"
-        >取消
-        </el-button
-        >
-        <el-button
-            type="primary"
-            style="width: 100px"
-            @click="deleteCourse()"
-        >删除
-        </el-button
-        >
+          >取消
+        </el-button>
+        <el-button type="primary" style="width: 100px" @click="deleteCourse()"
+          >删除
+        </el-button>
       </div>
     </el-dialog>
 
     <!-- 加入课程 模态框 -->
-    <el-dialog v-if="role === `3`"
-               :visible="joinCourseDialog" width="295px" top="30vh">
-      <p  class="joinCourseTitle">加入课程</p>
+    <el-dialog
+      v-if="role === `3`"
+      :visible="joinCourseDialog"
+      width="295px"
+      top="30vh"
+    >
+      <p class="joinCourseTitle">加入课程</p>
       <el-input
-          v-model="joinCode"
-          class="joinCourseInput"
-          placeholder="请输入课程加课码验证"
-          style="font-size: 16px"
-          maxlength="6"
+        v-model="joinCode"
+        class="joinCourseInput"
+        placeholder="请输入课程加课码验证"
+        style="font-size: 16px"
+        maxlength="6"
       />
       <div class="joinCourseFooter">
         <el-button @click="joinCourseDialog = false" style="width: 100px"
-        >取消
-        </el-button
-        >
+          >取消
+        </el-button>
         <el-button
-            type="primary"
-            style="width: 100px"
-            :disabled="joinCode.length!==6"
-            @click="joinCourse()"
-        >加入
+          type="primary"
+          style="width: 100px"
+          :disabled="joinCode.length !== 6"
+          @click="joinCourse()"
+          >加入
         </el-button>
       </div>
     </el-dialog>
 
     <!-- 课程排序和归档管理 模态框-->
     <el-dialog :visible="SFDialog" width="810px" top="30vh">
-      <div  class="SFtitle">
+      <div class="SFtitle">
         <p @click="selectSF(0)">课程排序</p>
         <p class="SFClick" @click="selectSF(1)">归档管理</p>
       </div>
@@ -254,11 +257,11 @@
       <div v-if="SFState === 0">
         <!--draggable为true表示可拖拽-->
         <div
-            ref="sortCourse"
-            class="sortCourse"
-            v-for="course of courseList"
-            :key="course.cno"
-            draggable="true"
+          ref="sortCourse"
+          class="sortCourse"
+          v-for="course of courseList"
+          :key="course.cno"
+          draggable="true"
         >
           <span></span>
           {{ course.courseName }}
@@ -272,22 +275,20 @@
         <!--course: 父组件向子组件传值-->
         <!--拖动移除  @dropOut="dropOut"-->
         <archiveFile
-            class="archiveFile"
-            v-for="archiveCourse in archiveCourses"
-            :key="archiveCourse.cno"
-            :course="archiveCourse"
-            @childDeleteCourse="childDeleteCourse"
-            @childRecoveryCourse="childRecoveryCourse"
-            @dragleave="dropOut"
+          class="archiveFile"
+          v-for="archiveCourse in archiveCourses"
+          :key="archiveCourse.cno"
+          :course="archiveCourse"
+          @childDeleteCourse="childDeleteCourse"
+          @childRecoveryCourse="childRecoveryCourse"
+          @dragleave="dropOut"
         />
       </div>
     </el-dialog>
 
     <!-- 恢复课程提示 模态框 -->
     <el-dialog :visible="recoveryTipsDialog" width="350px" top="30vh">
-      <p  class="joinCourseTitle">
-        确定要恢复"{{ course.courseName }}"吗?
-      </p>
+      <p class="joinCourseTitle">确定要恢复"{{ course.courseName }}"吗?</p>
       <div class="delete-tips">
         <p>您和您的学生将可以重新在此课程中互动。</p>
         <p>此课程会在课堂页上显示。</p>
@@ -295,22 +296,17 @@
 
       <div class="joinCourseFooter">
         <el-button @click="recoveryTipsDialog = false" style="width: 100px"
-        >取消
-        </el-button
-        >
-        <el-button
-            type="primary"
-            style="width: 100px"
-            @click="courseRecover"
-        >恢复课程
-        </el-button
-        >
+          >取消
+        </el-button>
+        <el-button type="primary" style="width: 100px" @click="courseRecover"
+          >恢复课程
+        </el-button>
       </div>
     </el-dialog>
 
     <!-- 退出课程 模态框 -->
     <el-dialog :visible="dropOutDialog" width="450px" top="30vh">
-      <p  class="joinCourseTitle">
+      <p class="joinCourseTitle">
         确定要删除"{{ this.dropOutObj.courseName }}"吗?
       </p>
 
@@ -320,19 +316,15 @@
         <p>提醒：已用课程数包含了“删除课程数”</p>
       </div>
 
-      <div  class="joinCourseFooter">
+      <div class="joinCourseFooter">
         <el-button @click="dropOutDialog = false" style="width: 100px"
-        >取消
+          >取消
         </el-button>
-        <el-button
-            type="primary"
-            style="width: 100px"
-            @click="dropOut"
-        >退出课程
+        <el-button type="primary" style="width: 100px" @click="dropOut"
+          >退出课程
         </el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -340,58 +332,56 @@
 import Navigation from "../components/homepage/Navigation";
 import CourseCard from "../components/homepage/CourseCard";
 import ArchiveFile from "../components/homepage/ArchiveFile";
-import hooks from '@/hooks/index.js'
-import {ref,reactive} from 'vue'
-import { useRouter } from 'vue-router'
+import hooks from "@/hooks/index.js";
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
-      const role = ref(3)//当前权限为
-     
-      const topList = reactive([]) // 置顶课程
-      const courses = reactive([])// 所有课程 拿来操作
-      const archiveCourses = reactive([])// 存档课程
-      const courseList = reactive([])// 所有课程
-      const fileCourses = reactive([])// 归档文件
-      const quickReleaseDialog = ref(false) //快速发布活动
-      const createCourseDialog = ref(false) // 创建课程
-      const SFDialog = ref(false) // 课程排序与归档
-      const SFState=ref(1) // 0为课程排序 1为归档管理 最开始登录页面时默认展示 归档管理
-      // 新创建的课程
-      const createCourse = reactive({
-        semester: 1,
-        courseName: '',
-        semesterYear: '',
-        owner: {
-          // 从vuex仓库中拿全局状态值
-          uid: ''//uid
-        }
-      })
-      // 可供选择的学期
-      const optionSemester= [
-        {
-          value: 1,
-          label: "第一学期",
-        },
-        {
-          value: 2,
-          label: "第二学期",
-        },
-      ]
-      const joinCourseDialog= ref(false)
-      const deleteCourseDialog= ref(false)
-      const fileCourseDialog= ref(false)
-      const recoveryTipsDialog= ref(false)
-      const transferCourseDialog= ref(false)
-      const dropOutDialog= ref(false)
-      const joinCode = ref('')// 加入课程的课程码
-      const deleteCourseObj = reactive({})// 要删除的课程
-      const course = reactive({})// 要恢复的课程
-      const dropOutObj = reactive({})// 要退出的课程
+const role = ref(3); //当前权限为
 
+const topList = reactive([]); // 置顶课程
+const courses = reactive([]); // 所有课程 拿来操作
+const archiveCourses = reactive([]); // 存档课程
+const courseList = reactive([]); // 所有课程
+const fileCourses = reactive([]); // 归档文件
+const quickReleaseDialog = ref(false); //快速发布活动
+const createCourseDialog = ref(false); // 创建课程
+const SFDialog = ref(false); // 课程排序与归档
+const SFState = ref(1); // 0为课程排序 1为归档管理 最开始登录页面时默认展示 归档管理
+// 新创建的课程
+const createCourse = reactive({
+  semester: 1,
+  courseName: "",
+  semesterYear: "",
+  owner: {
+    // 从vuex仓库中拿全局状态值
+    uid: "", //uid
+  },
+});
+// 可供选择的学期
+const optionSemester = [
+  {
+    value: 1,
+    label: "第一学期",
+  },
+  {
+    value: 2,
+    label: "第二学期",
+  },
+];
+const joinCourseDialog = ref(false);
+const deleteCourseDialog = ref(false);
+const fileCourseDialog = ref(false);
+const recoveryTipsDialog = ref(false);
+const transferCourseDialog = ref(false);
+const dropOutDialog = ref(false);
+const joinCode = ref(""); // 加入课程的课程码
+const deleteCourseObj = reactive({}); // 要删除的课程
+const course = reactive({}); // 要恢复的课程
+const dropOutObj = reactive({}); // 要退出的课程
 </script>
 <style lang="scss" scoped>
-
 .file-tips p {
   text-align: left;
   margin: 10px 0;
@@ -548,23 +538,28 @@ const router = useRouter()
 }
 
 .quickReleaseIcon div {
-  background: url("../assets/img/icon-gg.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-gg.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(2) div {
-  background: url("../assets/img/icon-ht.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-ht.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(3) div {
-  background: url("../assets/img/icon-hd.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-hd.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(4) div {
-  background: url("../assets/img/icon-zy.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-zy.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(5) div {
-  background: url("../assets/img/icon-cs.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-cs.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseIcon div {
@@ -685,5 +680,4 @@ p {
   outline: none;
   border: none;
 }
-
 </style>

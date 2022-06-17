@@ -26,7 +26,9 @@
         <el-dropdown-menu>
           <!--原生点击事件click-->
           <!--给一个vue组件添加原生事件时需要加上native才会生效-->
-          <el-dropdown-item @click="childRecoveryCourse()">恢复</el-dropdown-item>
+          <el-dropdown-item @click="childRecoveryCourse()"
+            >恢复</el-dropdown-item
+          >
           <el-dropdown-item @click="childDeleteCourse()">删除</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -35,25 +37,24 @@
 </template>
 
 <script setup>
-import {ref,reactive,defineProps,onMounted} from 'vue'
-const bg = ref('')
-const props = defineProps({course:Object}) 
+import { ref, reactive, defineProps, onMounted } from "vue";
+const bg = ref("");
+const props = defineProps({ course: Object });
 
-onMounted(()=>{
-  bg.value =  require(`../../assets/file/${Math.floor(Math.random()*31) + 1}.jpg`)
+onMounted(() => {
+  bg.value = require(`../../assets/file/${
+    Math.floor(Math.random() * 31) + 1
+  }.jpg`);
   console.log(course);
-})
+});
 
 // 归档课程
-   const childRecoveryCourse=()=> {
-      console.log('recovery');
-      // 子组件向父组件传值，childRecoveryCourse为父组件方法名，this.course为传递的参数
-    }
-    // 删除课程
-    const childDeleteCourse=()=>{
-    }
-
-
+const childRecoveryCourse = () => {
+  console.log("recovery");
+  // 子组件向父组件传值，childRecoveryCourse为父组件方法名，this.course为传递的参数
+};
+// 删除课程
+const childDeleteCourse = () => {};
 </script>
 <style lang="scss" scoped>
 .main i {

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <courseNav :cno="$route.params.cno"/>
+    <courseNav :cno="$route.params.cno" />
 
     <div class="course-header">
-      <img :src="bg" alt="theme"/>
+      <img :src="bg" alt="theme" />
       <div class="top">
         <div class="change-bg" @click="editCourseThemeDialog = true">
           <i class="el-icon-edit"></i>
@@ -15,8 +15,8 @@
             <h1>
               {{ course.courseName }}
               <i
-                  class="el-icon-edit-outline courseEdit-icon"
-                  @click="editCourseDialog = true"
+                class="el-icon-edit-outline courseEdit-icon"
+                @click="editCourseDialog = true"
               ></i>
             </h1>
             <h2>{{ course.courseName }}</h2>
@@ -30,7 +30,7 @@
 
                 <li>加课码:{{ course.addCourseCode }}</li>
 
-                <li @click='courseMember()' style="cursor: pointer;">
+                <li @click="courseMember()" style="cursor: pointer">
                   <i class="el-icon-service"></i>
                   成员{{ course.studentNum }}人
                 </li>
@@ -63,148 +63,164 @@
 
       <div class="bottom">
         <ul>
-
-          <li :class="{'click-option':optionState===0,'option':true}" @click="clickOption(0)">课堂互动</li>
+          <li
+            :class="{ 'click-option': optionState === 0, option: true }"
+            @click="clickOption(0)"
+          >
+            课堂互动
+          </li>
 
           <!--老师端-->
-          <li v-if="this.$store.state.role === '2'" :class="{'click-option':optionState===1,'option':true}"
-              @click="clickOption(1)">作业
+          <li
+            v-if="this.$store.state.role === '2'"
+            :class="{ 'click-option': optionState === 1, option: true }"
+            @click="clickOption(1)"
+          >
+            作业
           </li>
           <!--学生端-->
-          <li v-if="this.$store.state.role === '3'" :class="{'click-option':optionState===2,'option':true}"
-              @click="clickOption(2)">作业
+          <li
+            v-if="this.$store.state.role === '3'"
+            :class="{ 'click-option': optionState === 2, option: true }"
+            @click="clickOption(2)"
+          >
+            作业
           </li>
 
-          <li :class="{'click-option':optionState===3,'option':true}" @click="clickOption(3)">话题</li>
+          <li
+            :class="{ 'click-option': optionState === 3, option: true }"
+            @click="clickOption(3)"
+          >
+            话题
+          </li>
         </ul>
       </div>
     </div>
 
     <div class="show">
-      <router-view/>
+      <router-view />
     </div>
 
     <!-- 编辑课程模态框 -->
-    <el-dialog :visible="editCourseDialog" width="660px" top="30vh" v-if="this.$store.state.role === '2'">
-      <p  class="createCourseTitle">编辑课程</p>
+    <el-dialog
+      :visible="editCourseDialog"
+      width="660px"
+      top="30vh"
+      v-if="this.$store.state.role === '2'"
+    >
+      <p class="createCourseTitle">编辑课程</p>
       <div class="createCourse">
         <el-input
-            class="createCourseInput"
-            v-model="editCourseObj.courseName"
-            placeholder="请输入课程名称"
-            maxlength="20"
+          class="createCourseInput"
+          v-model="editCourseObj.courseName"
+          placeholder="请输入课程名称"
+          maxlength="20"
         />
         <el-input
-            class="createCourseInput"
-            placeholder="请输入班级名称(选填)"
-            maxlength="20"
+          class="createCourseInput"
+          placeholder="请输入班级名称(选填)"
+          maxlength="20"
         />
         <div class="selectSemester">
           <p>选择学期:</p>
           <el-date-picker
-              v-model="editCourseObj.semesterYear"
-              type="year"
-              placeholder="选择学年"
+            v-model="editCourseObj.semesterYear"
+            type="year"
+            placeholder="选择学年"
           >
           </el-date-picker>
 
           <el-select v-model="editCourseObj.semester">
             <el-option
-                v-for="item in optionSemester"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              v-for="item in optionSemester"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             >
             </el-option>
           </el-select>
         </div>
       </div>
 
-      <div  class="createCourseFooter">
-        <el-button style="width: 100px" @click="editCourseDialog= false"
-        >取消
+      <div class="createCourseFooter">
+        <el-button style="width: 100px" @click="editCourseDialog = false"
+          >取消
         </el-button>
         <el-button
-            type="primary"
-            :disabled="editCourseObj.courseName.length<=0"
-            style="width: 100px"
-            @click="updateCourse"
-        >保存
-        </el-button
-        >
+          type="primary"
+          :disabled="editCourseObj.courseName.length <= 0"
+          style="width: 100px"
+          @click="updateCourse"
+          >保存
+        </el-button>
       </div>
     </el-dialog>
 
     <!-- 更改背景 模态框 -->
     <el-dialog :visible="editCourseThemeDialog" width="970px" top="30vh">
-      <p  class="createCourseTitle">选择课程图片</p>
+      <p class="createCourseTitle">选择课程图片</p>
 
       <div style="display: flex; align-content: flex-start; flex-wrap: wrap">
-        <div
-            class="pictureShow"
-            v-for="i of 10"
-            :key="i"
-        >
+        <div class="pictureShow" v-for="i of 10" :key="i">
           <img
-              class="picture"
-              :src="require(`../assets/theme/${i}.png`)"
-              alt=""
+            class="picture"
+            :src="require(`../assets/theme/${i}.png`)"
+            alt=""
           />
           <div class="select-icon"></div>
         </div>
       </div>
 
-      <div  class="createCourseFooter">
+      <div class="createCourseFooter">
         <el-button style="width: 100px" @click="editCourseThemeDialog = false"
-        >取消
-        </el-button
+          >取消
+        </el-button>
+        <el-button
+          type="primary"
+          style="width: 100px"
+          @click="editCourseThemeDialog = false"
+          >保存</el-button
         >
-        <el-button type="primary" style="width: 100px" @click="editCourseThemeDialog = false">保存</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
 <script setup>
-import {ref,reactive,onMounted} from 'vue'
+import { ref, reactive, onMounted } from "vue";
 
-const course = reactive({}) 
-      // 任务
-const tasks = reactive([])
-const editCourseDialog = ref(false)
-const editCourseThemeDialog = ref(false)
-let bg = ref('') 
- let   optionState = ref(0) // 0为课堂互动 1为教师作业 2为学生作业 3为话题
-     const editCourseObj=reactive({
-        courseName: ""
-      })
+const course = reactive({});
+// 任务
+const tasks = reactive([]);
+const editCourseDialog = ref(false);
+const editCourseThemeDialog = ref(false);
+let bg = ref("");
+let optionState = ref(0); // 0为课堂互动 1为教师作业 2为学生作业 3为话题
+const editCourseObj = reactive({
+  courseName: "",
+});
 
-     const optionSemester= [
-        {
-          value: 1,
-          label: "第一学期",
-        },
-        {
-          value: 2,
-          label: "第二学期",
-        },
-      ]
+const optionSemester = [
+  {
+    value: 1,
+    label: "第一学期",
+  },
+  {
+    value: 2,
+    label: "第二学期",
+  },
+];
 
- // 课程成员展示
-const courseMember=()=>{
-    }
-const updateCourse=()=>{
-    }
-  const clickOption = ()=> {
-
-  }
-   const getCourse = ()=> {
-    
-  }
-  onMounted(()=>{
-    bg.value = import(`../../assets/file/${Math.floor(Math.random()*44) + 1}.png`)
-  })
+// 课程成员展示
+const courseMember = () => {};
+const updateCourse = () => {};
+const clickOption = () => {};
+const getCourse = () => {};
+onMounted(() => {
+  bg.value = import(
+    `../../assets/file/${Math.floor(Math.random() * 44) + 1}.png`
+  );
+});
 </script>
 <style lang="scss" scoped>
 .pictureShow {
@@ -319,7 +335,7 @@ ul {
 
 .top-main h2 {
   font-size: 20px;
-  font-family: PingFang SC,serif;
+  font-family: PingFang SC, serif;
   font-weight: 500;
   color: rgba(255, 255, 255, 1);
   line-height: 28px;
@@ -421,23 +437,28 @@ ul {
 }
 
 .quickReleaseIcon div {
-  background: url("../assets/img/icon-gg.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-gg.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(2) div {
-  background: url("../assets/img/icon-ht.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-ht.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(3) div {
-  background: url("../assets/img/icon-hd.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-hd.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(4) div {
-  background: url("../assets/img/icon-zy.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-zy.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseSelect .quickReleaseIcon:nth-child(5) div {
-  background: url("../assets/img/icon-cs.png") center no-repeat rgba(44, 87, 171, 1);
+  background: url("../assets/img/icon-cs.png") center no-repeat
+    rgba(44, 87, 171, 1);
 }
 
 .quickReleaseIcon div {

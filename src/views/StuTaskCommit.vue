@@ -1,9 +1,5 @@
 <template>
-  <div>
-    stuTaskCommit
-  </div>
+  <div>stuTaskCommit</div>
 </template>
-<script setup>
-</script>
-<style lang="scss" scoped>
-</style>
+<script setup></script>
+<style lang="scss" scoped></style>

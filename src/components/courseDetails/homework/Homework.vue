@@ -1,9 +1,5 @@
 <template>
-  <div>
-Homework
-  </div>
+  <div>Homework</div>
 </template>
-<script setup>
-</script>
-<style lang="scss" scoped>
-</style>
+<script setup></script>
+<style lang="scss" scoped></style>
