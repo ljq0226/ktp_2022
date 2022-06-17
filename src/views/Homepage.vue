@@ -337,6 +337,10 @@
 </template>
 
 <script setup>
+import Navigation from "../components/homepage/Navigation";
+import CourseCard from "../components/homepage/CourseCard";
+import ArchiveFile from "../components/homepage/ArchiveFile";
+import hooks from '@/hooks/index.js'
 import {ref,reactive} from 'vue'
 import { useRouter } from 'vue-router'
 

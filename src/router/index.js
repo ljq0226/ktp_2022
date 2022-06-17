@@ -7,22 +7,6 @@ const routes = [
         redirect: '/home',
     },
     {
-        path: '/about',
-        name: 'about',
-        meta: {
-            title: '关于',
-        },
-        component: () => import('@/views/about'),
-    },
-    {
-        path: '/home',
-        name: 'home',
-        meta: {
-            title: '主页',
-        },
-        component: () => import('@/views/home'),
-    },
-    {
         path: '/',
         name: 'Login',
         component: () => import('../views/Login'),
