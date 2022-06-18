@@ -6,7 +6,6 @@ import "@vue/runtime-core";
 declare module "@vue/runtime-core" {
   export interface GlobalComponents {
     ArchiveFile: typeof import("./src/components/homepage/ArchiveFile.vue")["default"];
-    Common: typeof import("./src/components/common/CommonNavigation.vue")["default"];
     CommonNavigation: typeof import("./src/components/common/CommonNavigation.vue")["default"];
     CourseCard: typeof import("./src/components/homepage/CourseCard.vue")["default"];
     CourseNav: typeof import("./src/components/courseDetails/CourseNav.vue")["default"];
@@ -15,8 +14,6 @@ declare module "@vue/runtime-core" {
     ElBreadcrumbItem: typeof import("element-plus/es")["ElBreadcrumbItem"];
     ElButton: typeof import("element-plus/es")["ElButton"];
     ElCol: typeof import("element-plus/es")["ElCol"];
-    ElCollapse: typeof import("element-plus/es")["ElCollapse"];
-    ElCollapseItem: typeof import("element-plus/es")["ElCollapseItem"];
     ElDatePicker: typeof import("element-plus/es")["ElDatePicker"];
     ElDialog: typeof import("element-plus/es")["ElDialog"];
     ElDropdown: typeof import("element-plus/es")["ElDropdown"];
@@ -24,8 +21,10 @@ declare module "@vue/runtime-core" {
     ElDropdownMenu: typeof import("element-plus/es")["ElDropdownMenu"];
     ElInput: typeof import("element-plus/es")["ElInput"];
     ElOption: typeof import("element-plus/es")["ElOption"];
+    ElRadio: typeof import("element-plus/es")["ElRadio"];
     ElRow: typeof import("element-plus/es")["ElRow"];
     ElSelect: typeof import("element-plus/es")["ElSelect"];
+    ElUpload: typeof import("element-plus/es")["ElUpload"];
     Homework: typeof import("./src/components/courseDetails/homework/Homework.vue")["default"];
     Interact: typeof import("./src/components/courseDetails/interact/Interact.vue")["default"];
     Navigation: typeof import("./src/components/homepage/Navigation.vue")["default"];
