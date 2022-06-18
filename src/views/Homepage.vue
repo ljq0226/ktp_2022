@@ -8,7 +8,7 @@
         <ul>
           <!--课程排序-->
           <li
-            v-if="status=1"
+            v-if="(status = 1)"
             class="sortFile"
             @click="
               SFDialog = true;
@@ -24,7 +24,7 @@
               SFDialog = true;
               selectSF(1);
             "
-            v-if="status=1"
+            v-if="(status = 1)"
           >
             <i class="el-icon-printer" />归档管理
           </li>
@@ -33,7 +33,7 @@
             <el-button
               type="primary"
               style="height: 40px"
-              v-if="status=1"
+              v-if="(status = 1)"
               @click="createCourseDialog = true"
               >+ 创建课程
             </el-button>
@@ -46,7 +46,7 @@
             </el-button>
           </li>
           <!--发布活动-->
-          <li v-if="status=1">
+          <li v-if="(status = 1)">
             <el-button
               type="primary"
               style="height: 40px"
@@ -58,7 +58,7 @@
       </div>
 
       <div class="courseShow">
-        <div v-if="status=1">
+        <div v-if="(status = 1)">
           <courseCard
             @childDeleteCourse="childDeleteCourse"
             @childArchiveCourse="childArchiveCourse"
@@ -69,23 +69,20 @@
             :role="'0'"
           />
         </div>
-        <div v-if="status=0">
-        <div v-for="course in courses"
+        <div v-if="(status = 0)">
+          <div
+            v-for="course in courses"
             :key="course.courseId"
-             @childDropOut="childDropOut"
-              class="courseCard">
-            <courseCard
-            :course="course"
-            :role="'1'"
-          />
+            @childDropOut="childDropOut"
+            class="courseCard"
+          >
+            <courseCard :course="course" :role="'1'" />
+          </div>
         </div>
-        </div>
-        <div class="addCourse" v-if="status=1">
+        <div class="addCourse" v-if="(status = 1)">
           <div class="addBg"></div>
           <div class="addfont">
-            <el-icon :size="20" color="red"><Plus /></el-icon>
-            <Plus width='30px'/>
-            <i @click="createCourseDialog = true" class="el-icon-plus"></i>
+            <el-icon :size="20"><Plus /></el-icon>
             <p @click="createCourseDialog = true">创建课程</p>
           </div>
         </div>
@@ -126,7 +123,7 @@
 
     <!-- 创建课程模态框 -->
     <el-dialog
-      v-if="status=1"
+      v-if="(status = 1)"
       :visible="createCourseDialog"
       width="660px"
       top="30vh"
@@ -332,10 +329,11 @@ import Navigation from "../components/homepage/Navigation";
 import CourseCard from "../components/homepage/CourseCard";
 import ArchiveFile from "../components/homepage/ArchiveFile";
 import hooks from "@/hooks/index.js";
-import { ref, reactive,onMounted } from "vue";
-import storage from '@/hooks/storage';
+import { Plus } from "@element-plus/icons-vue";
+import { ref, reactive, onMounted } from "vue";
+import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
-import {courseService } from '@/api'
+import { courseService } from "@/api";
 const router = useRouter();
 
 let status = ref(0); //当前角色为 0为学生 1为老师
@@ -381,28 +379,27 @@ const deleteCourseObj = reactive({}); // 要删除的课程
 const course = reactive({}); // 要恢复的课程
 const dropOutObj = reactive({}); // 要退出的课程
 
-
-onMounted(()=>{
-getStatus()
- init()
-})
+onMounted(() => {
+  getStatus();
+  init();
+});
 
 //初始化 获取所有课程信息
-const init = async()=>{
- const {userId} = storage.get('userInfo')
-  const res =await courseService.getAllNormalCourse(userId);
-  if(res.code===200){
+const init = async () => {
+  const { userId } = storage.get("userInfo");
+  const res = await courseService.getAllNormalCourse(userId);
+  if (res.code === 200) {
     courses = res.data;
-  }else{
-    ElMessage.error(res.msg)
+  } else {
+    ElMessage.error(res.msg);
   }
-}
+};
 //获取当前用户的角色状态
-const getStatus = ()=>{
-  const userInfo = storage.get('userInfo')
-  status.value =userInfo.status;
-}
+const getStatus = () => {
+  const userInfo = storage.get("userInfo");
+  status.value = userInfo.status;
+};
 </script>
 <style lang="scss" scoped>
-@import url('@/styles/Homepage.scss');
+@import url("@/styles/Homepage.scss");
 </style>

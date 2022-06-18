@@ -96,7 +96,7 @@ const getTermYear = computed(
 );
 
 onMounted(() => {
-  console.log('card');
+  console.log("card");
   bg.value = require(`../../assets/file/${
     Math.floor(Math.random() * 31) + 1
   }.jpg`);
