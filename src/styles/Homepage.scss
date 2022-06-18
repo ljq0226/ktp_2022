@@ -1,0 +1,296 @@
+.file-tips p {
+	text-align: left;
+	margin: 10px 0;
+      }
+      
+      .delete-tips {
+	text-align: left;
+      }
+      
+      .delete-tips p:nth-child(2) {
+	color: red;
+	margin: 10px 0;
+      }
+      
+      .delete-tips p:nth-child(3) {
+	color: blue;
+      }
+      
+      .archiveFile {
+	margin: 16px 40px;
+      }
+      
+      .archive {
+	display: flex;
+	align-content: flex-start;
+	flex-wrap: wrap;
+      }
+      
+      .sortCourse span {
+	margin: 18px 5px 0 10px;
+	background-color: rgb(49, 142, 235);
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+      }
+      
+      .sortCourse {
+	cursor: pointer;
+	display: flex;
+	border: 1px solid rgb(236, 236, 236);
+	height: 58px;
+	line-height: 58px;
+	font-size: 16px;
+	text-align: left;
+      }
+      
+      .SFClick {
+	border-bottom: 3px solid #aaa;
+	color: #2d2d2d;
+      }
+      
+      .SFtitle p {
+	padding: 0 30px;
+      }
+      
+      .SFtitle {
+	display: flex;
+	justify-content: center;
+	color: #818181;
+	font-size: 18px;
+	cursor: pointer;
+	line-height: 55px;
+      
+	border-bottom: 1px solid #dcdcdc;
+	height: 58px;
+	width: 100%;
+      }
+      
+      .joinCourseInput {
+	border-bottom: 2px solid #ececec;
+      }
+      
+      .joinCourseInput:hover {
+	border-bottom: 2px solid rgba(72, 104, 209, 0.3);
+      }
+      
+      .joinCourseTitle {
+	font-size: 18px;
+	color: #a9a9a9;
+	text-align: left;
+	border-bottom: 1px solid #ececec;
+	padding-bottom: 20px;
+      }
+      
+      .createCourseFooter {
+	text-align: right;
+      }
+      
+      .otherOptions {
+	margin-left: 10px;
+	text-align: left;
+      }
+      
+      .createCourse p {
+	text-align: left;
+	font-size: 14px;
+	color: #666;
+      }
+      
+      .selectSemester p:nth-child(1) {
+	line-height: 39px;
+	margin-left: -18px;
+      }
+      
+      .selectSemester {
+	margin: 20px 0;
+      }
+      
+      .selectSemester,
+      .joinCourseFooter {
+	display: flex;
+	justify-content: space-around;
+      }
+      
+      .createCourseInput {
+	display: flex;
+	border-bottom: 2px solid #c8c8c8;
+      }
+      
+      .createCourseInput:hover {
+	border-bottom: 2px solid #4d90fe;
+      }
+      
+      .createCourseInput:nth-child(1)::before {
+	content: "课程名称:";
+	width: 80px;
+	line-height: 66px;
+	height: 40px;
+      }
+      
+      .createCourseInput:nth-child(2)::before {
+	content: "班级名称:";
+	width: 80px;
+	line-height: 66px;
+	height: 40px;
+      }
+      
+      .createCourseTitle {
+	text-align: left;
+	font-size: 18px;
+      }
+      
+      .quickReleaseIcon p {
+	font-size: 14px;
+	font-weight: 600;
+	color: rgba(67, 67, 67, 1);
+      }
+      
+      .quickReleaseSelect {
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 40px;
+	cursor: pointer;
+      }
+      
+      .quickReleaseIcon div {
+	background: url("../assets/img/icon-gg.png") center no-repeat
+	  rgba(44, 87, 171, 1);
+      }
+      
+      .quickReleaseSelect .quickReleaseIcon:nth-child(2) div {
+	background: url("../assets/img/icon-ht.png") center no-repeat
+	  rgba(44, 87, 171, 1);
+      }
+      
+      .quickReleaseSelect .quickReleaseIcon:nth-child(3) div {
+	background: url("../assets/img/icon-hd.png") center no-repeat
+	  rgba(44, 87, 171, 1);
+      }
+      
+      .quickReleaseSelect .quickReleaseIcon:nth-child(4) div {
+	background: url("../assets/img/icon-zy.png") center no-repeat
+	  rgba(44, 87, 171, 1);
+      }
+      
+      .quickReleaseSelect .quickReleaseIcon:nth-child(5) div {
+	background: url("../assets/img/icon-cs.png") center no-repeat
+	  rgba(44, 87, 171, 1);
+      }
+      
+      .quickReleaseIcon div {
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+      }
+      
+      .quickRelease {
+	margin-bottom: 30px;
+      }
+      
+      .quickRelease {
+	font-size: 24px;
+	color: rgba(112, 112, 112, 1);
+	font-weight: 600;
+      }
+      
+      .el-dropdown-item {
+	width: 100px;
+	justify-content: center;
+      }
+      
+      .addfont p {
+	font-size: 14px;
+	cursor: pointer;
+      }
+      
+      .addfont i {
+	margin-top: 46px;
+	font-size: 20px;
+      }
+      
+      .addBg {
+	background-image: url("../assets/img/create-course.png");
+	width: 100%;
+	height: 127px;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+      }
+      
+      .addCourse {
+	width: 270px;
+	height: 275px;
+	border-radius: 8px;
+	border: 1px solid #e2e6ed;
+      }
+      
+      .courseCard,
+      .addCourse {
+	margin: 0 9px 10px;
+      }
+      
+      .courseShow {
+	padding-top: 60px;
+	height: 100%;
+	display: flex;
+      
+	align-content: flex-start;
+	flex-wrap: wrap;
+      }
+      
+      .sortFile {
+	cursor: pointer;
+      }
+      
+      .sortFile:hover {
+	color: black;
+      }
+      
+      .nav p,
+      .nav .sortFile {
+	line-height: 42px;
+      }
+      
+      .nav ul li {
+	padding: 0 13px;
+      }
+      
+      .nav ul {
+	display: flex;
+	justify-content: space-between;
+	list-style: none;
+      }
+      
+      .nav {
+	display: flex;
+	justify-content: space-between;
+	font-size: 14px;
+	height: 36px;
+	padding: 20px 0 12px 0;
+	color: #78787a;
+	border-bottom: 1px solid #d9d9f0;
+      }
+      
+      .main {
+	overflow: hidden;
+	padding: 0 4%;
+      }
+      
+      p {
+	margin: 0;
+	padding: 0;
+      }
+      
+      .container {
+	width: 100%;
+      }
+      
+      .createCourseInput .el-input__inner {
+	outline: none;
+	border: none;
+      }
+      
+      .joinCourseInput .el-input__inner {
+	outline: none;
+	border: none;
+      }

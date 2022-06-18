@@ -60,8 +60,6 @@
     <div class="bottom">
       <div class="teacher">
         <div class="isTop">成员{{ course.studentNum }}人</div>
-        <!-- <el-avatar style="width: 25px; height: 25px"></el-avatar> -->
-        <!-- <p>{{ course.teacher }}</p> -->
       </div>
       <div class="set">
         <el-dropdown v-if="role === '0'" trigger="click">
@@ -98,6 +96,7 @@ const getTermYear = computed(
 );
 
 onMounted(() => {
+  console.log('card');
   bg.value = require(`../../assets/file/${
     Math.floor(Math.random() * 31) + 1
   }.jpg`);

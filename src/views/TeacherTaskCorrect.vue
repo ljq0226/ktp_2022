@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import TaskCommitNav from "components/utils/TaskCommitNav";
+//import TaskCommitNav from "components/utils/TaskCommitNav";
 import { ref, reactive, onMounted } from "vue";
 
 const course = reactive({});

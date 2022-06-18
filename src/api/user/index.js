@@ -6,7 +6,6 @@ const userService = {
     const res = await post(
       `/user/login?username=${username}&password=${password}`
     );
-    console.log(res);
     if (res.code === 200) {
       return res.data;
     } else if (res.code === 500) {
@@ -16,7 +15,6 @@ const userService = {
   //注册
   async register(registerDto) {
     const res = await post("/user/register", registerDto);
-    console.log(res);
     if (res.code === 200) {
       return res.msg;
     }
