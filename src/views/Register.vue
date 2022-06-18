@@ -73,7 +73,7 @@
         />
         <el-select
           class="el-input"
-          v-model="regAccount.school"
+          v-model="regAccount.schoolId"
           filterable
           remote
           reserve-keyword
@@ -85,12 +85,12 @@
             v-for="item in options"
             :key="item.sid"
             :label="item.schoolName"
-            :value="item"
+            :value="item.sid"
           >
           </el-option>
         </el-select>
 
-        <el-button type="primary" class="el-button" @click="checkNull">
+        <el-button type="primary" class="el-button" @click="register()">
           <span v-if="state == 1">注册为老师/助教</span>
           <span v-else>注册为学生</span>
         </el-button>
@@ -118,22 +118,37 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-
+import { userService } from "@/api";
+import { useRouter } from "vue-router";
+const router = useRouter();
 //注册账号信息
 const regAccount = reactive({
   username: "",
   password: "",
-  name: "",
-  id: "",
-  school: {},
-  role: {},
+  stno: "",
+  schoolId: "",
+  status: "",
 });
+let againPassword = ref("");
 
 const state = ref(0); // 模态框分三个状态: 0选择身份 1教师注册 2学生注册
 const loading = ref(false);
 const successDialog = ref(false);
 const schools = reactive([]);
-const options = reactive([]);
+const options = reactive([
+  {
+    sid: "1537076005879681025",
+    schoolName: "重庆理工大学",
+  },
+  {
+    sid: "1537325500244795393",
+    schoolName: "bilibili大学",
+  },
+  {
+    sid: "1537325656851701762",
+    schoolName: "夕阳红大学",
+  },
+]);
 
 const login = () => {
   console.log("login");
@@ -142,21 +157,37 @@ const login = () => {
 const checkNull = () => {
   console.log("checkNull");
 };
-
-const register = () => {
-  console.log("register");
+//点击注册
+const register = async () => {
+  if (state.value == 2) regAccount.status = "0";
+  else regAccount.status = "1";
+  const msg = await userService.register(regAccount);
+  ElMessage.success(msg);
+  router.push("/login");
 };
 
 const remoteMethod = (query) => {
   console.log("remoteMethod");
 };
 
-const checkAccount = () => {
-  console.log("checkAccount");
+//检测用户名是否存在
+const checkAccount = async () => {
+  const isRepeat = await userService.isRepeat(regAccount.username);
+  console.log(isRepeat);
+  if (isRepeat) {
+    ElMessage.warning("该用户名已存在，请重新输入！");
+    regAccount.username = "";
+  }
 };
-
+//检测两次输入密码是否一致
 const checkPassword = () => {
-  console.log("checkPassword");
+  const flag = regAccount.password == againPassword.value;
+
+  console.log(flag);
+  if (!flag) {
+    ElMessage.warning("两次输入密码不相同，请重新输入！");
+    againPassword.value = "";
+  }
 };
 </script>
 

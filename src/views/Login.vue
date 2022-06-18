@@ -43,7 +43,12 @@
             <a href="javascript:">忘记密码?</a>
           </div>
           <div class="secondLine">
-            <button class="loginBtn" @click="login">登录</button>
+            <button
+              class="loginBtn"
+              @click="login(user.username, user.password)"
+            >
+              登录
+            </button>
           </div>
           <div class="third">
             <router-link to="register">
@@ -56,8 +61,10 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { userService } from "@/api";
+import storage from "@/hooks/storage";
 const router = useRouter();
 const user = reactive({
   username: "",
@@ -66,8 +73,16 @@ const user = reactive({
 
 let autoLogin = ref(false);
 
+onMounted(() => {
+  const { username, password } = storage.get("userInfo");
+  user.username = username;
+  user.password = password;
+});
+
 const autoLogin_Status = () => {};
-const login = () => {
+const login = async (username, password) => {
+  const data = await userService.login(username, password);
+  storage.set("userInfo", data.userInfo);
   router.push("/homepage");
 };
 </script>
