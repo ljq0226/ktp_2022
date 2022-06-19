@@ -20,5 +20,9 @@ const userService = {
   async updateUserInfo(infoDto) {
     return await post("/user/update", infoDto);
   },
+  //通过用户id获取用户信息
+  async getInfoById(id) {
+    return await get(`/user/getInfoById?userId=${id}`);
+  }
 };
 export default userService;

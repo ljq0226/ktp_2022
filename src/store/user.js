@@ -32,7 +32,6 @@ export const useUserStore = defineStore("user", {
       }
     },
     async updateUserInfo(userInfo) {
-      console.log(userInfo);
       const res = await userService.updateUserInfo(userInfo);
       if (res.code === 200) {
         ElMessage.success(res.msg);
@@ -42,5 +41,13 @@ export const useUserStore = defineStore("user", {
         return false;
       }
     },
+    async getInfoById(id){
+      const res = await userService.getInfoById(id);
+      if(res.code === 200){
+        return res.data
+      }else {
+        console.log(res.msg)
+      }
+    }
   },
 });

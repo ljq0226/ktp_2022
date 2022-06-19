@@ -3,9 +3,13 @@
     <div class="bg">
       <img :src="bg" alt="" />
     </div>
-    <div class="head">
+    <div class="main">
+  <div class="head">
+    <div class="semesterYear">
+      {{getTermYear}}
+    </div>
+
       <div class="courseName">
-        <!---->
         <router-link
           :to="{
             path: `/course/${props.course.courseId}`,
@@ -14,56 +18,31 @@
         >
       </div>
       <div class="courseInfo">
-        <el-dropdown trigger="click">
-          <div class="addCode">
-            <img src="../../assets/img/addCode.png" alt="加课码" />
-            <p>
-              加课码:<span> {{ props.course.addCourseCode }}</span>
-            </p>
-            <i
-              class="el-icon-arrow-down el-icon--right"
-              style="margin-top: 4px"
-            ></i>
-          </div>
-          <el-dropdown-menu v-if="status == 1">
-            <el-dropdown-item @click="addCodeReset()">重置</el-dropdown-item>
-          </el-dropdown-menu>
-
-          <el-dropdown-menu> </el-dropdown-menu>
-        </el-dropdown>
-
-        <div class="semester">
-          <p>{{ getTermYear }}</p>
-          <p v-if="props.course.semester === 1">第一学期</p>
-          <p v-else-if="props.course.semester === 2">第二学期</p>
+        <div class="addCode">
+          <p>
+            课堂码:<span> {{ props.course.addCourseCode }}</span>
+          </p>
         </div>
       </div>
     </div>
-    <!--作业-->
-    <div class="main">
-      <p>近期作业</p>
-      <p v-for="item of homework" :key="item.id" class="homework">
-        <span class="homework-title">
-          {{ item.name }}
-        </span>
-      </p>
-      <p class="homework" v-show="homework.length === 0">无</p>
+    <div class="main-space">
     </div>
-
     <div class="bottom">
       <div class="teacher">
-        <div class="isTop">成员{{ props.course.studentNum }}人</div>
+        <div class="isTop">负责人:{{owner}}</div>
       </div>
       <div class="set">
-        <el-dropdown v-if="status == 1" trigger="click">
+        <el-dropdown v-if="props.status == 1" trigger="click">
           <span class="el-dropdown-link">
-            <i class="el-icon-more iconMore"></i>
+            <el-icon><More /></el-icon>
           </span>
-          <el-dropdown-menu>
-            <el-dropdown-item>详细</el-dropdown-item>
-            <el-dropdown-item @click="deleteCourse()">删除</el-dropdown-item>
-            <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
-          </el-dropdown-menu>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>编辑</el-dropdown-item>
+              <el-dropdown-item @click="deleteCourse()">删除</el-dropdown-item>
+              <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
 
         <el-dropdown v-else trigger="click" placement="top">
@@ -72,40 +51,50 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
               <el-dropdown-item @click="dropOut">退课</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
     </div>
+    </div>
+  
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, defineProps, onMounted } from "vue";
+import { ref, reactive, defineProps, onMounted ,computed} from "vue";
 import { More } from "@element-plus/icons-vue";
 import { useCourseStore } from "@/store/course";
+import {useUserStore} from "@/store/user"
+const userStore = useUserStore();
 const courseStore = useCourseStore();
 const props = defineProps({ course: Object, status: String });
 const bg = ref("");
-const homework = reactive([]);
-const getTermYear = computed(
-  () =>
-    `${props.course.semesterYear}-${parseInt(props.course.semesterYear) + 1}`
+const owner = ref("");
+//处理学期
+const getTermYear = computed(() =>
+    `${props.course.semesterYear}-${parseInt(props.course.semesterYear) + 1} ${props.course.semester==1?'第一学期':'第二学期'}`
 );
+//处理负责人
+const handleOwner =async ()=>{
+  const info = await userStore.getInfoById(props.course.ownerId)
+  owner.value = info.name;
+}
 
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
+handleOwner()
 });
+
+
 
 const detailCourse = () => {};
 //退课
 const dropOut = async () => {
-  console.log(props.course.courseId);
-  console.log(courseStore);
   courseStore.exitCourse(props.course.courseId);
-  console.log("tui");
 };
 // 归档课程
 const fileCourse = () => {};
@@ -142,11 +131,6 @@ const addCodeReset = () => {};
   padding: 7px 10px;
 }
 
-.main > p:nth-child(1) {
-  padding-top: 14px;
-  font-size: 12px;
-  color: rgba(95, 99, 104, 1);
-}
 
 .homework {
   cursor: pointer;
@@ -164,115 +148,57 @@ const addCodeReset = () => {};
   border-bottom: 1px solid #32baf0;
   color: #32baf0;
 }
+.courseInfo{
+  .addCode{
+    color:white;
+    font-size: 13px;
+  }
+ }
 
-.courseInfo {
-  display: flex;
-  justify-content: space-between;
-}
 
-.semester {
-  margin: 12px 12px 0 0;
-  text-align: left;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 12px;
-}
 
-.addCode img {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
 
-.addCode {
-  margin: 24px 0 0 18px;
-  width: 140px;
-  display: flex;
-  justify-content: center;
-  font-size: 12px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-}
-
-.courseClass {
-  margin-top: 8px;
-}
-
-.courseClass,
 .courseName {
-  text-align: left;
-  margin-left: 15px;
-  color: white;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-a {
+  font-size: 18px;
+  color:white;
+  margin-top: 0.5vh;
+  margin-bottom:6.5vh;
+  a {
   color: white;
   outline: none;
   text-decoration: none;
 }
 
-.courseName {
-  font-size: 20px;
-  width: 210px;
 }
-
-.courseName a:hover {
-  border-bottom: 1px solid white;
-}
-
-.iconState {
-  position: relative;
-  margin-left: 233px;
-}
-
-.squr {
-  width: 0;
-  height: 0;
-  border-left: 10px solid #32baf0;
-  border-right: 10px solid #32baf0;
-  border-bottom: 4px solid transparent;
-  position: absolute;
-  left: 0;
-  top: 22px;
-}
-
-.icon {
-  background: #32baf0;
-  color: #fff;
-  font-size: 14px;
-  width: 20px;
-  height: 22px;
-}
-
 .bg {
   position: absolute;
   z-index: -1;
-}
-
-.bg img {
-  width: 270px;
-  height: 127px;
+   img {
+  width: 18vw;
+  height: 23vh;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
-
+}
 .main {
-  height: 106px;
-  border-bottom: 1px solid #e2e6ed;
-  padding: 0 16px;
-  text-align: left;
+  display: flex;
+  flex-flow: column;
+  .head {
+   height: 23vh;
+   padding:1.3vw;
+   .semesterYear{
+    font-size: 13px;
+    color: rgb(167, 202, 212);
+   }
 }
+  .main-space {
+    flex: 0.2;
+  }
 
-.head {
-  height: 127px;
 }
-
 .card {
-  width: 270px;
-  height: 275px;
+  width: 18vw;
+  height: 35vh;
   border: 1px solid #e2e6ed;
   border-radius: 8px;
   position: relative;

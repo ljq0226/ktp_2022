@@ -19,7 +19,7 @@
               @childDeleteCourse="childDeleteCourse"
               @childArchiveCourse="childArchiveCourse"
               :course="course"
-              :role="status"
+              :status="status"
             />
           </template>
         </div>
