@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Homework: typeof import('./components/courseDetails/homework/Homework.vue')['default']
     Interact: typeof import('./components/courseDetails/interact/Interact.vue')['default']

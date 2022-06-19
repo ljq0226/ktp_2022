@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Navigation info="我的课堂"/>
+    <Navigation info="我的课堂" />
     <div class="main">
       <div class="nav">
         <!--没有置顶课程就展示全部课程-->

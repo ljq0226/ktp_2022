@@ -23,5 +23,9 @@ const userService = {
   async isRepeat(username) {
     return await get(`/user/isRepeat?username=${username}`);
   },
+  //修改用户信息
+  async updateUserInfo(infoDto){
+    return  await post("/user/update", infoDto);
+  }
 };
 export default userService;

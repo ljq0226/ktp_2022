@@ -1,64 +1,69 @@
 <template>
-<div class="all">
-
-
-  <div class="container">
-    <div class="logo" @click="backHome">
-      <img src="@/assets/ktpLogo.png" alt="" />
-    </div>
-    <div class="middle active">
-      <div>
-        <a href="javascript:">{{props.info}}</a>
+  <div class="all">
+    <div class="container">
+      <div class="logo" @click="backHome">
+        <img src="@/assets/ktpLogo.png" alt="" />
+      </div>
+      <div class="middle active">
+        <div>
+          <a href="javascript:">{{ props.info }}</a>
+        </div>
+      </div>
+      <div class="right">
+        <div class="all-el-icon">
+          <el-icon class="el-icon" :size="25"><Message /></el-icon>
+          <el-icon class="el-icon" :size="25"><Bell /></el-icon>
+        </div>
+        <div class="userSetting">
+          <el-dropdown trigger="click" size="large">
+            <div class="avatar">
+              <el-avatar :size="50" src="/src/assets/img/default.jpg" />
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <div
+                    class="icon"
+                    style="background-position: 50% 56%"
+                    @click="noServe"
+                  >
+                    开通VIP
+                  </div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <div
+                    class="icon"
+                    style="background-position: 50% 30%"
+                    @click="noServe"
+                  >
+                    机构账号绑定
+                  </div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/profile" style="display: flex">
+                    <div class="icon" style="background-position: 50% 2%" />
+                    个人设置
+                  </router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <div class="icon" style="background-position: 50% 83%" />
+                  <span @click="logout">退出账号</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
-    <div class="right">
-      <div class="all-el-icon">
-        <el-icon class="el-icon" :size="25"><Message /></el-icon>
-        <el-icon class="el-icon" :size="25"><Bell /></el-icon>
-      </div>
-      <div class="userSetting">
-        <el-dropdown trigger="click" size="large">
-          <div class="avatar">
-            <el-avatar :size="50" src="/src/assets/img/default.jpg" />
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-            <el-dropdown-item>
-              <div class="icon" style="background-position: 50% 56%" @click="noServe">
-              开通VIP
-              </div>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div class="icon" style="background-position: 50% 30%" @click="noServe">
-              机构账号绑定
-               </div>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <router-link to="/profile" style="display: flex">
-                <div class="icon" style="background-position: 50% 2%" />
-                个人设置
-              </router-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <div class="icon" style="background-position: 50% 83%" />
-              <span @click="logout">退出账号</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-          </template>
-          
-        </el-dropdown>
-      </div>
-    </div>
-  </div>
   </div>
 </template>
 
 <script setup>
 import { Message, Bell } from "@element-plus/icons-vue";
 import { ref, reactive, defineProps, onMounted } from "vue";
-import {useRouter} from "vue-router";
-const router  = useRouter();
-const props = defineProps({info: String});
+import { useRouter } from "vue-router";
+const router = useRouter();
+const props = defineProps({ info: String });
 const imgURL = ref("@/assets/img/default.jpg");
 const state = 1; // 1 课堂 2 精品慕课 3 我的精品 4 双选会 5论文管理
 
@@ -66,21 +71,21 @@ onMounted(() => {});
 
 const changeState = (val) => {};
 const logout = () => {
-  console.log('退出登录');
+  console.log("退出登录");
 };
-const backHome = ()=>{
-  router.push('/homepage')
+const backHome = () => {
+  router.push("/homepage");
 };
 const noServe = () => {
-  ElMessage.warning('暂未开通该服务,尽请期待!')
-}
+  ElMessage.warning("暂未开通该服务,尽请期待!");
+};
 </script>
 <style lang="scss" scoped>
-.all{
-  position:fixed;
-  width:100%;
+.all {
+  position: fixed;
+  width: 100%;
   left: 0;
-  top:0;
+  top: 0;
   z-index: 999;
 }
 .container {
@@ -88,9 +93,9 @@ const noServe = () => {
   height: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   display: flex;
-  opacity: 1;
+  background-color: white;
 
-  .logo{
+  .logo {
     cursor: pointer;
   }
   .middle {

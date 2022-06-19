@@ -1,380 +1,267 @@
 <template>
-  <div class="outer">
-    <navigation info="用户设置"/>
-    <!-- 上部分 -->
-    <div class="layer-top">
-      <div>
-        <img :src="avatar" :alt="user.name" />
-        <el-upload
-          class="avatar-uploader"
-          :on-success="uploadSuccess"
-          :on-error="uploadError"
-          :on-change="onChange"
-          :file-list="fileList"
-          action=""
-          :auto-upload="false"
-          :before-upload="beforeAvatarUpload"
-        >
-          <div>选择图片</div>
-        </el-upload>
-        <el-button @click="submitUpload" style="position: relative; right: 10px"
-          >上传头像</el-button
-        >
+  <navigation info="用户设置" />
+  <div class="userInfo">
+    <div class="top">
+      <div class="userImg">
+        <el-avatar :size="120" src="/src/assets/img/default.jpg" />
       </div>
-    </div>
-    <div class="layer-bottom">
-      <div>
-        <div>
-          <h3>基本资料</h3>
-          <ul>
-            <li>
-              <p>姓名：</p>
-              <div class="edit-box">
-                <span v-if="!editBasic">{{ user.name }}</span>
-                <input
-                  v-else
-                  type="text"
-                  name="name"
-                  v-model="name"
-                  placeholder="请输入姓名"
-                />
-              </div>
-              <div v-if="!editBasic" @click="changeEdit(1)">编辑资料</div>
-              <div v-else @click="changeEdit(1)">放弃编辑</div>
-            </li>
-            <li>
-              <p>学校：</p>
-              <div class="edit-box">
-                <span v-if="!editBasic">{{ showSchool }}</span>
-                <input
-                  v-else
-                  type="text"
-                  name="school"
-                  v-model="school"
-                  placeholder="请输入学校"
-                />
-              </div>
-            </li>
-          </ul>
-          <div v-if="editBasic" class="save-btn" @click="save(1)">保存</div>
-        </div>
-        <div>
-          <h3>身份角色</h3>
-          <ul>
-            <li>
-              <p>角色：</p>
-              <div class="edit-box">
-                <span v-if="!editPermission">{{ showPermission }}</span>
-                <div v-else>
-                  <el-radio v-model="role" :label="1">学生</el-radio>
-                  <el-radio v-model="role" :label="2">教师</el-radio>
-                </div>
-              </div>
-              <div v-if="!editPermission" @click="changeEdit(2)">变更身份</div>
-              <div v-else @click="changeEdit(2)">放弃变更</div>
-            </li>
-          </ul>
-          <div v-if="editPermission" class="save-btn" @click="save(2)">
-            保存
+      <div class="noImg">
+        <div ></div>
+        <div class="hasInfo">
+          <div class="no-name">
+            {{ state.userInfo.name }}
+          </div>
+          <div class="no-func" @click="noServer">
+            <p>开通课堂派vip</p>
           </div>
         </div>
-        <div>
-          <h3>账号设置</h3>
-          <ul>
-            <li>
-              <p v-if="!editUser">账号：</p>
-              <p v-else>新密码：</p>
-              <div class="edit-box">
-                <span v-if="!editUser">{{ user.username }}</span>
-                <input
-                  v-else
-                  type="password"
-                  name="password"
-                  v-model="pwd"
-                  placeholder="请输入新密码"
-                />
-              </div>
-              <div v-if="!editUser" @click="changeEdit(3)">修改</div>
-              <div v-else @click="changeEdit(3)">放弃修改</div>
-            </li>
-            <li>
-              <p v-if="!editUser">密码：</p>
-              <p v-else>确认密码：</p>
-              <div class="edit-box">
-                <span v-if="!editUser">******</span>
-                <input
-                  v-else
-                  type="password"
-                  name="passwordAgain"
-                  v-model="pwdAgain"
-                  placeholder="请再次输入密码"
-                  @focus="pwdChange(2)"
-                  @blur="pwdChange(1)"
-                />
-                <b>两次密码不一致</b>
-              </div>
-            </li>
-          </ul>
-          <div v-if="editUser" class="save-btn" @click="save(3)">保存</div>
-        </div>
+
+        <div ></div>
       </div>
     </div>
+    <div class="func">
+      <div class="funcitem func1" @click="func=1">
+        <p> 账户信息 </p>
+      </div>
+      <div class="funcitem func2" @click="func=2">
+        <p> 通知设置 </p>
+      </div>
+    </div>
+
+    <div class="showPanel" >
+      <div class="showPanel1" v-show="func==1">
+      <p>基础信息</p>
+      <div class="baseInfo">
+        <div class="info-item">
+          <div class="item-type">
+            姓名
+          </div>
+          <div class="item-value">
+             <el-input v-model="state.userInfo.name" />
+          </div>
+          <div class="item-space"></div>
+        </div>
+        <div class="info-item">
+          <div class="item-type">
+            学号
+          </div>
+          <div class="item-value">
+             <el-input v-model="state.userInfo.stno" />
+          </div>
+          <div class="item-space"></div>
+        </div>
+        <div class="info-item">
+          <div class="item-type">
+            学校
+          </div>
+          <div class="item-value">
+             <el-input v-model="state.userInfo.schoolId" />
+          </div>
+          <div class="item-space"></div>
+        </div>
+      </div>
+      
+      <p>账号设置</p>
+       <div class="baseInfo">
+        <div class="info-item">
+          <div class="item-type">
+            账号
+          </div>
+          <div class="item-value">
+             <el-input v-model="state.userInfo.username" />
+          </div>
+          <div class="item-space"></div>
+        </div>
+        <div class="info-item">
+          <div class="item-type">
+            所属角色
+          </div>
+          <div class="item-value">
+             <el-input :value="state.userInfo.status?'老师':'学生'" disabled/>
+          </div>
+          <div class="item-space"></div>
+        </div>
+      </div>
+      </div>
+    
+      <div class="showPanel2" v-show="func==2">
+      <p>消息推送</p>
+      <div class="panel2Table">
+        <template v-for="item in func2Content" :key="item.type">
+        <div class="panel2item">
+          <p class="itemType"> {{item.type}}</p>
+          <p class="itemDes"> {{item.description}}</p>
+           <el-switch class="itemSwitch" v-model="item.switchVal" @change="noServer"/>
+        </div>
+          </template>
+      </div>
+    </div>
+      </div>
   </div>
+    <div class="bottomBut" style="float: right;margin-right:12vw">
+      <ElButton type='primary' @click="update"> 提交修改</ElButton>
+    </div>
 </template>
 
 <script setup>
 import Navigation from "@/components/homepage/Navigation";
 import { ref, reactive, onMounted } from "vue";
-
-const files = reactive([]);
-// 文件数组
-const fileList = reactive([]);
-const schools = reactive([]);
-const user = reactive([]);
-let avatar = ref("");
-let school = ref("");
-let name = ref("");
-let role = ref("");
-let pwd = ref("");
-let pwdAgain = ref("");
-let editBasic = ref(false);
-let editPermission = ref(false);
-let editUser = ref(false);
-
-const showSchool = computed(() =>
-  user.school === undefined ? "" : user.school.schoolName
-);
-const showPermission = computed(() => (user.role === "2" ? "教师" : "学生"));
-onMounted(() => {});
-
-const onChange = (file, fileList) => {};
-const changeEdit = (index) => {};
-const pwdChange = (flag) => {};
-const beforeAvatarUpload = (file) => {};
-const uploadSuccess = (res) => {};
-const uploadError = (res) => {};
-
-const submitUpload = () => {};
-
-const save = (status) => {};
+import storage from "@/hooks/storage";
+import {useUserStore} from '@/store/user'
+const userStore = useUserStore()
+let func = ref(1)
+let state = reactive({ userInfo: {} });
+const func2Content = reactive([
+  {type:'作业到期',description:'作业到截止日期接收消息推送',switchVal:true},
+  {type:'课堂私信',description:'有老师/同学私信后接受消息推送',switchVal:true},
+  {type:'话题类型',description:'有老师/同学发起话题后接受消息推送',switchVal:true}
+])
+onMounted(() => {
+  init();
+});
+const init = () => {
+  state.userInfo = storage.get("userInfo");
+  console.log(state.userInfo);
+};
+const noServer = () => {
+  ElMessage.warning("暂无此服务，尽情期待!!");
+};
+const update = ()=> {
+  console.log('1');
+  userStore.updateUserInfo(state.userInfo)
+}
 </script>
 <style lang="scss" scoped>
-.outer {
-  height: 100%;
-  position: relative;
-}
+.userInfo {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  overflow: auto;
+  margin: 0 18vw;
+  margin-top: 15vh;
+  background-color: white;
+  .func{
+    width:100%;
+    height: 23vh;
+    display: flex;
+    justify-content: flex-start;
+  
+    .funcitem{
+      display: flex;
+      align-items: center;
+      margin-right: 3vw;
+      p{ 
+        cursor: pointer;
+        font-size: 20px;
+      &:hover{
+        color: $ktp-color;
+      }
+      }
+  }
+  }
+  .showPanel{
+    display: flex;
+    height: 40vh;
+    background-color: rgb(248, 249, 250);
+    .showPanel1{
+p{ 
+        font-size: 20px;
+        margin:2vh 2vw;
+      }
+      .baseInfo{
+        margin-bottom:10vh;
+        .info-item{
+          display: flex;
+          flex-flow:row;
+          justify-content: space-around;
+          align-items: center;
+          height:10vh;
+          width:56vw;
+           border: .1px solid gray;
+          margin:0 2vw;
+          border-left:4px solid $ktp-color;
+          .item-type{
+            flex:0.1;
+            font-size:18px;
+          }
+          .item-value{
+            flex:0.3
+          }
+          .item-space{
+            flex: 0.5;
+          }
+        }
+      }
 
-/* 上部分 */
-.layer-top {
-  height: 200px;
-  margin-top: 65px;
-  border-bottom: 1px solid #c8c8c8;
-  text-align: center;
-  margin-bottom: 40px;
-  overflow: hidden;
-}
+    }
+    .showPanel2{
+      p{ 
+        font-size: 20px;
+        margin:2vh 2vw;
+      }
+      .panel2Table{
+        margin:2vh 2vw;
+        border-left: 4px solid $ktp-color;
+        .panel2item{
+          border: .1px solid gray;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height:10vh;
+          width:57vw;
+          border-spacing: 0;
+          border-collapse: collapse;
+          .itemType{
+            flex: 0.12;
+            font-size: 18px;
+          }
+          .itemDes{
+            font-size: 18px;
+            color:rgb(95, 99, 104);
+            flex: 0.78;
+          }
+          .itemSwitch{
+            flex: 0.1;
+          }
 
-.layer-top > div:first-child {
-  margin: 45px auto 0;
-  width: 73px;
-}
+        }
 
-.layer-top > div:first-child:hover > .avatar-uploader {
-  opacity: 1;
-}
+      }
 
-.layer-top > div:first-child > img {
-  height: 73px;
-  width: 73px;
-  margin: 0 auto;
-  border-radius: 50%;
-}
-
-.layer-top > h1 {
-  padding: 43px 0 10px;
-  font-size: 28px;
-  font-weight: 700;
-  margin-top: -30px;
-  line-height: 34px;
-  height: 34px;
-}
-
-/* 下部分 */
-.layer-bottom {
-  border: 1px solid #c8c8c8;
-  margin-top: 40px;
-  margin-bottom: 60px;
-  padding-bottom: 60px;
-  background: #fff;
-  font-size: 14px;
-}
-
-.layer-bottom > div {
-  padding: 20px 120px 0;
-}
-
-.layer-bottom > div > div {
-  margin-top: 20px;
-}
-
-.layer-bottom > div > div > h3 {
-  font-size: 14px;
-  color: #333;
-  border-bottom: 1px solid #dcdcdc;
-  padding-bottom: 20px;
-  line-height: 1;
-}
-
-.layer-bottom > div > div > ul {
-  padding-top: 10px;
-}
-
-.layer-bottom > div > div > ul > li {
-  height: 32px;
-  margin-top: 10px;
-}
-
-.layer-bottom > div > div > ul > li > p {
-  float: left;
-  min-width: 75px;
-  line-height: 32px;
-  color: #969696;
-}
-
-li {
-  list-style: none;
-}
-
-.layer-bottom > div > div > ul > li > div:nth-child(2) > span {
-  display: inline-block;
-  color: #595959;
-  line-height: 32px;
-  height: 32px;
-}
-
-.layer-bottom > div > div > ul > li > div:nth-child(2) > input {
-  width: 172px;
-  height: 30px;
-  line-height: 30px \9;
-  border: 1px solid #c8c8c8;
-  color: #595959;
-  padding: 0 14px;
-  border-radius: 3px;
-  font-size: 14px;
-  outline: none;
-}
-
-.layer-bottom > div > div > ul > li > div:nth-child(2) > input:focus {
-  border: 1px solid #4d90fe;
-}
-
-.layer-bottom > div > div > ul > li:nth-child(2) > div:nth-child(2) > b {
-  display: none;
-  line-height: 32px;
-  color: red;
-  font-size: 12px;
-  margin-left: 20px;
-  font-weight: 400;
-}
-
-.layer-bottom > div > div > ul > li:first-child > div:last-child {
-  float: right;
-  min-width: 56px;
-  height: 22px;
-  text-align: center;
-  line-height: 22px;
-  font-size: 12px;
-  border-radius: 3px;
-  margin-top: 3px;
-  padding-left: 5px;
-  padding-right: 5px;
-  cursor: pointer;
-  user-select: none;
-  color: #818181;
-  border: 1px solid #c8c8c8;
-  transition: 0.3s;
-}
-
-.layer-bottom
-  > div
-  > div:nth-child(1)
-  > ul
-  > li:first-child
-  > div:last-child:hover,
-.layer-bottom
-  > div
-  > div:nth-child(2)
-  > ul
-  > li:first-child
-  > div:last-child:hover,
-.layer-bottom
-  > div
-  > div:nth-child(3)
-  > ul
-  > li:first-child
-  > div:last-child:hover {
-  color: #2d2d2d;
-  background: #e6e6e6;
-}
-
-.edit-box {
-  float: left;
-  position: relative;
-}
-
-.save-btn {
-  display: block;
-  margin-left: 75px;
-  width: 56px;
-  height: 26px;
-  border-radius: 3px;
-  background: #4d90fe;
-  color: #fff;
-  text-align: center;
-  line-height: 26px;
-  margin-top: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* 上传头像 */
-.avatar-uploader {
-  position: absolute;
-  top: 183px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.3);
-  transition: 0.5s ease;
-  font-size: 14px;
-  border-radius: 50%;
-  opacity: 0;
-}
-
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.el-upload > div {
-  height: 73px;
-  width: 73px;
-  border-radius: 50%;
-  line-height: 73px;
-  text-align: center;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 73px;
-  height: 73px;
-  border-radius: 50%;
-  line-height: 73px;
-  text-align: center;
-}
-.avatarUpdate {
-  margin: 45px auto 0;
-  width: 73px;
+    }
+  }
+  .top {
+    display: flex;
+    width: 100%;
+    height: 26vh;
+    background-color: rgb(248, 249, 250);
+    .userImg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 10vw;
+      margin: 2vw;
+    }
+    .noImg {
+      display: flex;
+      flex-flow: column;
+      justify-content: space-around;
+      .hasInfo {
+        flex: 0.4;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        .no-name {
+          font-size: 24px;
+          font-weight: 400;
+        }
+        .no-func {
+          cursor: pointer;
+          font-size: 18px;
+          color: rgb(38, 117, 253);
+        }
+      }
+    }
+  }
 }
 </style>
