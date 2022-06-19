@@ -12,7 +12,7 @@ export const useCourseStore = defineStore("course", {
   actions: {
     //初始化 获取所有课程信息
     async init() {
-      const { userId } = storage.get("userInfo");
+      const {userId} = storage.get('userInfo');
       const res = await courseService.getAllNormalCourse(userId);
       if (res.code === 200) {
         this.allCourses = res.data;

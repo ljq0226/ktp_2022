@@ -2,6 +2,7 @@ import { get, post } from "@/hooks/axios";
 const courseService = {
   //获取所有课程
   async getAllNormalCourse(id) {
+    console.log(id);
     return await get(`course/selectAllNormalCourses?userId=${id}`);
   },
   //创建课程

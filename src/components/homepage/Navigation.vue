@@ -17,7 +17,7 @@
         <div class="userSetting">
           <el-dropdown trigger="click" size="large">
             <div class="avatar">
-              <el-avatar :size="50" src="/src/assets/img/default.jpg" />
+              <el-avatar :size="50" src="/src/assets/dsm.jpeg" />
             </div>
             <template #dropdown>
               <el-dropdown-menu>

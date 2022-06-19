@@ -120,6 +120,8 @@
 import { ref, reactive } from "vue";
 import { userService } from "@/api";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
+const userStore = useUserStore();
 const router = useRouter();
 //注册账号信息
 const regAccount = reactive({
@@ -161,9 +163,8 @@ const checkNull = () => {
 const register = async () => {
   if (state.value == 2) regAccount.status = "0";
   else regAccount.status = "1";
-  const msg = await userService.register(regAccount);
-  ElMessage.success(msg);
-  router.push("/login");
+  const res = userStore.register(regAccount);
+  if (res) router.push("/login");
 };
 
 const remoteMethod = (query) => {
@@ -173,7 +174,6 @@ const remoteMethod = (query) => {
 //检测用户名是否存在
 const checkAccount = async () => {
   const isRepeat = await userService.isRepeat(regAccount.username);
-  console.log(isRepeat);
   if (isRepeat) {
     ElMessage.warning("该用户名已存在，请重新输入！");
     regAccount.username = "";
@@ -182,7 +182,6 @@ const checkAccount = async () => {
 //检测两次输入密码是否一致
 const checkPassword = () => {
   const flag = regAccount.password == againPassword.value;
-
   console.log(flag);
   if (!flag) {
     ElMessage.warning("两次输入密码不相同，请重新输入！");

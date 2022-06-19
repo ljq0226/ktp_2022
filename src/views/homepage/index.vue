@@ -1,6 +1,6 @@
 <template>
+  <Navigation info="我的课堂" />
   <div class="container">
-    <Navigation info="我的课堂" />
     <div class="main">
       <div class="nav">
         <!--没有置顶课程就展示全部课程-->
@@ -378,23 +378,8 @@ const dropOutObj = reactive({}); // 要退出的课程
 onMounted(() => {
   getStatus();
   courseStore.init();
-  // init();
 });
 
-//初始化 获取所有课程信息
-// const init = async () => {
-//   const { userId } = storage.get("userInfo");
-//   const res = await courseService.getAllNormalCourse(userId);
-//   if (res.code === 200) {
-//     allCourses = res.data;
-//     console.log(allCourses);
-//     console.log(allCourses.length);
-//     allCourses = [1,2]
-//      console.log(allCourses);
-//   } else {
-//     ElMessage.error(res.msg);
-//   }
-// };
 //获取当前用户的角色状态
 const getStatus = () => {
   const userInfo = storage.get("userInfo");

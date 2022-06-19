@@ -6,12 +6,9 @@
     <div class="login-bg">
       <img src="../assets/img/newbg.png" alt="" />
     </div>
-    <!--    <div class="login-bg2"></div>-->
-
     <div class="login-box">
       <div class="">
         <div class="title active">账号登录</div>
-
         <div class="main">
           <div class="useAccount">
             <input
@@ -63,8 +60,9 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { userService } from "@/api";
 import storage from "@/hooks/storage";
+import { useUserStore } from "../store/user";
+const userStore = useUserStore();
 const router = useRouter();
 const user = reactive({
   username: "",
@@ -78,14 +76,14 @@ onMounted(() => {
   user.username = username;
   user.password = password;
 });
-
-const autoLogin_Status = () => {};
 //登录
 const login = async (username, password) => {
-  const data = await userService.login(username, password);
-  storage.set("userInfo", data.userInfo);
-  storage.set("token", data.token);
-  router.push("/homepage");
+  console.log(username, password);
+  const res = await userStore.login(username, password);
+  console.log(res);
+  setTimeout(() => {
+    if (res) router.push("/homepage");
+  }, 1000);
 };
 </script>
 <style lang="scss" scoped>
@@ -96,16 +94,12 @@ const login = async (username, password) => {
 .YZM-img {
   height: 150px;
 }
-
 .upp-left-corner {
   display: block;
   width: 10%;
   height: 10%;
   margin-left: 7%;
   margin-top: 3%;
-  /*position: absolute;*/
-  /*left: 10%;*/
-  /*top: 10%;*/
 }
 
 .login-bg {
@@ -119,13 +113,6 @@ const login = async (username, password) => {
 
 .login-bg,
 .login-bg2 {
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*position: fixed;*/
-  /*top: 0;*/
-  /*position: absolute;*/
-  /*left: 10%;*/
-  /*top: 10%;*/
   width: 45%;
   height: 100%;
   margin-left: -1%;
@@ -145,10 +132,6 @@ img {
   height: 24%;
   margin-left: -2%;
   margin-top: 6%;
-  /*position: absolute;*/
-  /*left: 60%;*/
-  /*top: 20%;*/
-  /*transform: translate(-50%, -50%);*/
   border-radius: 1%;
   box-shadow: 2px 2px 10px #909090;
 }
