@@ -4,6 +4,10 @@ const courseService = {
   async getAllNormalCourse(id) {
     return await get(`course/selectAllNormalCourses?userId=${id}`);
   },
+  //创建课程
+  async createCourse(createCourseDto) {
+    return await post("course/createCourse", createCourseDto);
+  },
   //加入课程
   async joinCourse(courseId, userid) {
     return await post(
@@ -18,9 +22,13 @@ const courseService = {
   async getAllArchiveCourse(id) {
     return await get(`course/selectAllArchiveCourses?userId=${id}`);
   },
-  //创建课程
-  async createCourse(createCourseDto) {
-    return await post("course/createCourse", createCourseDto);
+  //编辑课程
+  async editCourse(courseDto) {
+    return await post("course/editCourse", courseDto);
+  },
+  //删除课程
+  async deleteCourse(id) {
+    return await get(`course/deleteCourse?courseId=${id}`);
   },
 };
 

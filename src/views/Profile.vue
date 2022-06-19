@@ -1,15 +1,10 @@
 <template>
   <div class="outer">
-    <navigation />
+    <navigation info="用户设置"/>
     <!-- 上部分 -->
     <div class="layer-top">
       <div>
         <img :src="avatar" :alt="user.name" />
-        <!--data:传递的参数-->
-        <!--
-                :headers="{token: $store.state.token}"
-                    :data="{uid: $store.state.uid}"
-                    -->
         <el-upload
           class="avatar-uploader"
           :on-success="uploadSuccess"

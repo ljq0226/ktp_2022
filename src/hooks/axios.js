@@ -6,6 +6,8 @@ import { ElMessage } from "element-plus";
 axios.defaults.timeout = 50000;
 // 请求地址-动态赋值环境变量
 axios.defaults.baseURL = "/api";
+
+axios.defaults.headers.common["Authorization"] = localStorage.getItem("token");
 // 请求拦截器
 axios.interceptors.request.use(
   (config) => {

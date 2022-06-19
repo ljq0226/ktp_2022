@@ -4,7 +4,7 @@ import Course from "../views/Course";
 const routes = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/login",
   },
   {
     path: "/",
@@ -44,7 +44,7 @@ const routes = [
   {
     path: "/homepage",
     name: "Homepage",
-    component: () => import("../views/Homepage") /*设置回调函数*/,
+    component: () => import("../views/homepage/index.vue") /*设置回调函数*/,
     meta: {
       requireAuth: true /*需要权限*/,
       role: [2, 3],
@@ -150,7 +150,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title || "Admin";
+  document.title = to.meta.title || "课堂派";
   next();
   // do something
 });

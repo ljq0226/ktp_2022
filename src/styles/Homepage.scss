@@ -227,9 +227,15 @@
   flex-flow: column;
 }
 
+.allCourses {
+  display: flex;
+}
+.card {
+  margin: 1vh 0.5vw;
+}
 .courseCard,
 .addCourse {
-  margin: 0 9px 10px;
+  margin: 1vh 0.5vw;
 }
 
 .courseShow {

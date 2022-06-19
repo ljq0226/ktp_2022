@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     CourseCard: typeof import('./components/homepage/CourseCard.vue')['default']
     CourseNav: typeof import('./components/courseDetails/CourseNav.vue')['default']
     Editor: typeof import('./components/utils/Editor.vue')['default']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']

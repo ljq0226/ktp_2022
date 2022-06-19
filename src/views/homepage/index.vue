@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Navigation />
+    <Navigation info="我的课堂"/>
     <div class="main">
       <div class="nav">
         <!--没有置顶课程就展示全部课程-->
@@ -8,7 +8,7 @@
         <ul>
           <!--课程排序-->
           <li
-            v-if="(status = 1)"
+            v-if="status == '1'"
             class="sortFile"
             @click="
               SFDialog = true;
@@ -24,7 +24,7 @@
               SFDialog = true;
               selectSF(1);
             "
-            v-if="(status = 1)"
+            v-if="status == 1"
           >
             <i class="el-icon-printer" />归档管理
           </li>
@@ -33,7 +33,7 @@
             <el-button
               type="primary"
               style="height: 40px"
-              v-if="(status = 1)"
+              v-if="status == 1"
               @click="createCourseDialog = true"
               >+ 创建课程
             </el-button>
@@ -46,40 +46,34 @@
             </el-button>
           </li>
           <!--发布活动-->
-          <li v-if="(status = 1)">
+          <li v-if="status == 1">
             <el-button
               type="primary"
               style="height: 40px"
               @click="quickReleaseDialog = true"
-              >+ 快速发布活动
+              >+ 发布活动
             </el-button>
           </li>
         </ul>
       </div>
 
       <div class="courseShow">
-        <div v-if="(status = 1)">
-          <courseCard
-            @childDeleteCourse="childDeleteCourse"
-            @childArchiveCourse="childArchiveCourse"
-            v-for="course in courses"
+        <div class="allCourses">
+          <template
+            v-for="course in courseStore.allCourses"
             :key="course.courseId"
-            :course="course"
-            class="courseCard"
-            :role="'0'"
-          />
-        </div>
-        <div v-if="(status = 0)">
-          <div
-            v-for="course in courses"
-            :key="course.courseId"
-            @childDropOut="childDropOut"
             class="courseCard"
           >
-            <courseCard :course="course" :role="'1'" />
-          </div>
+            <CourseCard
+              @childDeleteCourse="childDeleteCourse"
+              @childArchiveCourse="childArchiveCourse"
+              :course="course"
+              :role="status"
+            />
+          </template>
         </div>
-        <div class="addCourse" v-if="(status = 1)">
+
+        <div class="addCourse" v-if="status == 1">
           <div class="addBg"></div>
           <div class="addfont">
             <el-icon :size="20"><Plus /></el-icon>
@@ -123,7 +117,7 @@
 
     <!-- 创建课程模态框 -->
     <el-dialog
-      v-if="(status = 1)"
+      v-if="status == 1"
       :visible="createCourseDialog"
       width="660px"
       top="30vh"
@@ -325,21 +319,23 @@
 </template>
 
 <script setup>
-import Navigation from "../components/homepage/Navigation";
-import CourseCard from "../components/homepage/CourseCard";
-import ArchiveFile from "../components/homepage/ArchiveFile";
+import Navigation from "@/components/homepage/Navigation";
+import CourseCard from "@/components/homepage/CourseCard";
+import ArchiveFile from "@/components/homepage/ArchiveFile";
 import hooks from "@/hooks/index.js";
 import { Plus } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
 import { courseService } from "@/api";
+import { useCourseStore } from "@/store/course";
 const router = useRouter();
+const courseStore = useCourseStore();
 
 let status = ref(0); //当前角色为 0为学生 1为老师
 
 const topList = reactive([]); // 置顶课程
-let courses = reactive([]); // 所有课程 拿来操作
+let allCourses = reactive([]); // 所有课程 拿来操作
 const archiveCourses = reactive([]); // 存档课程
 const courseList = reactive([]); // 所有课程
 const fileCourses = reactive([]); // 归档文件
@@ -381,23 +377,31 @@ const dropOutObj = reactive({}); // 要退出的课程
 
 onMounted(() => {
   getStatus();
-  init();
+  courseStore.init();
+  // init();
 });
 
 //初始化 获取所有课程信息
-const init = async () => {
-  const { userId } = storage.get("userInfo");
-  const res = await courseService.getAllNormalCourse(userId);
-  if (res.code === 200) {
-    courses = res.data;
-  } else {
-    ElMessage.error(res.msg);
-  }
-};
+// const init = async () => {
+//   const { userId } = storage.get("userInfo");
+//   const res = await courseService.getAllNormalCourse(userId);
+//   if (res.code === 200) {
+//     allCourses = res.data;
+//     console.log(allCourses);
+//     console.log(allCourses.length);
+//     allCourses = [1,2]
+//      console.log(allCourses);
+//   } else {
+//     ElMessage.error(res.msg);
+//   }
+// };
 //获取当前用户的角色状态
 const getStatus = () => {
   const userInfo = storage.get("userInfo");
   status.value = userInfo.status;
+};
+const showsth = () => {
+  allCourses = [1, 2, 3];
 };
 </script>
 <style lang="scss" scoped>

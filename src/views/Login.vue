@@ -80,9 +80,11 @@ onMounted(() => {
 });
 
 const autoLogin_Status = () => {};
+//登录
 const login = async (username, password) => {
   const data = await userService.login(username, password);
   storage.set("userInfo", data.userInfo);
+  storage.set("token", data.token);
   router.push("/homepage");
 };
 </script>

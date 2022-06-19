@@ -4,19 +4,13 @@
       <img :src="bg" alt="" />
     </div>
     <div class="head">
-      <div class="iconState">
-        <div class="squr"></div>
-        <div class="icon" v-if="role === '1'">学</div>
-        <div class="icon" v-else>教</div>
-      </div>
-
       <div class="courseName">
         <!---->
         <router-link
           :to="{
-            path: `/course/${course.cno}`,
+            path: `/course/${props.course.courseId}`,
           }"
-          >{{ course.courseName }}</router-link
+          >{{ props.course.courseName }}</router-link
         >
       </div>
 
@@ -25,14 +19,14 @@
           <div class="addCode">
             <img src="../../assets/img/addCode.png" alt="加课码" />
             <p>
-              加课码:<span> {{ course.addCourseCode }}</span>
+              加课码:<span> {{ props.course.addCourseCode }}</span>
             </p>
             <i
               class="el-icon-arrow-down el-icon--right"
               style="margin-top: 4px"
             ></i>
           </div>
-          <el-dropdown-menu v-if="this.$store.state.role === '2'">
+          <el-dropdown-menu v-if="status == 1">
             <el-dropdown-item @click="addCodeReset()">重置</el-dropdown-item>
           </el-dropdown-menu>
 
@@ -41,8 +35,8 @@
 
         <div class="semester">
           <p>{{ getTermYear }}</p>
-          <p v-if="course.semester === 1">第一学期</p>
-          <p v-else-if="course.semester === 2">第二学期</p>
+          <p v-if="props.course.semester === 1">第一学期</p>
+          <p v-else-if="props.course.semester === 2">第二学期</p>
         </div>
       </div>
     </div>
@@ -59,10 +53,10 @@
 
     <div class="bottom">
       <div class="teacher">
-        <div class="isTop">成员{{ course.studentNum }}人</div>
+        <div class="isTop">成员{{ props.course.studentNum }}人</div>
       </div>
       <div class="set">
-        <el-dropdown v-if="role === '0'" trigger="click">
+        <el-dropdown v-if="status == 1" trigger="click">
           <span class="el-dropdown-link">
             <i class="el-icon-more iconMore"></i>
           </span>
@@ -75,11 +69,13 @@
 
         <el-dropdown v-else trigger="click" placement="top">
           <span class="el-dropdown-link">
-            <i class="el-icon-more iconMore"></i>
+            <el-icon><More /></el-icon>
           </span>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="dropOut()">退课</el-dropdown-item>
-          </el-dropdown-menu>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="dropOut">退课</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </div>
     </div>
@@ -88,23 +84,25 @@
 
 <script setup>
 import { ref, reactive, defineProps, onMounted } from "vue";
-const props = defineProps({ course: Object, role: String });
+import { More } from "@element-plus/icons-vue";
+const props = defineProps({ course: Object, status: String });
 const bg = ref("");
 const homework = reactive([]);
 const getTermYear = computed(
-  () => `${course.semesterYear}-${parseInt(course.semesterYear) + 1}`
+  () =>
+    `${props.course.semesterYear}-${parseInt(props.course.semesterYear) + 1}`
 );
 
 onMounted(() => {
-  console.log("card");
-  bg.value = require(`../../assets/file/${
-    Math.floor(Math.random() * 31) + 1
-  }.jpg`);
+  let randomNumber = Math.floor(Math.random() * 31) + 1;
+  bg.value = `src/assets/file/${randomNumber}.jpg`;
 });
 
 const detailCourse = () => {};
 //退课
-const dropOut = () => {};
+const dropOut = () => {
+  console.log("tui");
+};
 // 归档课程
 const fileCourse = () => {};
 // 删除课程
