@@ -68,7 +68,6 @@ const user = reactive({
   username: "",
   password: "",
 });
-
 let autoLogin = ref(false);
 
 onMounted(() => {
@@ -80,10 +79,7 @@ onMounted(() => {
 const login = async (username, password) => {
   console.log(username, password);
   const res = await userStore.login(username, password);
-  console.log(res);
-  setTimeout(() => {
-    if (res) router.push("/homepage");
-  }, 1000);
+  if (res) router.push("/homepage");
 };
 </script>
 <style lang="scss" scoped>

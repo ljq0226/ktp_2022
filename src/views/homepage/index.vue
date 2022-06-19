@@ -2,59 +2,10 @@
   <Navigation info="我的课堂" />
   <div class="container">
     <div class="main">
-      <div class="nav">
-        <!--没有置顶课程就展示全部课程-->
-        <p v-if="topList.length == 0">全部课程</p>
-        <ul>
-          <!--课程排序-->
-          <li
-            v-if="status == '1'"
-            class="sortFile"
-            @click="
-              SFDialog = true;
-              selectSF(0);
-            "
-          >
-            <i class="el-icon-tickets" />课程排序
-          </li>
-          <!--归档管理-->
-          <li
-            class="sortFile"
-            @click="
-              SFDialog = true;
-              selectSF(1);
-            "
-            v-if="status == 1"
-          >
-            <i class="el-icon-printer" />归档管理
-          </li>
-          <!--加入、创建课程-->
-          <li>
-            <el-button
-              type="primary"
-              style="height: 40px"
-              v-if="status == 1"
-              @click="createCourseDialog = true"
-              >+ 创建课程
-            </el-button>
-            <el-button
-              type="primary"
-              style="height: 40px"
-              v-else
-              @click="joinCourseDialog = true"
-              >+ 加入课程
-            </el-button>
-          </li>
-          <!--发布活动-->
-          <li v-if="status == 1">
-            <el-button
-              type="primary"
-              style="height: 40px"
-              @click="quickReleaseDialog = true"
-              >+ 发布活动
-            </el-button>
-          </li>
-        </ul>
+      <div class="addCoureBtn">
+        <ElButton type="primary" @click="joinCourseDialog = true"
+          ><el-icon><Plus /></el-icon>加入课程</ElButton
+        >
       </div>
 
       <div class="courseShow">
@@ -71,14 +22,6 @@
               :role="status"
             />
           </template>
-        </div>
-
-        <div class="addCourse" v-if="status == 1">
-          <div class="addBg"></div>
-          <div class="addfont">
-            <el-icon :size="20"><Plus /></el-icon>
-            <p @click="createCourseDialog = true">创建课程</p>
-          </div>
         </div>
       </div>
     </div>
@@ -210,19 +153,22 @@
 
     <!-- 加入课程 模态框 -->
     <el-dialog
-      v-if="role == `3`"
-      :visible="joinCourseDialog"
-      width="295px"
+      v-model="joinCourseDialog"
+      title="加入课程"
+      width="50vw"
       top="30vh"
+      :before-close="handleClose"
     >
-      <p class="joinCourseTitle">加入课程</p>
-      <el-input
-        v-model="joinCode"
-        class="joinCourseInput"
-        placeholder="请输入课程加课码验证"
-        style="font-size: 16px"
-        maxlength="6"
-      />
+      <div class="joinCourseTitle">
+        <el-input
+          v-model="joinCode"
+          class="joinCourseInput"
+          placeholder="请输入课程加课码"
+          style="font-size: 16px"
+          maxlength="8"
+          minlength="1"
+        />
+      </div>
       <div class="joinCourseFooter">
         <el-button @click="joinCourseDialog = false" style="width: 100px"
           >取消
@@ -230,9 +176,9 @@
         <el-button
           type="primary"
           style="width: 100px"
-          :disabled="joinCode.length !== 6"
-          @click="joinCourse()"
-          >加入
+          :disabled="joinCode.length !== 8"
+          @click="joinCourse"
+          >确认
         </el-button>
       </div>
     </el-dialog>
@@ -299,7 +245,6 @@
       <p class="joinCourseTitle">
         确定要删除"{{ this.dropOutObj.courseName }}"吗?
       </p>
-
       <div class="delete-tips">
         <p>您的这个课程的任何信息或评论将被永久删除</p>
         <p>警告：此操作无法撤消</p>
@@ -327,13 +272,11 @@ import { Plus } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
-import { courseService } from "@/api";
 import { useCourseStore } from "@/store/course";
 const router = useRouter();
 const courseStore = useCourseStore();
 
 let status = ref(0); //当前角色为 0为学生 1为老师
-
 const topList = reactive([]); // 置顶课程
 let allCourses = reactive([]); // 所有课程 拿来操作
 const archiveCourses = reactive([]); // 存档课程
@@ -364,7 +307,7 @@ const optionSemester = [
     label: "第二学期",
   },
 ];
-const joinCourseDialog = ref(false);
+let joinCourseDialog = ref(false);
 const deleteCourseDialog = ref(false);
 const fileCourseDialog = ref(false);
 const recoveryTipsDialog = ref(false);
@@ -387,6 +330,12 @@ const getStatus = () => {
 };
 const showsth = () => {
   allCourses = [1, 2, 3];
+};
+const joinCourse = async () => {
+  console.log("加入", typeof joinCode.value);
+  joinCourseDialog.value = false;
+  const { userId } = storage.get("userInfo");
+  await courseStore.joinCourse(joinCode.value, userId);
 };
 </script>
 <style lang="scss" scoped>

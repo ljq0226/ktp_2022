@@ -13,7 +13,6 @@
           >{{ props.course.courseName }}</router-link
         >
       </div>
-
       <div class="courseInfo">
         <el-dropdown trigger="click">
           <div class="addCode">
@@ -85,6 +84,8 @@
 <script setup>
 import { ref, reactive, defineProps, onMounted } from "vue";
 import { More } from "@element-plus/icons-vue";
+import { useCourseStore } from "@/store/course";
+const courseStore = useCourseStore();
 const props = defineProps({ course: Object, status: String });
 const bg = ref("");
 const homework = reactive([]);
@@ -94,13 +95,16 @@ const getTermYear = computed(
 );
 
 onMounted(() => {
-  let randomNumber = Math.floor(Math.random() * 31) + 1;
-  bg.value = `src/assets/file/${randomNumber}.jpg`;
+  let randomNumber = Math.floor(Math.random() * 14) + 1;
+  bg.value = `src/assets/bg/${randomNumber}.png`;
 });
 
 const detailCourse = () => {};
 //退课
-const dropOut = () => {
+const dropOut = async () => {
+  console.log(props.course.courseId);
+  console.log(courseStore);
+  courseStore.exitCourse(props.course.courseId);
   console.log("tui");
 };
 // 归档课程

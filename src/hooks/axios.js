@@ -7,7 +7,7 @@ axios.defaults.timeout = 50000;
 // 请求地址-动态赋值环境变量
 axios.defaults.baseURL = "/api";
 
-axios.defaults.headers.common["Authorization"] = localStorage.getItem("token");
+// axios.defaults.headers.common["Authorization"] = localStorage.getItem("token");
 // 请求拦截器
 axios.interceptors.request.use(
   (config) => {
@@ -16,6 +16,7 @@ axios.interceptors.request.use(
       // "Content-Type":'application/x-www-form-urlencoded',//传参方式表单
       "Content-Type": "application/json;charset=UTF-8", //传参方式json
       "Access-Control-Allow-Origin": "*",
+      token: JSON.parse(localStorage.getItem("token")),
     };
     return config;
   },

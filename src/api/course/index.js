@@ -10,9 +10,9 @@ const courseService = {
     return await post("course/createCourse", createCourseDto);
   },
   //加入课程
-  async joinCourse(courseId, userid) {
+  async joinCourse(addCourseCode, userid) {
     return await post(
-      `course/joinCourse?courseId=${courseId}&userId=${userid}`
+      `course/joinCourse?addCourseCode=${addCourseCode}&userId=${userid}`
     );
   },
   //查询课程成员
@@ -30,6 +30,10 @@ const courseService = {
   //删除课程
   async deleteCourse(id) {
     return await get(`course/deleteCourse?courseId=${id}`);
+  },
+  //学生退课
+  async exitCourse(courseId) {
+    return await post(`course/exitCourse?courseId=${courseId}`);
   },
 };
 

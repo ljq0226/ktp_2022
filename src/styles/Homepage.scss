@@ -1,3 +1,7 @@
+.addCoureBtn {
+  float: right;
+}
+
 .file-tips p {
   text-align: left;
   margin: 10px 0;
@@ -198,43 +202,11 @@
   width: 100px;
   justify-content: center;
 }
-.addfont {
-  flex: 1;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  p {
-    font-size: 14px;
-  }
-}
-
-.addBg {
-  background-image: url("../assets/img/create-course.png");
-  width: 100%;
-  height: 127px;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-}
-
-.addCourse {
-  width: 270px;
-  height: 275px;
-  border-radius: 8px;
-  border: 1px solid #e2e6ed;
-  display: flex;
-  flex-flow: column;
-}
 
 .allCourses {
   display: flex;
 }
-.card {
-  margin: 1vh 0.5vw;
-}
-.courseCard,
-.addCourse {
+.courseCard {
   margin: 1vh 0.5vw;
 }
 
@@ -282,7 +254,7 @@
 
 .main {
   overflow: hidden;
-  padding: 0 4%;
+  padding: 0 6vw;
 }
 
 p {
