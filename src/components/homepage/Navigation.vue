@@ -71,7 +71,8 @@ onMounted(() => {});
 
 const changeState = (val) => {};
 const logout = () => {
-  console.log("退出登录");
+  ElMessage.success("成功退出登录！");
+  router.push("/login");
 };
 const backHome = () => {
   router.push("/homepage");

@@ -34,6 +34,22 @@ const courseService = {
   async exitCourse(courseId) {
     return await post(`course/exitCourse?courseId=${courseId}`);
   },
+  //归档课程
+  async archiveCourse(courseId, userId) {
+    return await post(
+      `course/archiveCourse?courseId=${courseId}&userId=${userId}`
+    );
+  },
+  //归档所有课程
+  async archiveAllCourse(courseId) {
+    return await post(`course/archiveCourseAll?courseId=${courseId}`);
+  },
+  //恢复归档课程
+  async recoverCourse(courseId, userId) {
+    return await post(
+      `course/recoverCourse?courseId=${courseId}&userId=${userId}`
+    );
+  },
 };
 
 export default courseService;

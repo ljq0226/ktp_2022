@@ -1,14 +1,48 @@
 <template>
   <Navigation info="我的课堂" />
   <div class="container">
-    <div class="main">
-      <div class="addCoureBtn">
-        <ElButton type="primary" @click="joinCourseDialog = true"
-          ><el-icon><Plus /></el-icon>加入课程</ElButton
-        >
+    <div class="main-all">
+      <div class="main-top">
+        <div class="addCoureBtn">
+          <ElButton type="primary" @click="joinCourseDialog = true"
+            ><el-icon><Plus /></el-icon>加入课程</ElButton
+          >
+        </div>
+        <div class="archiveMng">
+          <div class="archiveMng-space"></div>
+          <ElButton @click="SFDialog = true">归档管理</ElButton>
+          <el-input
+            v-model="input2"
+            class="w-20 m-2"
+            placeholder="搜索我学的课程"
+            :suffix-icon="Search"
+            input-style="border-radius: 20px;width:8vw"
+          />
+        </div>
       </div>
 
       <div class="courseShow">
+        <div class="demo-collapse">
+          <el-collapse v-model="activeNames" @change="handleChange" accordion>
+            <el-collapse-item title="Consistency" name="1">
+              <div>1</div>
+              <div>2</div>
+            </el-collapse-item>
+            <el-collapse-item title="Feedback" name="2">
+              <div>3</div>
+              <div>4</div>
+            </el-collapse-item>
+            <el-collapse-item title="Efficiency" name="3">
+              <div>5</div>
+              <div>6</div>
+              <div>7</div>
+            </el-collapse-item>
+            <el-collapse-item title="Controllability" name="4">
+              <div>8</div>
+              <div>9</div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
         <div class="allCourses">
           <template
             v-for="course in courseStore.allCourses"
@@ -17,7 +51,7 @@
           >
             <CourseCard
               @childDeleteCourse="childDeleteCourse"
-              @childArchiveCourse="childArchiveCourse"
+              @childArchiveCourse="childArchiveCourse(course)"
               :course="course"
               :status="status"
             />
@@ -40,7 +74,6 @@
           <div></div>
           <p>话题</p>
         </div>
-
         <div class="quickReleaseIcon">
           <div></div>
           <p>课堂互动</p>
@@ -112,24 +145,32 @@
       </div>
     </el-dialog>
     <!-- 归档课程 模态框 -->
-    <el-dialog :visible="fileCourseDialog" width="450px" top="30vh">
-      <p class="joinCourseTitle">确定要归档"{{ this.course.name }}"吗?</p>
-      <div class="file-tips">
-        <p>您可以在“课堂”-“归档管理”中查看此课程</p>
-        <p>【归档】，学生的课程也会一起被归档</p>
-      </div>
-
-      <div class="joinCourseFooter">
-        <el-button @click="fileCourseDialog = false" style="width: 100px"
+ <el-dialog
+      v-model="archiveCourseDialog"
+      width="32vw"
+      top="28vh"
+      draggable
+      title="要归档此课程吗"
+    >
+    <div class="archiveCourseDialog">
+        <p  class="ach-p2">您可以在<span>“课堂”-“归档管理”</span>中查看此课程</p>
+      <div class="archiveCourseFooter">
+        <div></div>
+        <el-button @click="archiveCourseDialog = false" style="width: 100px"
           >取消
         </el-button>
 
-        <el-button style="width: 100px" @click="courseArchive"
-          >归档全部
+        <el-button
+          style="width: 100px"
+          @click="courseArchive(courseStore.awaitArchiveCourse.courseId)"
+          >归档自己
         </el-button>
       </div>
+    </div>
+     
     </el-dialog>
 
+   
     <!-- 删除课程 模态框 -->
     <el-dialog :visible="deleteCourseDialog" width="450px" top="30vh">
       <p class="joinCourseTitle">
@@ -184,7 +225,7 @@
     </el-dialog>
 
     <!-- 课程排序和归档管理 模态框-->
-    <el-dialog :visible="SFDialog" width="810px" top="30vh">
+    <el-dialog v-model="SFDialog" width="810px" top="30vh">
       <div class="SFtitle">
         <p @click="selectSF(0)">课程排序</p>
         <p class="SFClick" @click="selectSF(1)">归档管理</p>
@@ -268,16 +309,16 @@ import Navigation from "@/components/homepage/Navigation";
 import CourseCard from "@/components/homepage/CourseCard";
 import ArchiveFile from "@/components/homepage/ArchiveFile";
 import hooks from "@/hooks/index.js";
-import { Plus } from "@element-plus/icons-vue";
+import { Plus, Search } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
 import { useCourseStore } from "@/store/course";
 const router = useRouter();
 const courseStore = useCourseStore();
-
 let status = ref(0); //当前角色为 0为学生 1为老师
-const topList = reactive([]); // 置顶课程
+let toArchiveCourse = reactive({});
+
 let allCourses = reactive([]); // 所有课程 拿来操作
 const archiveCourses = reactive([]); // 存档课程
 const courseList = reactive([]); // 所有课程
@@ -309,7 +350,7 @@ const optionSemester = [
 ];
 let joinCourseDialog = ref(false);
 const deleteCourseDialog = ref(false);
-const fileCourseDialog = ref(false);
+let archiveCourseDialog = ref(false);
 const recoveryTipsDialog = ref(false);
 const transferCourseDialog = ref(false);
 const dropOutDialog = ref(false);
@@ -322,7 +363,10 @@ onMounted(() => {
   getStatus();
   courseStore.init();
 });
-
+const activeNames = reactive([]);
+const handleChange = (val) => {
+  console.log(val);
+};
 //获取当前用户的角色状态
 const getStatus = () => {
   const userInfo = storage.get("userInfo");
@@ -336,8 +380,64 @@ const joinCourse = async () => {
   joinCourseDialog.value = false;
   const { userId } = storage.get("userInfo");
   await courseStore.joinCourse(joinCode.value, userId);
+  joinCode.value = "";
+};
+//传递给子组件的归档方法
+const childArchiveCourse = (course) => {
+  archiveCourseDialog.value = true;
+  courseStore.awaitArchiveCourse = course;
+};
+//课程归档处理
+const courseArchive = async (courseId) => {
+  archiveCourseDialog.value = false;
+  await courseStore.archiveCourse(courseId);
 };
 </script>
 <style lang="scss" scoped>
-@import url("@/styles/Homepage.scss");
+.container {
+  width: 100%;
+  margin-top: 12vh;
+  .main-all {
+    padding: 0 10vw;
+    .main-top {
+      display: flex;
+      flex-flow: column;
+      width: 100%;
+      height: 20vh;
+      justify-content: space-around;
+      align-items: flex-end;
+      .addCoureBtn {
+      }
+      .archiveMng {
+        display: flex;
+        flex-flow: row;
+        align-items: space-around;
+        .archiveMng-space {
+          flex: 0.7;
+        }
+        el-input {
+          flex: 0.2;
+        }
+      }
+    }
+  }
+}
+.archiveCourseDialog{
+  p{ 
+  border-top: .01px solid gray;
+  border-bottom: .01px solid gray;
+  padding: 2vh;
+  span{
+    color:$ktp-color;
+  }
+  }
+  .archiveCourseFooter{
+    display: flex;
+    justify-content: flex-end;
+  }
+
+
+
+}
+ 
 </style>

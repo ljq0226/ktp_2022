@@ -41,13 +41,13 @@ export const useUserStore = defineStore("user", {
         return false;
       }
     },
-    async getInfoById(id){
+    async getInfoById(id) {
       const res = await userService.getInfoById(id);
-      if(res.code === 200){
-        return res.data
-      }else {
-        console.log(res.msg)
+      if (res.code === 200) {
+        return res.data;
+      } else {
+        console.log(res.msg);
       }
-    }
+    },
   },
 });

@@ -4,92 +4,98 @@
       <img :src="bg" alt="" />
     </div>
     <div class="main">
-  <div class="head">
-    <div class="semesterYear">
-      {{getTermYear}}
-    </div>
+      <div class="head">
+        <div class="semesterYear">
+          {{ getTermYear }}
+        </div>
 
-      <div class="courseName">
-        <router-link
-          :to="{
-            path: `/course/${props.course.courseId}`,
-          }"
-          >{{ props.course.courseName }}</router-link
-        >
+        <div class="courseName">
+          <router-link
+            :to="{
+              path: `/course/${props.course.courseId}`,
+            }"
+            >{{ props.course.courseName }}</router-link
+          >
+        </div>
+        <div class="courseInfo">
+          <div class="addCode">
+            <p>
+              课堂码:<span> {{ props.course.addCourseCode }}</span>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="courseInfo">
-        <div class="addCode">
-          <p>
-            课堂码:<span> {{ props.course.addCourseCode }}</span>
-          </p>
+      <div class="main-space"></div>
+      <div class="bottom">
+        <div class="teacher">
+          <div class="isTop">负责人:{{ owner }}</div>
+        </div>
+        <div class="set">
+          <el-dropdown v-if="props.status == 1" trigger="click">
+            <span class="el-dropdown-link">
+              <el-icon><More /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>编辑</el-dropdown-item>
+                <el-dropdown-item @click="deleteCourse()"
+                  >删除</el-dropdown-item
+                >
+                <el-dropdown-item @click="archiveCourse()"
+                  >归档</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          <el-dropdown v-else trigger="click" placement="top">
+            <span class="el-dropdown-link">
+              <el-icon><More /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="archiveCourse()"
+                  >归档</el-dropdown-item
+                >
+                <el-dropdown-item @click="dropOut">退课</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
     </div>
-    <div class="main-space">
-    </div>
-    <div class="bottom">
-      <div class="teacher">
-        <div class="isTop">负责人:{{owner}}</div>
-      </div>
-      <div class="set">
-        <el-dropdown v-if="props.status == 1" trigger="click">
-          <span class="el-dropdown-link">
-            <el-icon><More /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>编辑</el-dropdown-item>
-              <el-dropdown-item @click="deleteCourse()">删除</el-dropdown-item>
-              <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-
-        <el-dropdown v-else trigger="click" placement="top">
-          <span class="el-dropdown-link">
-            <el-icon><More /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="fileCourse()">归档</el-dropdown-item>
-              <el-dropdown-item @click="dropOut">退课</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-    </div>
-    </div>
-  
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, defineProps, onMounted ,computed} from "vue";
+import { ref, reactive, defineProps, onMounted, computed } from "vue";
 import { More } from "@element-plus/icons-vue";
 import { useCourseStore } from "@/store/course";
-import {useUserStore} from "@/store/user"
+import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 const courseStore = useCourseStore();
 const props = defineProps({ course: Object, status: String });
+const emits = defineEmits(["childArchiveCourse"]);
 const bg = ref("");
 const owner = ref("");
 //处理学期
-const getTermYear = computed(() =>
-    `${props.course.semesterYear}-${parseInt(props.course.semesterYear) + 1} ${props.course.semester==1?'第一学期':'第二学期'}`
+const getTermYear = computed(
+  () =>
+    `${props.course.semesterYear}-${parseInt(props.course.semesterYear) + 1} ${
+      props.course.semester == 1 ? "第一学期" : "第二学期"
+    }`
 );
 //处理负责人
-const handleOwner =async ()=>{
-  const info = await userStore.getInfoById(props.course.ownerId)
+const handleOwner = async () => {
+  const info = await userStore.getInfoById(props.course.ownerId);
   owner.value = info.name;
-}
+};
 
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
-handleOwner()
+  handleOwner();
 });
-
-
 
 const detailCourse = () => {};
 //退课
@@ -97,7 +103,14 @@ const dropOut = async () => {
   courseStore.exitCourse(props.course.courseId);
 };
 // 归档课程
-const fileCourse = () => {};
+const archiveCourse = () => {
+  emits("childArchiveCourse");
+  console.log("zi");
+  return props.course;
+};
+defineExpose({
+  archiveCourse,
+});
 // 删除课程
 const deleteCourse = () => {};
 // 重置加课码 启用加课码
@@ -131,7 +144,6 @@ const addCodeReset = () => {};
   padding: 7px 10px;
 }
 
-
 .homework {
   cursor: pointer;
   margin-top: 11px;
@@ -148,53 +160,48 @@ const addCodeReset = () => {};
   border-bottom: 1px solid #32baf0;
   color: #32baf0;
 }
-.courseInfo{
-  .addCode{
-    color:white;
+.courseInfo {
+  .addCode {
+    color: white;
     font-size: 13px;
   }
- }
-
-
-
+}
 
 .courseName {
   font-size: 18px;
-  color:white;
-  margin-top: 0.5vh;
-  margin-bottom:6.5vh;
-  a {
   color: white;
-  outline: none;
-  text-decoration: none;
-}
-
+  margin-top: 0.5vh;
+  margin-bottom: 6.5vh;
+  a {
+    color: white;
+    outline: none;
+    text-decoration: none;
+  }
 }
 .bg {
   position: absolute;
   z-index: -1;
-   img {
-  width: 18vw;
-  height: 23vh;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
+  img {
+    width: 18vw;
+    height: 23vh;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
 }
 .main {
   display: flex;
   flex-flow: column;
   .head {
-   height: 23vh;
-   padding:1.3vw;
-   .semesterYear{
-    font-size: 13px;
-    color: rgb(167, 202, 212);
-   }
-}
+    height: 23vh;
+    padding: 1.3vw;
+    .semesterYear {
+      font-size: 13px;
+      color: rgb(167, 202, 212);
+    }
+  }
   .main-space {
     flex: 0.2;
   }
-
 }
 .card {
   width: 18vw;
