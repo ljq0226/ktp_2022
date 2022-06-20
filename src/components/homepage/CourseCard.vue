@@ -32,33 +32,21 @@
           <div class="isTop">负责人:{{ owner }}</div>
         </div>
         <div class="set">
-          <el-dropdown v-if="props.status == 1" trigger="click">
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">
               <el-icon><More /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>编辑</el-dropdown-item>
+                <el-dropdown-item v-if="props.status == 1"
+                  >编辑</el-dropdown-item
+                >
                 <el-dropdown-item @click="deleteCourse()"
                   >删除</el-dropdown-item
                 >
                 <el-dropdown-item @click="archiveCourse()"
                   >归档</el-dropdown-item
                 >
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-
-          <el-dropdown v-else trigger="click" placement="top">
-            <span class="el-dropdown-link">
-              <el-icon><More /></el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item @click="archiveCourse()"
-                  >归档</el-dropdown-item
-                >
-                <el-dropdown-item @click="dropOut">退课</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

@@ -31,7 +31,7 @@
     </div>
 
     <div class="showMoudle">
-      <CourserStudy></CourserStudy>
+      <CourserStudy :courseId="currentCourse.courseId"></CourserStudy>
     </div>
   </div>
 </template>
