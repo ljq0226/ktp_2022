@@ -4,6 +4,10 @@ const courseService = {
   async getAllNormalCourse(id) {
     return await get(`course/selectAllNormalCourses?userId=${id}`);
   },
+  //根据课程id获取课程信息
+  async getCourseByCourseId(id) {
+    return await get(`course/selectByCourseId?courseId=${id}`);
+  },
   //创建课程
   async createCourse(createCourseDto) {
     return await post("course/createCourse", createCourseDto);

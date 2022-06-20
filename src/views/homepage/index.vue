@@ -23,25 +23,7 @@
 
       <div class="courseShow">
         <div class="demo-collapse">
-          <el-collapse v-model="activeNames" @change="handleChange" accordion>
-            <el-collapse-item title="Consistency" name="1">
-              <div>1</div>
-              <div>2</div>
-            </el-collapse-item>
-            <el-collapse-item title="Feedback" name="2">
-              <div>3</div>
-              <div>4</div>
-            </el-collapse-item>
-            <el-collapse-item title="Efficiency" name="3">
-              <div>5</div>
-              <div>6</div>
-              <div>7</div>
-            </el-collapse-item>
-            <el-collapse-item title="Controllability" name="4">
-              <div>8</div>
-              <div>9</div>
-            </el-collapse-item>
-          </el-collapse>
+          <CourseShow></CourseShow>
         </div>
         <div class="allCourses">
           <template
@@ -306,6 +288,7 @@
 import Navigation from "@/components/homepage/Navigation";
 import CourseCard from "@/components/homepage/CourseCard";
 import ArchiveFile from "@/components/homepage/ArchiveFile";
+import CourseShow from "./CourseShow.vue";
 import hooks from "@/hooks/index.js";
 import { Plus, Search } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
@@ -361,10 +344,7 @@ onMounted(() => {
   getStatus();
   courseStore.init();
 });
-const activeNames = reactive([]);
-const handleChange = (val) => {
-  console.log(val);
-};
+
 //获取当前用户的角色状态
 const getStatus = () => {
   const userInfo = storage.get("userInfo");

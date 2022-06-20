@@ -1,10 +1,10 @@
 <template>
   <div style="display: flex">
     <div class="upp-left-corner">
-      <img src="../assets/img/logo_blue.png" alt="" />
+      <img src="@/assets/img/logo_blue.png" alt="" />
     </div>
     <div class="login-bg">
-      <img src="../assets/img/newbg.png" alt="" />
+      <img src="@/assets/img/newbg.png" alt="" />
     </div>
     <div class="login-box">
       <div class="">

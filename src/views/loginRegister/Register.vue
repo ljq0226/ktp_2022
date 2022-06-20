@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="upp-left-corner">
-      <img src="../assets/img/logo_blue.png" alt="" />
+      <img src="@/assets/img/logo_blue.png" alt="" />
     </div>
     <div class="reg-bg">
-      <img src="../assets/img/newbg.png" alt="" />
+      <img src="@/assets/img/newbg.png" alt="" />
     </div>
 
     <div class="main">
@@ -13,7 +13,7 @@
         <p>请选择您在日常教学的实际身份</p>
         <div class="firstLine">
           <img
-            src="../assets/img/teacher.png"
+            src="@/assets/img/teacher.png"
             alt="teacher"
             @click="state = 1"
           />
@@ -22,7 +22,7 @@
 
         <div class="secondLine">
           <img
-            src="../assets/img/student.png"
+            src="@/assets/img/student.png"
             alt="student"
             @click="state = 2"
           />
@@ -32,7 +32,7 @@
 
       <div v-else-if="state !== 0" class="regMessage">
         <img
-          src="../assets/img/returnReg.png"
+          src="@/assets/img/returnReg.png"
           class="back"
           alt="返回"
           @click="state = 0"
