@@ -1,7 +1,8 @@
 <template>
   <div class="card">
     <div class="bg">
-      <img :src="bg" alt="" />
+      <img :src="bg" />
+      <!-- <img src="../../assets/bg/1.png"  /> -->
     </div>
     <div class="main">
       <div class="head">
@@ -94,6 +95,7 @@ const handleOwner = async () => {
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
+  console.log(bg.value);
   handleOwner();
 });
 
@@ -194,6 +196,7 @@ const addCodeReset = () => {};
   .head {
     height: 23vh;
     padding: 1.3vw;
+
     .semesterYear {
       font-size: 13px;
       color: rgb(167, 202, 212);

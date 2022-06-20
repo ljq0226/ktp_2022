@@ -23,22 +23,9 @@
 
       <div class="courseShow">
         <div class="demo-collapse">
-          <CourseShow></CourseShow>
+          <CourseShow :status="stauts"></CourseShow>
         </div>
-        <div class="allCourses">
-          <template
-            v-for="course in courseStore.allCourses"
-            :key="course.courseId"
-            class="courseCard"
-          >
-            <CourseCard
-              @childDeleteCourse="childDeleteCourse"
-              @childArchiveCourse="childArchiveCourse(course)"
-              :course="course"
-              :status="status"
-            />
-          </template>
-        </div>
+        <div class="allCourses"></div>
       </div>
     </div>
 

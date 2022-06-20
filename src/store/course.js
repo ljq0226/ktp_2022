@@ -20,7 +20,9 @@ export const useCourseStore = defineStore("course", {
       const res = await courseService.getAllNormalCourse(userId);
       if (res.code === 200) {
         this.allCourses = res.data;
-        this.groupCourese(res.data);
+        this.updateCourse = [];
+        this.groupCourese(this.allCourses);
+        console.log(1);
       } else {
         ElMessage.error(res.msg);
       }
@@ -38,11 +40,9 @@ export const useCourseStore = defineStore("course", {
       let newArr = Array.from(new Set(arr));
       this.semesterArr = newArr;
       let a = [];
-      console.log(rawData);
       for (let i = 0; i < newArr.length; i++) {
         for (const item of rawData) {
           if (item.semesterInfo == newArr[i]) {
-            console.log(item.courseName);
             a.push(item);
           } else {
             continue;
