@@ -12,6 +12,7 @@ export const useCourseStore = defineStore("course", {
       updateShowArchive: [], //需要展示的
       archiveSemesterArr: [], //不同学习学年将归档课程进行分组
       currentCourse: {}, //当前课程详情
+      currentCourseMembers: {}, //当前课程成员
       semesterArr: [], //通过不同学习学年将课程进行分组
     };
   },

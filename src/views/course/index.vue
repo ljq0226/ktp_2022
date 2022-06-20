@@ -12,8 +12,8 @@
 
         <div class="courseQrCode">
           <p>
-            <span>加课码{{ " " + currentCourse.addCourseCode }}</span>
-            <span>已有{{ currentCourse.studentNum }}人加入</span>
+            <span >加课码{{ " " + currentCourse.addCourseCode }}</span>
+            <span @click="toCourseMember">已有{{ currentCourse.studentNum }}人加入</span>
           </p>
         </div>
       </div>
@@ -92,6 +92,10 @@ const showCourseStudy = () => {
 const noServer = () => {
   ElMessage.warning("暂未开放，尽请期待！");
 };
+const toCourseMember = () => {
+  console.log('object');
+  router.push(`/courseMember/${routerId.value}`)
+}
 </script>
 <style lang="scss" scoped>
 .courseCard {
@@ -118,6 +122,7 @@ const noServer = () => {
           margin-left: 2vw;
           span {
             padding-right: 1vw;
+            cursor:pointer;
           }
         }
       }

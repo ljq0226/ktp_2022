@@ -16,10 +16,6 @@ const routes = [
     path: "/courseMember/:cno",
     name: "CourseMember",
     component: () => import("../views/course/CourseMember.vue"),
-    meta: {
-      requireAuth: true,
-      role: [2, 3],
-    },
   },
   {
     path: "/arc",

@@ -49,7 +49,15 @@
           <div class="info-item">
             <div class="item-type">学校</div>
             <div class="item-value">
+              <!-- <el-input v-model="state.userInfo.schoolId" /> -->
               <el-input v-model="state.userInfo.schoolId" />
+            </div>
+            <div class="item-space"></div>
+          </div>
+          <div class="info-item">
+            <div class="item-type">ID</div>
+            <div class="item-value">
+              <el-input v-model="state.userInfo.userId" disabled/>
             </div>
             <div class="item-space"></div>
           </div>
