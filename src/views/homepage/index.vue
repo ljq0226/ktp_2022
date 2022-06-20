@@ -10,7 +10,7 @@
         </div>
         <div class="archiveMng">
           <div class="archiveMng-space"></div>
-          <ElButton @click="SFDialog = true">归档管理</ElButton>
+          <ElButton @click="archiveDialog = true">归档管理</ElButton>
           <el-input
             v-model="input2"
             class="w-20 m-2"
@@ -113,30 +113,6 @@
         </el-button>
       </div>
     </el-dialog>
-    <!-- 归档课程 模态框 -->
-    <el-dialog
-      v-model="archiveCourseDialog"
-      width="32vw"
-      top="28vh"
-      draggable
-      title="要归档此课程吗"
-    >
-      <div class="archiveCourseDialog">
-        <p class="ach-p2">您可以在<span>“课堂”-“归档管理”</span>中查看此课程</p>
-        <div class="archiveCourseFooter">
-          <div></div>
-          <el-button @click="archiveCourseDialog = false" style="width: 100px"
-            >取消
-          </el-button>
-
-          <el-button
-            style="width: 100px"
-            @click="courseArchive(courseStore.awaitArchiveCourse.courseId)"
-            >归档自己
-          </el-button>
-        </div>
-      </div>
-    </el-dialog>
 
     <!-- 删除课程 模态框 -->
     <el-dialog :visible="deleteCourseDialog" width="450px" top="30vh">
@@ -190,46 +166,6 @@
         </el-button>
       </div>
     </el-dialog>
-
-    <!-- 课程排序和归档管理 模态框-->
-    <el-dialog v-model="SFDialog" width="810px" top="30vh">
-      <div class="SFtitle">
-        <p @click="selectSF(0)">课程排序</p>
-        <p class="SFClick" @click="selectSF(1)">归档管理</p>
-      </div>
-      <!--课程排序-->
-      <div v-if="SFState == 0">
-        <!--draggable为true表示可拖拽-->
-        <div
-          ref="sortCourse"
-          class="sortCourse"
-          v-for="course of courseList"
-          :key="course.cno"
-          draggable="true"
-        >
-          <span></span>
-          {{ course.courseName }}
-        </div>
-        <div ref="test"></div>
-      </div>
-      <!--课程存档-->
-      <div v-else class="archive">
-        <!--ArchiveFile.vue-->
-        <!--监听子组件定义函数(事件) childDeleteCourse，第二个childDeleteCourse为父组件函数用于接收子组件传值并进行相应数据处理，可定义为同一个名称-->
-        <!--course: 父组件向子组件传值-->
-        <!--拖动移除  @dropOut="dropOut"-->
-        <archiveFile
-          class="archiveFile"
-          v-for="archiveCourse in archiveCourses"
-          :key="archiveCourse.cno"
-          :course="archiveCourse"
-          @childDeleteCourse="childDeleteCourse"
-          @childRecoveryCourse="childRecoveryCourse"
-          @dragleave="dropOut"
-        />
-      </div>
-    </el-dialog>
-
     <!-- 恢复课程提示 模态框 -->
     <el-dialog :visible="recoveryTipsDialog" width="350px" top="30vh">
       <p class="joinCourseTitle">确定要恢复"{{ course.courseName }}"吗?</p>
@@ -247,7 +183,6 @@
         </el-button>
       </div>
     </el-dialog>
-
     <!-- 退出课程 模态框 -->
     <el-dialog :visible="dropOutDialog" width="450px" top="30vh">
       <p class="joinCourseTitle">
@@ -268,24 +203,77 @@
         </el-button>
       </div>
     </el-dialog>
+
+    <!-- 课程排序和归档管理 模态框-->
+    <el-dialog v-model="archiveDialog" title="归档管理" width="62vw" top="10vh">
+      <el-divider></el-divider>
+      <div class="archieveTable">
+        <div class="left">
+          <template v-for="(item, index) in archiveSemesterArr" :key="item">
+            <div class="left_card" @click="showArchive(index)">
+              {{ item }}
+            </div>
+          </template>
+        </div>
+        <div class="right">
+          <template v-for="item in updateShowArchive" :key="item">
+            <div class="rightCard">
+              <div class="cardImg">
+                <p class="cardQrCode">课堂码{{ item.addCourseCode }}</p>
+              </div>
+              <div class="cardInfo">
+                <p class="info1">120230201,120230202</p>
+                <p class="info2">{{ item.courseName }}</p>
+                <p class="info3">成员{{ item.studentNum }}人</p>
+              </div>
+              <div class="cardTools">
+                <div class="cardToolsSapce">
+                  <div></div>
+                  <div class="set">
+                    <el-dropdown trigger="click">
+                      <span class="el-dropdown-link">
+                        <el-icon><More /></el-icon>
+                      </span>
+                      <template #dropdown>
+                        <el-dropdown-menu>
+                          <el-dropdown-item v-if="status == 1"
+                            >编辑</el-dropdown-item
+                          >
+                          <el-dropdown-item
+                            @click="recoverCourse(item.courseId)"
+                            >恢复</el-dropdown-item
+                          >
+                          <el-dropdown-item @click="deleteCourse(item.courseId)"
+                            >删除</el-dropdown-item
+                          >
+                        </el-dropdown-menu>
+                      </template>
+                    </el-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import Navigation from "@/components/homepage/Navigation";
 import CourseCard from "@/components/homepage/CourseCard";
-import ArchiveFile from "@/components/homepage/ArchiveFile";
 import CourseShow from "./CourseShow.vue";
+import { More } from "@element-plus/icons-vue";
 import hooks from "@/hooks/index.js";
 import { Plus, Search } from "@element-plus/icons-vue";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed, toRaw } from "vue";
 import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
 import { useCourseStore } from "@/store/course";
 const router = useRouter();
 const courseStore = useCourseStore();
 let status = ref(0); //当前角色为 0为学生 1为老师
-let toArchiveCourse = reactive({});
 
 let allCourses = reactive([]); // 所有课程 拿来操作
 const archiveCourses = reactive([]); // 存档课程
@@ -293,8 +281,7 @@ const courseList = reactive([]); // 所有课程
 const fileCourses = reactive([]); // 归档文件
 const quickReleaseDialog = ref(false); //快速发布活动
 let createCourseDialog = ref(false); // 创建课程
-const SFDialog = ref(false); // 课程排序与归档
-const SFState = ref(1); // 0为课程排序 1为归档管理 最开始登录页面时默认展示 归档管理
+
 // 新创建的课程
 const createCourse = reactive({
   semester: 1,
@@ -318,7 +305,8 @@ const optionSemester = [
 ];
 let joinCourseDialog = ref(false);
 const deleteCourseDialog = ref(false);
-let archiveCourseDialog = ref(false);
+let archiveDialog = ref(false); // 课程排序与归档
+
 const recoveryTipsDialog = ref(false);
 const transferCourseDialog = ref(false);
 const dropOutDialog = ref(false);
@@ -326,6 +314,9 @@ const joinCode = ref(""); // 加入课程的课程码
 const deleteCourseObj = reactive({}); // 要删除的课程
 const course = reactive({}); // 要恢复的课程
 const dropOutObj = reactive({}); // 要退出的课程
+let archiveSemesterArr = computed(() => courseStore.archiveSemesterArr);
+let updateArchiveCourses = computed(() => courseStore.updateArchiveCourses);
+let updateShowArchive = computed(() => courseStore.updateShowArchive);
 
 onMounted(() => {
   getStatus();
@@ -337,9 +328,6 @@ const getStatus = () => {
   const userInfo = storage.get("userInfo");
   status.value = userInfo.status;
 };
-const showsth = () => {
-  allCourses = [1, 2, 3];
-};
 const joinCourse = async () => {
   console.log("加入", typeof joinCode.value);
   joinCourseDialog.value = false;
@@ -347,16 +335,19 @@ const joinCourse = async () => {
   await courseStore.joinCourse(joinCode.value, userId);
   joinCode.value = "";
 };
-//传递给子组件的归档方法
-const childArchiveCourse = (course) => {
-  archiveCourseDialog.value = true;
-  courseStore.awaitArchiveCourse = course;
+//点击课程归档后 显示分类归档信息
+const showArchive = (index) => {
+  courseStore.showArchive(index);
 };
-//课程归档处理
-const courseArchive = async (courseId) => {
-  archiveCourseDialog.value = false;
-  await courseStore.archiveCourse(courseId);
+//恢复归档课程
+const recoverCourse = (courseId) => {
+  courseStore.recoverArchiveCourse(courseId);
 };
+//删除归档课程
+const deleteCourse = (courseId) => {
+  courseStore.deleteCourse(courseId);
+};
+deleteCourse;
 </script>
 <style lang="scss" scoped>
 .container {
@@ -386,18 +377,82 @@ const courseArchive = async (courseId) => {
     }
   }
 }
-.archiveCourseDialog {
-  p {
-    border-top: 0.01px solid gray;
-    border-bottom: 0.01px solid gray;
-    padding: 2vh;
-    span {
-      color: $ktp-color;
+
+::v-deep .el-divider {
+  margin: 0;
+}
+::v-deep .el-dialog__header {
+  padding-bottom: 0;
+}
+.archieveTable {
+  height: 70vh;
+  display: flex;
+  flex-flow: row;
+  .right {
+    width: 69%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    .rightCard {
+      margin: 3vh;
+      margin-right: 0;
+      width: 50vw;
+      height: 15vh;
+      display: flex;
+      border: 1px solid $border;
+      border-radius: 5px;
+      .cardTools {
+        flex: 0.5;
+      }
+      .cardInfo {
+        flex: 0.3;
+        display: flex;
+        flex-flow: column;
+        p {
+          margin: 0.5vh 0;
+        }
+        .info2 {
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+      .cardImg {
+        background: url("@/assets/bg/1.png") no-repeat center;
+        width: 7vw;
+        height: 10vh;
+        margin: 2vh;
+        flex: 0.16;
+        .cardQrCode {
+          margin: 0 0.8vh;
+          margin-top: 7vh;
+
+          font-size: 12px;
+          font-weight: 350;
+          color: white;
+        }
+      }
+      .cardTools {
+        display: flex;
+        flex-flow: row;
+        .cardToolsSpace {
+          flex: 0.6;
+        }
+      }
     }
   }
-  .archiveCourseFooter {
-    display: flex;
-    justify-content: flex-end;
+  .left {
+    width: 30%;
+    overflow: hidden;
+    border-right: 1px solid gray;
+    .left_card {
+      padding: 2vw;
+      cursor: pointer;
+      &:hover {
+        color: $ktp-color;
+        background-color: $light-blue;
+      }
+    }
   }
 }
 </style>

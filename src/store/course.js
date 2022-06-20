@@ -8,6 +8,9 @@ export const useCourseStore = defineStore("course", {
       updateCourse: [], //处理过后用于展示的课程数据
       awaitArchiveCourse: {}, //执行被归档的课程
       archiveCourses: [], //获取所有归档课程
+      updateArchiveCourses: [], //处理过后的归档课程
+      updateShowArchive: [], //需要展示的
+      archiveSemesterArr: [], //不同学习学年将归档课程进行分组
       currentCourse: {}, //当前课程详情
       semesterArr: [], //通过不同学习学年将课程进行分组
     };
@@ -21,8 +24,8 @@ export const useCourseStore = defineStore("course", {
       if (res.code === 200) {
         this.allCourses = res.data;
         this.updateCourse = [];
-        this.groupCourese(this.allCourses);
-        console.log(1);
+        this.groupCourese(res.data);
+        this.getAllArchiveCourse();
       } else {
         ElMessage.error(res.msg);
       }
@@ -39,6 +42,7 @@ export const useCourseStore = defineStore("course", {
       }
       let newArr = Array.from(new Set(arr));
       this.semesterArr = newArr;
+
       let a = [];
       for (let i = 0; i < newArr.length; i++) {
         for (const item of rawData) {
@@ -60,7 +64,16 @@ export const useCourseStore = defineStore("course", {
     },
 
     //删除课程
-    async deleteCourse(id) {},
+    async deleteCourse(courseId) {
+      const res = await courseService.deleteCourse(courseId);
+      if (res.code === 200) {
+        this.getAllArchiveCourse();
+        this.updateShowArchive = [];
+        ElMessage.success(res.msg);
+      } else if (res.code === 500) {
+        ElMessage.error(res.msg);
+      }
+    },
     //退出课程
     async exitCourse(courseId) {
       const res = await courseService.exitCourse(courseId);
@@ -81,13 +94,27 @@ export const useCourseStore = defineStore("course", {
         ElMessage.error(res.msg);
       }
     },
-    //归档处理
+    //归档课程
     async archiveCourse(courseId) {
       const { userId } = storage.get("userInfo");
-      console.log(userId);
       const res = await courseService.archiveCourse(courseId, userId);
       if (res.code === 200) {
         this.getAllArchiveCourse();
+        this.init();
+
+        ElMessage.success(res.msg);
+      } else if (res.code === 500) {
+        ElMessage.error(res.msg);
+      }
+    },
+    //课程恢复归档
+    async recoverArchiveCourse(courseId) {
+      const { userId } = storage.get("userInfo");
+      const res = await courseService.recoverCourse(courseId, userId);
+      if (res.code === 200) {
+        this.getAllArchiveCourse();
+        this.init();
+        this.updateShowArchive = [];
         ElMessage.success(res.msg);
       } else if (res.code === 500) {
         ElMessage.error(res.msg);
@@ -99,6 +126,8 @@ export const useCourseStore = defineStore("course", {
       const res = await courseService.getAllArchiveCourse(userId);
       if (res.code === 200) {
         this.archiveCourses = res.data;
+        this.updateArchiveCourses = [];
+        this.groupArchiveCourese(res.data);
       } else {
         ElMessage.error(res.msg);
       }
@@ -111,6 +140,35 @@ export const useCourseStore = defineStore("course", {
       } else {
         ElMessage.error(res.msg);
       }
+    },
+    //对所有归档课程进行处理分组
+    groupArchiveCourese(allCourses) {
+      //取出所有的学年学期
+      let rawData = allCourses;
+      let arr = [];
+      for (let i = 0; i < rawData.length; i++) {
+        const res = this.getTermYear(rawData[i]);
+        rawData[i]["semesterInfo"] = res;
+        arr.push(res);
+      }
+      let newArr = Array.from(new Set(arr));
+      this.archiveSemesterArr = newArr;
+      let a = [];
+      for (let i = 0; i < newArr.length; i++) {
+        for (const item of rawData) {
+          if (item.semesterInfo == newArr[i]) {
+            a.push(item);
+          } else {
+            continue;
+          }
+        }
+        this.updateArchiveCourses.push(a);
+        a = [];
+      }
+    },
+    showArchive(index) {
+      console.log(index);
+      this.updateShowArchive = this.updateArchiveCourses[index];
     },
   },
 });

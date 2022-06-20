@@ -95,7 +95,6 @@ const handleOwner = async () => {
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
-  console.log(bg.value);
   handleOwner();
 });
 
@@ -104,15 +103,6 @@ const detailCourse = () => {};
 const dropOut = async () => {
   courseStore.exitCourse(props.course.courseId);
 };
-// 归档课程
-const archiveCourse = () => {
-  emits("childArchiveCourse");
-  console.log("zi");
-  return props.course;
-};
-defineExpose({
-  archiveCourse,
-});
 // 删除课程
 const deleteCourse = () => {};
 // 重置加课码 启用加课码

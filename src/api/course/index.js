@@ -32,7 +32,7 @@ const courseService = {
   },
   //删除课程
   async deleteCourse(id) {
-    return await get(`course/deleteCourse?courseId=${id}`);
+    return await post(`course/deleteCourse?courseId=${id}`);
   },
   //学生退课
   async exitCourse(courseId) {
