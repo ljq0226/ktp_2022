@@ -61,7 +61,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import storage from "@/hooks/storage";
-import { useUserStore } from "../store/user";
+import { useUserStore } from "../../store/user";
 const userStore = useUserStore();
 const router = useRouter();
 const user = reactive({

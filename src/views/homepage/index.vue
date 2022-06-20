@@ -145,32 +145,30 @@
       </div>
     </el-dialog>
     <!-- 归档课程 模态框 -->
- <el-dialog
+    <el-dialog
       v-model="archiveCourseDialog"
       width="32vw"
       top="28vh"
       draggable
       title="要归档此课程吗"
     >
-    <div class="archiveCourseDialog">
-        <p  class="ach-p2">您可以在<span>“课堂”-“归档管理”</span>中查看此课程</p>
-      <div class="archiveCourseFooter">
-        <div></div>
-        <el-button @click="archiveCourseDialog = false" style="width: 100px"
-          >取消
-        </el-button>
+      <div class="archiveCourseDialog">
+        <p class="ach-p2">您可以在<span>“课堂”-“归档管理”</span>中查看此课程</p>
+        <div class="archiveCourseFooter">
+          <div></div>
+          <el-button @click="archiveCourseDialog = false" style="width: 100px"
+            >取消
+          </el-button>
 
-        <el-button
-          style="width: 100px"
-          @click="courseArchive(courseStore.awaitArchiveCourse.courseId)"
-          >归档自己
-        </el-button>
+          <el-button
+            style="width: 100px"
+            @click="courseArchive(courseStore.awaitArchiveCourse.courseId)"
+            >归档自己
+          </el-button>
+        </div>
       </div>
-    </div>
-     
     </el-dialog>
 
-   
     <!-- 删除课程 模态框 -->
     <el-dialog :visible="deleteCourseDialog" width="450px" top="30vh">
       <p class="joinCourseTitle">
@@ -406,8 +404,7 @@ const courseArchive = async (courseId) => {
       height: 20vh;
       justify-content: space-around;
       align-items: flex-end;
-      .addCoureBtn {
-      }
+
       .archiveMng {
         display: flex;
         flex-flow: row;
@@ -422,22 +419,18 @@ const courseArchive = async (courseId) => {
     }
   }
 }
-.archiveCourseDialog{
-  p{ 
-  border-top: .01px solid gray;
-  border-bottom: .01px solid gray;
-  padding: 2vh;
-  span{
-    color:$ktp-color;
+.archiveCourseDialog {
+  p {
+    border-top: 0.01px solid gray;
+    border-bottom: 0.01px solid gray;
+    padding: 2vh;
+    span {
+      color: $ktp-color;
+    }
   }
-  }
-  .archiveCourseFooter{
+  .archiveCourseFooter {
     display: flex;
     justify-content: flex-end;
   }
-
-
-
 }
- 
 </style>
