@@ -2,14 +2,12 @@
   <div class="card">
     <div class="bg">
       <img :src="bg" />
-      <!-- <img src="../../assets/bg/1.png"  /> -->
     </div>
     <div class="main">
       <div class="head">
         <div class="semesterYear">
           {{ getTermYear }}
         </div>
-
         <div class="courseName">
           <router-link
             :to="{

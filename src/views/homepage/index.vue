@@ -120,7 +120,7 @@
     </el-dialog>
 
     <!-- 删除课程 模态框 -->
-    <el-dialog v-model:visible="deleteCourseDialog" width="450px" top="30vh">
+    <el-dialog v-model="deleteCourseDialog" width="450px" top="30vh">
       <p class="joinCourseTitle">确定要删除此课程吗?</p>
       <div class="delete-tips">
         <p>您的这个课程的任何信息或评论将被永久删除</p>
@@ -167,44 +167,6 @@
         </el-button>
       </div>
     </el-dialog>
-    <!-- 恢复课程提示 模态框 -->
-    <el-dialog v-model="recoveryTipsDialog" width="350px" top="30vh">
-      <p class="joinCourseTitle">确定要恢复"{{ course.courseName }}"吗?</p>
-      <div class="delete-tips">
-        <p>您和您的学生将可以重新在此课程中互动。</p>
-        <p>此课程会在课堂页上显示。</p>
-      </div>
-
-      <div class="joinCourseFooter">
-        <el-button @click="recoveryTipsDialog = false" style="width: 100px"
-          >取消
-        </el-button>
-        <el-button type="primary" style="width: 100px" @click="courseRecover"
-          >恢复课程
-        </el-button>
-      </div>
-    </el-dialog>
-    <!-- 退出课程 模态框 -->
-    <el-dialog v-model="dropOutDialog" width="450px" top="30vh">
-      <p class="joinCourseTitle">
-        确定要删除"{{ this.dropOutObj.courseName }}"吗?
-      </p>
-      <div class="delete-tips">
-        <p>您的这个课程的任何信息或评论将被永久删除</p>
-        <p>警告：此操作无法撤消</p>
-        <p>提醒：已用课程数包含了“删除课程数”</p>
-      </div>
-
-      <div class="joinCourseFooter">
-        <el-button @click="dropOutDialog = false" style="width: 100px"
-          >取消
-        </el-button>
-        <el-button type="primary" style="width: 100px" @click="dropOut"
-          >退出课程
-        </el-button>
-      </div>
-    </el-dialog>
-
     <!-- 课程排序和归档管理 模态框-->
     <el-dialog v-model="archiveDialog" title="归档管理" width="62vw" top="10vh">
       <el-divider></el-divider>

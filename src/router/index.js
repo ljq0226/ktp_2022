@@ -18,11 +18,6 @@ const routes = [
     component: () => import("../views/course/CourseMember.vue"),
   },
   {
-    path: "/arc",
-    name: "arc",
-    component: () => import("../components/homepage/ArchiveFile"),
-  },
-  {
     path: "/login",
     name: "Login",
     component: () => import("../views/loginRegister/Login.vue"),
@@ -46,47 +41,31 @@ const routes = [
     path: "/course/:cno" /*cno为参数，参数前要有: */,
     name: "Course",
     component: Course,
+  },
+  {
+    path: "/task/:taskId",
+    name: "CourseTask",
+    component: () => import("../views/task/index.vue"),
+    query: {
+      courseId: "",
+    },
     children: [
       {
-        path: "/",
-        name: "Interact",
-        component: () =>
-          import("../components/courseDetails/interact/Interact"),
+        path: "/taskInfo",
+        name: "TaskInfo",
+        component: () => import("../views/task/TaskInfo.vue"),
       },
       {
-        path: "/interact",
-        name: "Interact",
-        component: () =>
-          import("../components/courseDetails/interact/Interact"),
+        path: "/submitTask",
+        name: "SubmitTask",
+        component: () => import("../views/task/SubmitTask.vue"),
       },
       {
-        path: "/stuHomework/:cno",
-        name: "StuHomework",
-        component: () =>
-          import("../components/courseDetails/homework/StuHomework"),
-      },
-      {
-        path: "/homework/:cno",
-        name: "Homework",
-        component: () =>
-          import("../components/courseDetails/homework/Homework"),
-      },
-      {
-        path: "/topic",
-        name: "Topic",
-        component: () => import("../components/courseDetails/topic/Topic"),
+        path: "/correctTask",
+        name: "CorrectTask",
+        component: () => import("../views/task/CorrectTask.vue"),
       },
     ],
-  },
-  {
-    path: "/stuTaskCommit/:cno/:tno",
-    name: "StuTaskCommit",
-    component: () => import("../views/course/stuTaskCommit.vue"),
-  },
-  {
-    path: "/teacherTaskCorrect/:cno/:tno",
-    name: "TeacherTaskCorrect",
-    component: () => import("../views/course/teacherTaskCorrect.vue"),
   },
   {
     path: "/profile",

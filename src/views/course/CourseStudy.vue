@@ -19,7 +19,9 @@
           <div class="taskItem">
             <div class="taskImg"></div>
             <div class="taskInfo">
-              <p class="taskName">{{ item.taskName }}</p>
+              <p class="taskName" @click="toTaskInfo(item.taskId)">
+                {{ item.taskName }}
+              </p>
               <p class="taskTime">
                 提交截止时间{{ item.cutOffTime }}|<span>已结束</span>|<span
                   >个人作业</span
@@ -40,16 +42,24 @@ import { ref, reactive, onMounted } from "vue";
 import { useTaskStore } from "@/store/task";
 import { useCourseStore } from "@/store/course";
 import storage from "@/hooks/storage";
+import { useRouter } from "vue-router";
+import moment from "moment";
+const router = useRouter();
 const props = defineProps({ courseId: String });
 const taskStore = useTaskStore();
 const courseStore = useCourseStore();
-let courseId = computed(() => courseStore.currentCourse.courseId);
-
+let courseId = ref("");
 let status = ref(1); //自增对应目录 互动课件 作业 测试 。。
 
 onMounted(() => {
-  taskStore.selectAllTask(courseStore.currentCourse.courseId);
+  courseId.value = router.currentRoute.value.params.cno;
+  init();
 });
+//获取该课程从所有作业
+const init = async () => {
+  await taskStore.selectAllTask(courseId.value);
+};
+//展示所有作业
 const showTask = () => {
   status.value = 3;
   const userInfo = storage.get("userInfo");
@@ -62,6 +72,11 @@ const showTask = () => {
       status.value = 1;
     }, 1500);
   }
+};
+//跳转到作业详情
+const toTaskInfo = (taskId) => {
+  let path = `/task/${taskId}`;
+  router.push({ path, query: { courseId: courseId.value } });
 };
 
 const noServer = () => {
@@ -106,6 +121,7 @@ const noServer = () => {
             margin: 0;
           }
           .taskName {
+            cursor: pointer;
             font-size: 16px;
             font-weight: 350;
             margin: 2vh 0;

@@ -1,5 +1,5 @@
 <template>
-  <div>CommonNavigation</div>
+  <div>taskInfo</div>
 </template>
 <script setup></script>
 <style lang="scss" scoped></style>
