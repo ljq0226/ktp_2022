@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="submitWord">
-      <p>提交内容</p>
-      <ElButton type="primary">确认提交</ElButton>
+      <p>提交内容 <span style="font-size:13px;color:rgb(85, 145, 245);cursor: pointer;"><el-icon><Clock /></el-icon>提交历史</span></p>
+      <ElButton type="primary" @click="show">确认提交</ElButton>
     </div>
     <div class="submitFile">
       <p>作业附件</p>
@@ -31,6 +31,7 @@
         class="upload-demo"
         action="https://jsonplaceholder.typicode.com/posts/"
         :on-change="handleChange"
+        :file-list="testFile"
       >
         <el-button type="primary">Click to upload</el-button>
         <template #tip>
@@ -55,6 +56,7 @@
   </div>
 </template>
 <script setup>
+import {Clock} from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTaskStore } from "@/store/task";
@@ -62,12 +64,16 @@ import moment from "moment";
 const taskStore = useTaskStore();
 const router = useRouter();
 let startAndEndTime = ref("");
-
+let testFile = ref([])
 const handleChange = (uploadFile, uploadFiles) => {
   fileList.value = fileList.value.slice(-3);
 };
 
 let task = computed(() => taskStore.currentTask);
+const show = () => {
+  console.log((testFile));
+}
+
 onMounted(() => {
   init();
 });
@@ -134,7 +140,7 @@ const showVip = () => {
   align-items: center;
   margin: 2vh 0;
   p {
-    font-size: 18px;
+    font-size: 19px;
   }
 }
 .submitFile {
