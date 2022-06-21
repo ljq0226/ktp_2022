@@ -22,13 +22,15 @@
               <p class="taskName" @click="toTaskInfo(item.taskId)">
                 {{ item.taskName }}
               </p>
-              <p class="taskTime">
-                提交截止时间{{ item.cutOffTime }}|<span>已结束</span>|<span
-                  >个人作业</span
-                >
-              </p>
-              <p class="taskStatus">
-                {{ item.situation }} <span>{{ item.grade }}</span>
+              <p class="p2">
+                <span class="span1">个人作业</span
+                ><span class="span1"
+                  >提交起止时间：{{
+                    `${moment(item.releaseTime).format(
+                      "YY/MM/DD HH:mm"
+                    )}~ ${moment(item.cutOffTime).format("YY/MM/DD HH:mm")}`
+                  }}</span
+                ><span class="span2">5分</span><span class="span2">查重</span>
               </p>
             </div>
           </div>
@@ -76,7 +78,7 @@ const showTask = () => {
 //跳转到作业详情
 const toTaskInfo = (taskId) => {
   let path = `/task/${taskId}`;
-  router.push({ path, query: { courseId: courseId.value } });
+  router.push({ path, query: { courseId: courseId.value, taskId } });
 };
 
 const noServer = () => {
@@ -126,10 +128,19 @@ const noServer = () => {
             font-weight: 350;
             margin: 2vh 0;
           }
-          .taskTime {
-            font-size: 12px;
-            color: rgb(138, 141, 144);
-            margin: 1vh 0;
+          .p2 {
+            span {
+              margin-right: 1vh;
+              font-size: 12px;
+            }
+            .span1 {
+              color: rgb(98, 152, 246);
+              background-color: rgb(235, 243, 254);
+            }
+            .span2 {
+              color: rgb(192, 195, 198);
+              background-color: rgb(248, 249, 250);
+            }
           }
           .taskStatus {
             font-size: 12px;

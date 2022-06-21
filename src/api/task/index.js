@@ -22,5 +22,9 @@ const taskService = {
       file
     );
   },
+  //通过id获取作业详情
+  async selectById(taskId) {
+    return await get(`task/selectById?taskId=${taskId}`);
+  },
 };
 export default taskService;

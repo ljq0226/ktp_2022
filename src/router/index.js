@@ -48,6 +48,7 @@ const routes = [
     component: () => import("../views/task/index.vue"),
     query: {
       courseId: "",
+      taskId: "",
     },
     children: [
       {
