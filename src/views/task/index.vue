@@ -25,13 +25,8 @@ import Navigation from "@/components/homepage/Navigation.vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
-let courseId = ref("");
-let taskId = ref("");
 onMounted(() => {
-  //通过路由获取课程id 和作业id
-  courseId = router.currentRoute.value.query.courseId;
-  taskId = router.currentRoute.value.params.taskId;
-  console.log(router.currentRoute.value.query);
+  router.push({ name: 'TaskInfo', query: router.currentRoute.value.query })
 });
 </script>
 <style lang="scss" scoped>
