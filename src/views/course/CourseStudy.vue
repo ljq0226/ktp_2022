@@ -39,6 +39,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useTaskStore } from "@/store/task";
 import { useCourseStore } from "@/store/course";
+import storage from "@/hooks/storage";
 const props = defineProps({ courseId: String });
 const taskStore = useTaskStore();
 const courseStore = useCourseStore();
@@ -51,10 +52,16 @@ onMounted(() => {
 });
 const showTask = () => {
   status.value = 3;
-  if (taskStore.courseTask.length == 0) ElMessage.warning("老师暂未发布作业！");
-  setTimeout(() => {
-    status.value = 1;
-  }, 1500);
+  const userInfo = storage.get("userInfo");
+  const identity = userInfo.status;
+  if (!identity) {
+    //如果为学生
+    if (taskStore.courseTask.length == 0)
+      ElMessage.warning("老师暂未发布作业！");
+    setTimeout(() => {
+      status.value = 1;
+    }, 1500);
+  }
 };
 
 const noServer = () => {

@@ -9,7 +9,7 @@
           >
             <div class="rowCard">
               <CourseCard
-                @childDeleteCourse="childDeleteCourse"
+                @childDropOutCourse="childDropOutCourse(course)"
                 @childArchiveCourse="childArchiveCourse(course)"
                 :course="course"
                 :status="props.status"
@@ -44,6 +44,22 @@
       </div>
     </div>
   </el-dialog>
+  <!-- 退出课程 模态框 -->
+  <el-dialog v-model="dropOutCourseDialog" width="450px" top="30vh">
+    <p class="joinCourseTitle">确定要退出此课程吗?</p>
+    <div class="delete-tips">
+      <p>您的这个课程的任何信息或评论将被永久删除</p>
+      <p>警告：此操作无法撤消</p>
+    </div>
+    <div class="joinCourseFooter">
+      <el-button @click="dropOutCourseDialog = false" style="width: 100px"
+        >取消
+      </el-button>
+      <el-button type="primary" style="width: 100px" @click="handleDropOut"
+        >退出
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
@@ -56,16 +72,27 @@ let semesterArr = computed(() => courseStore.semesterArr);
 let updateCourse = computed(() => courseStore.updateCourse);
 const activeNames = reactive([]);
 let archiveCourseDialog = ref(false);
+let dropOutCourseDialog = ref(false);
 onMounted(() => {});
 //传递给子组件的归档方法
 const childArchiveCourse = (course) => {
   archiveCourseDialog.value = true;
   courseStore.awaitArchiveCourse = course;
 };
+//传递给子组件的退课方法
+const childDropOutCourse = (course) => {
+  dropOutCourseDialog.value = true;
+  //
+};
 //课程归档处理
 const courseArchive = async (courseId) => {
   archiveCourseDialog.value = false;
   await courseStore.archiveCourse(courseId);
+};
+//课程退出处理
+const handleDropOut = async () => {
+  dropOutCourseDialog.value = false;
+  await courseStore.exitCourse(course.courseId);
 };
 
 const handleChange = (val) => {};

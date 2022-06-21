@@ -41,9 +41,7 @@
                 <el-dropdown-item v-if="props.status == 1"
                   >编辑</el-dropdown-item
                 >
-                <el-dropdown-item @click="deleteCourse()"
-                  >删除</el-dropdown-item
-                >
+                <el-dropdown-item @click="dropOut()">退出</el-dropdown-item>
                 <el-dropdown-item @click="archiveCourse()"
                   >归档</el-dropdown-item
                 >
@@ -64,7 +62,7 @@ import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 const courseStore = useCourseStore();
 const props = defineProps({ course: Object, status: String });
-const emits = defineEmits(["childArchiveCourse"]);
+const emits = defineEmits(["childArchiveCourse", "childDropOutCourse"]);
 const bg = ref("");
 const owner = ref("");
 //处理学期
@@ -89,9 +87,13 @@ onMounted(() => {
 const detailCourse = () => {};
 //退课
 const dropOut = async () => {
-  courseStore.exitCourse(props.course.courseId);
+  emits("childDropOutCourse");
 };
-// 删除课程
+//归档
+const archiveCourse = () => {
+  emits("childArchiveCourse");
+};
+// 退出课程
 const deleteCourse = () => {};
 // 重置加课码 启用加课码
 const addCodeReset = () => {};

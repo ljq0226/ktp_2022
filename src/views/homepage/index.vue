@@ -3,11 +3,19 @@
   <div class="container">
     <div class="main-all">
       <div class="main-top">
-        <div class="addCoureBtn">
-          <ElButton type="primary" @click="joinCourseDialog = true"
-            ><el-icon><Plus /></el-icon>加入课程</ElButton
-          >
+        <div class="two-button">
+          <div class="createCourseBtn" v-show="status == 1">
+            <ElButton type="primary" @click="createCourseDialog = true"
+              ><el-icon><Plus /></el-icon>创建课程</ElButton
+            >
+          </div>
+          <div class="addCourseBtn">
+            <ElButton type="primary" @click="joinCourseDialog = true"
+              ><el-icon><Plus /></el-icon>加入课程</ElButton
+            >
+          </div>
         </div>
+
         <div class="archiveMng">
           <div class="archiveMng-space"></div>
           <ElButton @click="archiveDialog = true">归档管理</ElButton>
@@ -62,24 +70,21 @@
 
     <!-- 创建课程模态框 -->
     <el-dialog
-      v-if="status == 1"
-      :visible="createCourseDialog"
-      width="660px"
-      top="30vh"
+      v-model="createCourseDialog"
+      width="60vw"
+      top="25vh"
+      title="创建课程"
+      draggable
     >
-      <p class="createCourseTitle">新建课程</p>
       <div class="createCourse">
-        <el-input
-          class="createCourseInput"
-          v-model="createCourse.courseName"
-          placeholder="请输入课程名称"
-          maxlength="20"
-        />
-        <el-input
-          class="createCourseInput"
-          placeholder="请输入班级名称(选填)"
-          maxlength="20"
-        />
+        <div>
+          课程名：<el-input
+            class="createCourseInput"
+            v-model="createCourse.courseName"
+            placeholder="请输入课程名称"
+            maxlength="10"
+          />
+        </div>
         <div class="selectSemester">
           <p>选择学期:</p>
           <el-date-picker
@@ -108,22 +113,18 @@
           type="primary"
           :disabled="createCourse.courseName.length <= 0"
           style="width: 100px"
-          @click="create()"
+          @click="handleCreateCourse"
           >创建
         </el-button>
       </div>
     </el-dialog>
 
     <!-- 删除课程 模态框 -->
-    <el-dialog :visible="deleteCourseDialog" width="450px" top="30vh">
-      <p class="joinCourseTitle">
-        确定要删除"{{ this.deleteCourseObj.courseName }}"吗?
-      </p>
-
+    <el-dialog v-model:visible="deleteCourseDialog" width="450px" top="30vh">
+      <p class="joinCourseTitle">确定要删除此课程吗?</p>
       <div class="delete-tips">
         <p>您的这个课程的任何信息或评论将被永久删除</p>
         <p>警告：此操作无法撤消</p>
-        <p>提醒：已用课程数包含了“删除课程数”</p>
       </div>
       <div class="joinCourseFooter">
         <el-button @click="deleteCourseDialog = false" style="width: 100px"
@@ -167,7 +168,7 @@
       </div>
     </el-dialog>
     <!-- 恢复课程提示 模态框 -->
-    <el-dialog :visible="recoveryTipsDialog" width="350px" top="30vh">
+    <el-dialog v-model="recoveryTipsDialog" width="350px" top="30vh">
       <p class="joinCourseTitle">确定要恢复"{{ course.courseName }}"吗?</p>
       <div class="delete-tips">
         <p>您和您的学生将可以重新在此课程中互动。</p>
@@ -184,7 +185,7 @@
       </div>
     </el-dialog>
     <!-- 退出课程 模态框 -->
-    <el-dialog :visible="dropOutDialog" width="450px" top="30vh">
+    <el-dialog v-model="dropOutDialog" width="450px" top="30vh">
       <p class="joinCourseTitle">
         确定要删除"{{ this.dropOutObj.courseName }}"吗?
       </p>
@@ -282,29 +283,8 @@ const fileCourses = reactive([]); // 归档文件
 const quickReleaseDialog = ref(false); //快速发布活动
 let createCourseDialog = ref(false); // 创建课程
 
-// 新创建的课程
-const createCourse = reactive({
-  semester: 1,
-  courseName: "",
-  semesterYear: "",
-  owner: {
-    // 从vuex仓库中拿全局状态值
-    uid: "", //uid
-  },
-});
-// 可供选择的学期
-const optionSemester = [
-  {
-    value: 1,
-    label: "第一学期",
-  },
-  {
-    value: 2,
-    label: "第二学期",
-  },
-];
 let joinCourseDialog = ref(false);
-const deleteCourseDialog = ref(false);
+let deleteCourseDialog = ref(false);
 let archiveDialog = ref(false); // 课程排序与归档
 
 const recoveryTipsDialog = ref(false);
@@ -318,6 +298,25 @@ let archiveSemesterArr = computed(() => courseStore.archiveSemesterArr);
 let updateArchiveCourses = computed(() => courseStore.updateArchiveCourses);
 let updateShowArchive = computed(() => courseStore.updateShowArchive);
 
+// 新创建的课程
+const createCourse = reactive({
+  semester: "1",
+  courseName: "",
+  semesterYear: "",
+  ownerId: storage.get("userInfo").userId,
+});
+// 可供选择的学期
+const optionSemester = [
+  {
+    value: "1",
+    label: "第一学期",
+  },
+  {
+    value: "2",
+    label: "第二学期",
+  },
+];
+
 onMounted(() => {
   getStatus();
   courseStore.init();
@@ -328,6 +327,7 @@ const getStatus = () => {
   const userInfo = storage.get("userInfo");
   status.value = userInfo.status;
 };
+//加入课程
 const joinCourse = async () => {
   console.log("加入", typeof joinCode.value);
   joinCourseDialog.value = false;
@@ -342,12 +342,22 @@ const showArchive = (index) => {
 //恢复归档课程
 const recoverCourse = (courseId) => {
   courseStore.recoverArchiveCourse(courseId);
+  archiveDialog.value = false;
 };
 //删除归档课程
 const deleteCourse = (courseId) => {
   courseStore.deleteCourse(courseId);
+  archiveDialog.value = false;
 };
-deleteCourse;
+//创建课程
+const handleCreateCourse = () => {
+  createCourse.semesterYear = createCourse.semesterYear
+    .toString()
+    .split(" ")[3];
+  courseStore.createCourse(createCourse);
+  createCourse.semesterYear = "";
+  createCourseDialog.value = false;
+};
 </script>
 <style lang="scss" scoped>
 .container {
@@ -362,6 +372,12 @@ deleteCourse;
       height: 20vh;
       justify-content: space-around;
       align-items: flex-end;
+      .two-button {
+        display: flex;
+        .addCourseBtn {
+          margin-left: 2vw;
+        }
+      }
 
       .archiveMng {
         display: flex;
