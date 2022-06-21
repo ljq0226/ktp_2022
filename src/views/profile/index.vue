@@ -57,7 +57,7 @@
           <div class="info-item">
             <div class="item-type">ID</div>
             <div class="item-value">
-              <el-input v-model="state.userInfo.userId" disabled/>
+              <el-input v-model="state.userInfo.userId" disabled />
             </div>
             <div class="item-space"></div>
           </div>

@@ -1,37 +1,50 @@
 <template>
-<Navigation info="课程成员" />
+  <Navigation info="课程成员" />
   <div>
     <div class="outer">
       <div class="content">
         <div class="lstyle">
           <div>
             <ul>
-              <li  @click="change(1)">
-                教学团队（{{ teaCount }}）
+              <li @click="showTeacher">
+                教学团队（教师{{ teachers.length }}人）
               </li>
-              <li
-                @click="change(2)"
-                style="border-radius: 0"
-              >
-                全部学生（学生{{ stuCount }}）
+              <li @click="showStudent" style="border-radius: 0">
+                全部学生（学生{{ students.length }}人）
               </li>
             </ul>
           </div>
         </div>
         <div class="rstyle">
           <div class="members">
-            <div class="tittle">
-              <span :class="{ hide: isActive !== 1 }"
-                >教学团队（老师{{ teaCount }}）</span
+            <div class="tittle">{{ title }}</div>
+            <div class="tittle" style="background-color: white"></div>
+            <div class="infoTable">
+              <el-table
+                :data="courseStore.showCurrentCourseMembers"
+                :default-sort="{ prop: 'name', order: 'descending' }"
+                style="width: 100%"
               >
-              <span :class="{ hide: isActive !== 2 }"
-                >全部学生（学生{{ stuCount }}）</span
-              >
-            </div>
-            <div
-              class="tittle"
-              style="background-color: white"
-            >
+                <el-table-column
+                  prop="name"
+                  label="全部成员"
+                  sortable
+                  width="130"
+                />
+                <el-table-column
+                  prop="stno"
+                  label="学号"
+                  sortable
+                  width="180"
+                />
+                <el-table-column prop="userId" label="账号" />
+                <el-table-column
+                  prop="status"
+                  label="身份"
+                  :formatter="formatter"
+                />
+                <el-table-column prop="updateTime" label="加入时间" sortable />
+              </el-table>
             </div>
           </div>
         </div>
@@ -41,12 +54,32 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, toRaw } from "vue";
 import Navigation from "@/components/homepage/Navigation.vue";
+import { useRouter } from "vue-router";
+import { useCourseStore } from "@/store/course";
+const courseStore = useCourseStore();
+const students = computed(() => courseStore.currentCourseStudents);
+const teachers = computed(() => courseStore.currentCourseTeachers);
+let title = ref(`教师(${courseStore.currentCourseTeachers.length})`);
+const router = useRouter();
 
-const isActive = ref(1); // 1 代表教师团队高亮、 2 代表学生团队高亮
-
-onMounted(() => {});
+const formatter = (row, column) => {
+  if (row.status == 0) return "学生";
+  else return "老师";
+};
+onMounted(() => {
+  courseStore.init();
+  courseStore.selectAllMembers(router.currentRoute.value.params.cno);
+});
+const showTeacher = () => {
+  title.value = `教师(${courseStore.currentCourseTeachers.length})`;
+  courseStore.asd(courseStore.currentCourseTeachers);
+};
+const showStudent = () => {
+  title.value = `学生(${courseStore.currentCourseStudents.length})`;
+  courseStore.asd(courseStore.currentCourseStudents);
+};
 </script>
 <style scoped lang="scss">
 .outer {

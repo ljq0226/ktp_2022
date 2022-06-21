@@ -12,7 +12,9 @@ export const useCourseStore = defineStore("course", {
       updateShowArchive: [], //需要展示的
       archiveSemesterArr: [], //不同学习学年将归档课程进行分组
       currentCourse: {}, //当前课程详情
-      currentCourseMembers: {}, //当前课程成员
+      currentCourseStudents: [], //当前课程学生
+      currentCourseTeachers: [], //当前课程老师
+      showCurrentCourseMembers: [],
       semesterArr: [], //通过不同学习学年将课程进行分组
     };
   },
@@ -170,6 +172,21 @@ export const useCourseStore = defineStore("course", {
     showArchive(index) {
       console.log(index);
       this.updateShowArchive = this.updateArchiveCourses[index];
+    },
+    //查询课程成员
+    async selectAllMembers(courseId) {
+      const res = await courseService.selectAllMembers(courseId);
+      if (res.code === 200) {
+        this.currentCourseStudents = res.data.students;
+        this.currentCourseTeachers = res.data.teachers;
+        this.showCurrentCourseMembers = this.currentCourseTeachers;
+      } else {
+        ElMessage.error(res.code);
+      }
+    },
+    asd(items) {
+      console.log(items);
+      this.showCurrentCourseMembers = items;
     },
   },
 });

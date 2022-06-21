@@ -3,7 +3,7 @@
     <div class="module_func">
       <div class="m_item" @click="status = 1">目录</div>
       <div class="m_item" @click="noServer">互动课件</div>
-      <div class="m_item" @click="status = 3">作业</div>
+      <div class="m_item" @click="showTask">作业</div>
       <div class="m_item" @click="noServer">测试</div>
       <div class="m_item" @click="noServer">资料</div>
       <div class="m_item" @click="noServer">公告</div>
@@ -49,6 +49,13 @@ let status = ref(1); //自增对应目录 互动课件 作业 测试 。。
 onMounted(() => {
   taskStore.selectAllTask(courseStore.currentCourse.courseId);
 });
+const showTask = () => {
+  status.value = 3;
+  if (taskStore.courseTask.length == 0) ElMessage.warning("老师暂未发布作业！");
+  setTimeout(() => {
+    status.value = 1;
+  }, 1500);
+};
 
 const noServer = () => {
   ElMessage.warning("暂未开放，尽请期待！");

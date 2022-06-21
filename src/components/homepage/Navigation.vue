@@ -5,7 +5,7 @@
         <img src="@/assets/ktpLogo.png" alt="" />
       </div>
       <div class="middle active">
-        <div>
+        <div @click="router.go('-1')">
           <a href="javascript:">{{ props.info }}</a>
         </div>
       </div>
@@ -65,8 +65,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const props = defineProps({ info: String });
 const imgURL = ref("@/assets/img/default.jpg");
-const state = 1; // 1 课堂 2 精品慕课 3 我的精品 4 双选会 5论文管理
-
 onMounted(() => {});
 
 const changeState = (val) => {};
