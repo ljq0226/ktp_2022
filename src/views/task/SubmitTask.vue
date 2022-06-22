@@ -79,7 +79,6 @@ let remarks = ref("");
 //上传附件
 const uploadAction = async (option) => {
   toSubmitFile = option.file;
-  console.log(option);
   let param = new FormData();
   param.append("file", option.file);
   const taskId = taskStore.currentTask.taskId;

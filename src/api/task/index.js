@@ -32,5 +32,8 @@ const taskService = {
     return await get(`task/selectById?taskId=${taskId}`);
   },
   //通过作业id获取所有学生提交情况
+  async getAllGrades(taskId) {
+    return await get(`task/getAllGrades?taskId=${taskId}`);
+  },
 };
 export default taskService;

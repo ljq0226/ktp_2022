@@ -6,6 +6,7 @@ export const useTaskStore = defineStore("task", {
     return {
       courseTask: [], //某一课程所有作业
       currentTask: {}, //当前作业详情
+      taskGrades: [], //当前作业所有学生数据
     };
   },
   getters: {},
@@ -40,11 +41,18 @@ export const useTaskStore = defineStore("task", {
     },
     //发布作业
     async createTask(taskDto, file) {
-      console.log(taskDto);
-      console.log(file);
       const res = await taskService.createTask(taskDto, file);
       if (res.code === 200) {
         ElMessage.success(res.msg);
+      } else {
+        ElMessage.error(res.msg);
+      }
+    },
+    //获取该课程下所有成绩
+    async getAllGrades(taskId) {
+      const res = await taskService.getAllGrades(taskId);
+      if (res.code === 200) {
+        this.taskGrades = res.data;
       } else {
         ElMessage.error(res.msg);
       }
