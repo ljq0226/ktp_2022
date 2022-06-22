@@ -101,6 +101,7 @@ export const useCourseStore = defineStore("course", {
     async createCourse(createCourseDto) {
       const res = await courseService.createCourse(createCourseDto);
       if (res.code === 200) {
+        this.init();
         ElMessage.success(res.msg);
       } else if (res.code === 500) {
         ElMessage.error(res.msg);

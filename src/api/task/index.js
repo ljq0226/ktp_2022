@@ -5,8 +5,13 @@ const taskService = {
     return await get(`task/selectAll?courseId=${courseId}`);
   },
   //发布作业
-  async createTask(taskDto) {
-    return await post("task.createTask", createTask);
+  async createTask(taskInfo, file) {
+    console.log(file);
+    return await post(
+      `task/createTask?courseId=${taskInfo.courseId}&taskName=${taskInfo.taskName}
+    &releaseTime=${taskInfo.releaseTime}&cutOffTime=${taskInfo.cutOffTime}&remarks=${taskInfo.remarks}`,
+      file
+    );
   },
   //上传附件
   async uploadAnnex(taskId, userId, file) {

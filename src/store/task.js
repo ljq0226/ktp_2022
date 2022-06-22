@@ -33,6 +33,17 @@ export const useTaskStore = defineStore("task", {
       const { userId } = storage.get("userInfo");
       const res = await taskService.submit(taskId, userId, remarks, file);
       if (res.code === 200) {
+        ElMessage.success("文件提交成功");
+      } else {
+        ElMessage.error(res.msg);
+      }
+    },
+    //发布作业
+    async createTask(taskDto, file) {
+      console.log(taskDto);
+      console.log(file);
+      const res = await taskService.createTask(taskDto, file);
+      if (res.code === 200) {
         ElMessage.success(res.msg);
       } else {
         ElMessage.error(res.msg);

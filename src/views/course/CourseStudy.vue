@@ -55,7 +55,7 @@
         <el-input v-model="form.remarks" type="textarea" />
       </el-form-item>
       <el-form-item label="截止日期">
-        <el-col :span="11">
+        <!-- <el-col :span="11">
           <el-date-picker
             v-model="form.date1"
             type="date"
@@ -72,7 +72,13 @@
             placeholder="Pick a time"
             style="width: 100%"
           />
-        </el-col>
+        </el-col> -->
+        <el-date-picker
+          v-model="form.defaultTime"
+          type="daterange"
+          start-placeholder="Start date"
+          end-placeholder="End date"
+        />
       </el-form-item>
       <el-form-item label="是否查重" v-model="form.check">
         <el-switch />
@@ -80,9 +86,11 @@
       <el-form-item label="上传附件📎">
         <el-upload
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple
-          :file-list="form.file"
+          action="#"
+          :http-request="uploadAction"
+          :limit="1"
+          :show-file-list="true"
+          :auto-upload="true"
         >
           <el-button type="primary">Click to upload</el-button>
         </el-upload>
@@ -91,9 +99,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >提交</el-button
-        >
+        <el-button type="primary" @click="publishTask()">发布</el-button>
       </span>
     </template>
   </el-dialog>
@@ -116,14 +122,17 @@ let status = ref(0);
 const dialogFormVisible = ref(false);
 const form = reactive({
   taskName: "",
-  courseId: "",
   remarks: "",
-  releaseTime: "",
-  date1: "",
-  date2: "",
-  check: false,
-  file: [],
+  defaultTime: [],
 });
+let toSubmitFile;
+//上传附件
+const uploadAction = async (option) => {
+  toSubmitFile = option.file;
+  let param = new FormData();
+  param.append("file", option.file);
+  toSubmitFile = param;
+};
 
 onMounted(() => {
   courseId.value = router.currentRoute.value.params.cno;
@@ -152,7 +161,19 @@ const toTaskInfo = (taskId) => {
   let path = `/task/${taskId}`;
   router.push({ path, query: { courseId: courseId.value, taskId } });
 };
-
+//发布作业
+const publishTask = async () => {
+  dialogFormVisible.value = false;
+  const taskInfo = {
+    courseId: courseId.value,
+    taskName: form.taskName,
+    remarks: form.remarks,
+    releaseTime: moment(form.defaultTime[0]).format("YYYY-MM-DD HH:mm:ss"),
+    cutOffTime: moment(form.defaultTime[1]).format("YYYY-MM-DD HH:mm:ss"),
+  };
+  await taskStore.createTask(taskInfo, toSubmitFile);
+  init();
+};
 const noServer = () => {
   ElMessage.warning("暂未开放，尽请期待！");
 };

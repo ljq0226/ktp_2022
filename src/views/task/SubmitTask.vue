@@ -39,7 +39,6 @@
         :limit="1"
         :show-file-list="true"
         :auto-upload="true"
-        :file-list="fileList"
       >
         <el-button type="primary">Click to upload</el-button>
         <template #tip>
@@ -75,16 +74,17 @@ const taskStore = useTaskStore();
 const router = useRouter();
 const { userId } = storage.get("userInfo");
 let startAndEndTime = ref("");
-let fileList = ref([]);
+let toSubmitFile;
 let remarks = ref("");
 //上传附件
 const uploadAction = async (option) => {
+  toSubmitFile = option.file;
+  console.log(option);
   let param = new FormData();
   param.append("file", option.file);
   const taskId = taskStore.currentTask.taskId;
   const res = await annexService.uploadAnnex(taskId, userId, param);
   if (res.code === 200) {
-    ElMessage.success("附件上传成功");
   } else {
     ElMessage.error(res.msg);
   }
@@ -102,11 +102,11 @@ const init = () => {
 };
 //提交作业
 const submitTask = async () => {
-  console.log(task.taskId);
-  console.log(remarks);
-  console.log(fileList);
-
-  // await taskStore.submitTask(task.taskId,remarks,file)
+  const taskId = taskStore.currentTask.taskId;
+  console.log(toSubmitFile);
+  let param = new FormData();
+  param.append("file", toSubmitFile);
+  await taskStore.submitTask(taskId, remarks.value, param);
 };
 const showVip = () => {
   ElMessage.success("请充值SVIP!");
