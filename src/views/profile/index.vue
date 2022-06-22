@@ -49,7 +49,6 @@
           <div class="info-item">
             <div class="item-type">学校</div>
             <div class="item-value">
-              <!-- <el-input v-model="state.userInfo.schoolId" /> -->
               <el-input v-model="state.userInfo.schoolId" />
             </div>
             <div class="item-space"></div>
@@ -69,6 +68,13 @@
             <div class="item-type">账号</div>
             <div class="item-value">
               <el-input v-model="state.userInfo.username" />
+            </div>
+            <div class="item-space"></div>
+          </div>
+          <div class="info-item">
+            <div class="item-type">密码</div>
+            <div class="item-value">
+              <el-input type="password" v-model="state.userInfo.password" />
             </div>
             <div class="item-space"></div>
           </div>
@@ -144,7 +150,6 @@ const noServer = () => {
   ElMessage.warning("暂无此服务，尽情期待!!");
 };
 const update = () => {
-  console.log("1");
   userStore.updateUserInfo(state.userInfo);
 };
 </script>

@@ -26,5 +26,6 @@ const taskService = {
   async selectById(taskId) {
     return await get(`task/selectById?taskId=${taskId}`);
   },
+  //通过作业id获取所有学生提交情况
 };
 export default taskService;

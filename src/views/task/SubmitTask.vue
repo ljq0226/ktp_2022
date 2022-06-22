@@ -28,15 +28,18 @@
           ><el-icon><Clock /></el-icon>提交历史</span
         >
       </p>
-      <ElButton type="primary" @click="show">确认提交</ElButton>
+      <ElButton type="primary" @click="submitTask">确认提交</ElButton>
     </div>
     <div class="submitFile">
       <p>作业附件</p>
       <el-upload
         class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-change="handleChange"
-        :file-list="testFile"
+        action="#"
+        :http-request="uploadAction"
+        :limit="1"
+        :show-file-list="true"
+        :auto-upload="true"
+        :file-list="fileList"
       >
         <el-button type="primary">Click to upload</el-button>
         <template #tip>
@@ -52,7 +55,7 @@
         >
       </p>
       <el-input
-        v-model="textarea"
+        v-model="remarks"
         :rows="4"
         type="textarea"
         placeholder="作业以附件形式提交，留言仅作备注使用哦！"
@@ -65,19 +68,29 @@ import { Clock } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTaskStore } from "@/store/task";
+import { annexService } from "@/api";
 import moment from "moment";
+import storage from "@/hooks/storage";
 const taskStore = useTaskStore();
 const router = useRouter();
+const { userId } = storage.get("userInfo");
 let startAndEndTime = ref("");
-let testFile = ref([]);
-const handleChange = (uploadFile, uploadFiles) => {
-  fileList.value = fileList.value.slice(-3);
+let fileList = ref([]);
+let remarks = ref("");
+//上传附件
+const uploadAction = async (option) => {
+  let param = new FormData();
+  param.append("file", option.file);
+  const taskId = taskStore.currentTask.taskId;
+  const res = await annexService.uploadAnnex(taskId, userId, param);
+  if (res.code === 200) {
+    ElMessage.success("附件上传成功");
+  } else {
+    ElMessage.error(res.msg);
+  }
 };
 
 let task = computed(() => taskStore.currentTask);
-const show = () => {
-  console.log(testFile);
-};
 
 onMounted(() => {
   init();
@@ -86,6 +99,14 @@ const init = () => {
   startAndEndTime.value = `${moment(task.releaseTime).format(
     "YY/MM/DD HH:mm"
   )}~ ${moment(task.cutOffTime).format("YY/MM/DD HH:mm")}`;
+};
+//提交作业
+const submitTask = async () => {
+  console.log(task.taskId);
+  console.log(remarks);
+  console.log(fileList);
+
+  // await taskStore.submitTask(task.taskId,remarks,file)
 };
 const showVip = () => {
   ElMessage.success("请充值SVIP!");
