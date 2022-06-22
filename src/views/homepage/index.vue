@@ -7,7 +7,7 @@
           <div class="createCourseBtn" v-show="status == 1">
             <ElButton type="primary" @click="createCourseDialog = true"
               ><el-icon><Plus /></el-icon>创建课程</ElButton
-            > 
+            >
           </div>
           <div class="addCourseBtn">
             <ElButton type="primary" @click="joinCourseDialog = true"
@@ -18,7 +18,9 @@
 
         <div class="archiveMng">
           <div class="archiveMng-space"></div>
-          <ElButton @click="archiveAll()" v-show="status == 1">归档全部</ElButton>
+          <ElButton @click="archiveAll()" v-show="status == 1"
+            >归档全部</ElButton
+          >
           <ElButton @click="archiveDialog = true">归档管理</ElButton>
           <el-input
             v-model="input2"
@@ -175,7 +177,9 @@
                             @click="recoverCourse(item.courseId)"
                             >恢复</el-dropdown-item
                           >
-                          <el-dropdown-item @click="deleteCourse(item.courseId)" v-if="status == 1"
+                          <el-dropdown-item
+                            @click="deleteCourse(item.courseId)"
+                            v-if="status == 1"
                             >删除</el-dropdown-item
                           >
                         </el-dropdown-menu>
@@ -235,7 +239,6 @@ const optionSemester = [
   },
 ];
 onMounted(() => {
-
   getStatus();
   courseStore.init();
 });
@@ -277,10 +280,9 @@ const handleCreateCourse = () => {
   createCourseDialog.value = false;
 };
 //归档全部
-const archiveAll =async (courseId)=>{
-  await courseStore.archiveAllCourse(courseId)
-
-}
+const archiveAll = async (courseId) => {
+  await courseStore.archiveAllCourse(courseId);
+};
 </script>
 <style lang="scss" scoped>
 .container {
@@ -316,11 +318,11 @@ const archiveAll =async (courseId)=>{
     }
   }
 }
-.joinCourseFooter{
-  display:flex;
+.joinCourseFooter {
+  display: flex;
   flex-flow: row;
   justify-content: flex-end;
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 
 ::v-deep .el-divider {

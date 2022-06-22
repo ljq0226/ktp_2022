@@ -62,7 +62,11 @@ const userStore = useUserStore();
 const courseStore = useCourseStore();
 let status = ref(0); //当前角色为 0为学生 1为老师
 const props = defineProps({ course: Object });
-const emits = defineEmits(["childArchiveCourse", "childDropOutCourse","childSetCourse"]);
+const emits = defineEmits([
+  "childArchiveCourse",
+  "childDropOutCourse",
+  "childSetCourse",
+]);
 const bg = ref("");
 const owner = ref("");
 //处理学期
@@ -81,7 +85,7 @@ const handleOwner = async () => {
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
-  getStatus()
+  getStatus();
   handleOwner();
 });
 //获取当前用户的角色状态
@@ -100,8 +104,8 @@ const archiveCourse = () => {
 };
 //编辑
 const setCourse = () => {
-  emits('childSetCourse');
-}
+  emits("childSetCourse");
+};
 // 退出课程
 const deleteCourse = () => {};
 // 重置加课码 启用加课码

@@ -10,83 +10,84 @@
       <div class="m_item" @click="noServer">话题</div>
       <div class="func_space"></div>
     </div>
-  
     <div class="module_show">
-      
       <div class="m_directory" v-show="item == 1">
         <img src="@/assets/noData.png" alt="" />
       </div>
       <div v-show="item == 3">
-  <div class="createTask" v-show="status==1"><ElButton type="primary" @click="dialogFormVisible = true">发布作业</ElButton></div>
- <div class="allTask" >
-        <template v-for="item in taskStore.courseTask" :key="item.taskId">
-          <div class="taskItem">
-            <div class="taskImg"></div>
-            <div class="taskInfo">
-              <p class="taskName" @click="toTaskInfo(item.taskId)">
-                {{ item.taskName }}
-              </p>
-              <p class="p2">
-                <span class="span1">个人作业</span
-                ><span class="span1"
-                  >提交起止时间：{{
-                    `${moment(item.releaseTime).format(
-                      "YY/MM/DD HH:mm"
-                    )}~ ${moment(item.cutOffTime).format("YY/MM/DD HH:mm")}`
-                  }}</span
-                ><span class="span2">5分</span><span class="span2">查重</span>
-              </p>
+        <div class="createTask" v-show="status == 1">
+          <ElButton type="primary" @click="dialogFormVisible = true"
+            >发布作业</ElButton
+          >
+        </div>
+        <div class="allTask">
+          <template v-for="item in taskStore.courseTask" :key="item.taskId">
+            <div class="taskItem">
+              <div class="taskImg"></div>
+              <div class="taskInfo">
+                <p class="taskName" @click="toTaskInfo(item.taskId)">
+                  {{ item.taskName }}
+                </p>
+                <p class="p2">
+                  <span class="span1">个人作业</span
+                  ><span class="span1"
+                    >提交起止时间：{{
+                      `${moment(item.releaseTime).format(
+                        "YY/MM/DD HH:mm"
+                      )}~ ${moment(item.cutOffTime).format("YY/MM/DD HH:mm")}`
+                    }}</span
+                  ><span class="span2">5分</span><span class="span2">查重</span>
+                </p>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </div>
-      </div>
-     
     </div>
   </div>
   <!-- 发布作业 -->
-   <el-dialog v-model="dialogFormVisible" title="发布作业" draggable>
+  <el-dialog v-model="dialogFormVisible" title="发布作业" draggable>
     <el-form :model="form" label-width="120px">
-    <el-form-item label="作业名称">
-      <el-input v-model="form.taskName" />
-    </el-form-item>
-    <el-form-item label="作业要求">
-      <el-input v-model="form.remarks" type="textarea" />
-    </el-form-item>
-    <el-form-item label="截止日期">
-      <el-col :span="11">
-        <el-date-picker
-          v-model="form.date1"
-          type="date"
-          placeholder="Pick a date"
-          style="width: 100%"
-        />
-      </el-col>
-      <el-col :span="2" class="text-center">
-        <span class="text-gray-500">-</span>
-      </el-col>
-      <el-col :span="11">
-        <el-time-picker
-          v-model="form.date2"
-          placeholder="Pick a time"
-          style="width: 100%"
-        />
-      </el-col>
-    </el-form-item>
-    <el-form-item label="是否查重" v-model="form.check">
-      <el-switch  />
-    </el-form-item>
-    <el-form-item label="上传附件📎">
-      <el-upload
-    class="upload-demo"
-    action="https://jsonplaceholder.typicode.com/posts/"
-    multiple
-    :file-list="form.file"
-  >
-    <el-button type="primary">Click to upload</el-button>
-  </el-upload>
-    </el-form-item>
-  </el-form>
+      <el-form-item label="作业名称">
+        <el-input v-model="form.taskName" />
+      </el-form-item>
+      <el-form-item label="作业要求">
+        <el-input v-model="form.remarks" type="textarea" />
+      </el-form-item>
+      <el-form-item label="截止日期">
+        <el-col :span="11">
+          <el-date-picker
+            v-model="form.date1"
+            type="date"
+            placeholder="Pick a date"
+            style="width: 100%"
+          />
+        </el-col>
+        <el-col :span="2" class="text-center">
+          <span class="text-gray-500">-</span>
+        </el-col>
+        <el-col :span="11">
+          <el-time-picker
+            v-model="form.date2"
+            placeholder="Pick a time"
+            style="width: 100%"
+          />
+        </el-col>
+      </el-form-item>
+      <el-form-item label="是否查重" v-model="form.check">
+        <el-switch />
+      </el-form-item>
+      <el-form-item label="上传附件📎">
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+          :file-list="form.file"
+        >
+          <el-button type="primary">Click to upload</el-button>
+        </el-upload>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -112,17 +113,17 @@ let courseId = ref("");
 let item = ref(1); //自增对应目录 互动课件 作业 测试 。。
 let status = ref(0);
 
-const dialogFormVisible = ref(false)
+const dialogFormVisible = ref(false);
 const form = reactive({
-  taskName: '',
-  courseId:'',
-  remarks: '',
-  releaseTime: '',
-  date1:'',
-  date2:'',
-  check:false,
-  file:[],
-})
+  taskName: "",
+  courseId: "",
+  remarks: "",
+  releaseTime: "",
+  date1: "",
+  date2: "",
+  check: false,
+  file: [],
+});
 
 onMounted(() => {
   courseId.value = router.currentRoute.value.params.cno;
@@ -136,7 +137,7 @@ const init = async () => {
 const showTask = () => {
   item.value = 3;
   const userInfo = storage.get("userInfo");
-   status.value = userInfo.status;
+  status.value = userInfo.status;
   if (!status.value) {
     //如果为学生
     if (taskStore.courseTask.length == 0)
@@ -174,7 +175,7 @@ const noServer = () => {
       flex: 0.6;
     }
   }
-  .createTask{
+  .createTask {
     margin: 2vh 0;
   }
   .module_show {

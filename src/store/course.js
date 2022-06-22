@@ -107,7 +107,7 @@ export const useCourseStore = defineStore("course", {
       }
     },
     //编辑课程
-    async editCourse(CourseDto){
+    async editCourse(CourseDto) {
       const res = await courseService.editCourse(CourseDto);
       if (res.code === 200) {
         ElMessage.success(res.msg);
@@ -129,7 +129,7 @@ export const useCourseStore = defineStore("course", {
       }
     },
     //归档全部课程
-    async archiveAllCourse(courseId){
+    async archiveAllCourse(courseId) {
       const res = await courseService.archiveAllCourse(courseId);
       if (res.code === 200) {
         this.getAllArchiveCourse();

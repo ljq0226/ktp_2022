@@ -61,57 +61,57 @@
     </div>
   </el-dialog>
   <!-- 编辑课程 模态框  -->
-    <el-dialog
-      v-model="setCourseDialog"
-      width="60vw"
-      top="25vh"
-      title="编辑课程"
-      draggable
-    >
-      <div class="createCourse">
-        <div>
-          课程名：<el-input
-            class="createCourseInput"
-            v-model="toSetCourse.courseName"
-            placeholder="请输入课程名称"
-            maxlength="10"
-          />
-        </div>
-        <div class="selectSemester">
-          <p>选择学期:</p>
-          <el-date-picker
-            v-model="toSetCourse.semesterYear"
-            type="year"
-            placeholder="选择学年"
+  <el-dialog
+    v-model="setCourseDialog"
+    width="60vw"
+    top="25vh"
+    title="编辑课程"
+    draggable
+  >
+    <div class="createCourse">
+      <div>
+        课程名：<el-input
+          class="createCourseInput"
+          v-model="toSetCourse.courseName"
+          placeholder="请输入课程名称"
+          maxlength="10"
+        />
+      </div>
+      <div class="selectSemester">
+        <p>选择学期:</p>
+        <el-date-picker
+          v-model="toSetCourse.semesterYear"
+          type="year"
+          placeholder="选择学年"
+        >
+        </el-date-picker>
+        <el-select v-model="toSetCourse.semester">
+          <el-option
+            v-for="item in optionSemester"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           >
-          </el-date-picker>
-          <el-select v-model="toSetCourse.semester">
-            <el-option
-              v-for="item in optionSemester"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div>
+          </el-option>
+        </el-select>
       </div>
-      <div class="updateCourseFooter">
-        <el-button style="width: 100px" @click="setCourseDialog = false"
-          >取消
-        </el-button>
-        <el-button
-          type="primary"
-          :disabled="toSetCourse.courseName.length <= 0"
-          style="width: 100px"
-          @click="handleUpdateCourse(awaitArchiveCourse.courseId)"
-          >编辑
-        </el-button>
-      </div>
-    </el-dialog>
+    </div>
+    <div class="updateCourseFooter">
+      <el-button style="width: 100px" @click="setCourseDialog = false"
+        >取消
+      </el-button>
+      <el-button
+        type="primary"
+        :disabled="toSetCourse.courseName.length <= 0"
+        style="width: 100px"
+        @click="handleUpdateCourse(awaitArchiveCourse.courseId)"
+        >编辑
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 <script setup>
-import { ref, reactive, onMounted, computed} from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useCourseStore } from "@/store/course";
 import CourseCard from "@/components/CourseCard";
 const props = defineProps({ status: String });
@@ -119,7 +119,7 @@ const courseStore = useCourseStore();
 let collapseItem = ref(null);
 let semesterArr = computed(() => courseStore.semesterArr);
 let updateCourse = computed(() => courseStore.updateCourse);
-let awaitArchiveCourse = computed(() => courseStore.awaitArchiveCourse)
+let awaitArchiveCourse = computed(() => courseStore.awaitArchiveCourse);
 const activeNames = reactive([]);
 //模态框
 let archiveCourseDialog = ref(false);
@@ -127,10 +127,10 @@ let dropOutCourseDialog = ref(false);
 let setCourseDialog = ref(false);
 // 新创建的课程
 const toSetCourse = reactive({
-  semester:'',
-  courseName: '',
-  semesterYear: '',
-  courseId:''
+  semester: "",
+  courseName: "",
+  semesterYear: "",
+  courseId: "",
 });
 
 // 可供选择的学期
@@ -160,9 +160,9 @@ const childDropOutCourse = (course) => {
 const setCourse = (course) => {
   setCourseDialog.value = true;
   courseStore.awaitArchiveCourse = course;
-  toSetCourse.courseName = course.courseName
-  toSetCourse.semester = course.semester
-  toSetCourse.semesterYear = course.semesterYear
+  toSetCourse.courseName = course.courseName;
+  toSetCourse.semester = course.semester;
+  toSetCourse.semesterYear = course.semesterYear;
 };
 //课程归档处理
 const courseArchive = async (courseId) => {
@@ -175,14 +175,15 @@ const handleDropOut = async () => {
   await courseStore.exitCourse(course.courseId);
 };
 //课程编辑处理
-const handleUpdateCourse = async(courseId)=>{
+const handleUpdateCourse = async (courseId) => {
   toSetCourse.semesterYear = toSetCourse.semesterYear
     .toString()
-    .split(" ")[3].toString();
-    toSetCourse.courseId = courseId;
-  await courseStore.editCourse(toSetCourse)
+    .split(" ")[3]
+    .toString();
+  toSetCourse.courseId = courseId;
+  await courseStore.editCourse(toSetCourse);
   setCourseDialog.value = false;
-}
+};
 
 const handleChange = (val) => {};
 </script>
@@ -208,10 +209,10 @@ const handleChange = (val) => {};
     justify-content: flex-end;
   }
 }
-.updateCourseFooter{
-  display:flex;
+.updateCourseFooter {
+  display: flex;
   flex-flow: row;
   justify-content: flex-end;
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 </style>
