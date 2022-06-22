@@ -194,15 +194,15 @@ const archiveAll = async (courseId) => {
   archiveCourseDialog.value = false;
   await courseStore.archiveAllCourse(courseId);
 };
-
 const handleChange = (val) => {};
 </script>
 <style lang="scss" scoped>
 ::v-deep .el-collapse-item__content {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   .rowCard {
     margin-right: 3vw;
+    margin-bottom: 3vh;
   }
 }
 .archiveCourseDialog {

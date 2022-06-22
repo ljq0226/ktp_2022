@@ -3,16 +3,15 @@
   <div class="table">
     <el-table :data="taskGrades" style="width: 100%">
       <el-table-column type="selection" width="55" />
-      <el-table-column fixed prop="stno" label="学号" width="150" />
+      <el-table-column fixed prop="stno" label="学号" width="250" sortable />
       <el-table-column prop="name" label="姓名" width="120" />
-      <el-table-column prop="score" label="成绩" width="120">
-        <span style="textdecoration: underline">{{ score }}</span
+      <el-table-column prop="score" label="成绩" width="120" sortable>
+        <span style="textdecoration: underline">{{ score ? score : "0" }}</span
         >/100
       </el-table-column>
-      <el-table-column prop="city" label="相似度" width="120">
-        {{}}
+      <el-table-column prop="summitTime" label="提交时间" width="120">
+        {{ summitTime ? moment(summitTime).format("MM/DD HH:mm") : "未提交" }}
       </el-table-column>
-      <el-table-column prop="address" label="提交状态" width="600" />
       <el-table-column fixed="right" label="" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="handleClick"
@@ -42,7 +41,9 @@ onMounted(() => {
 const getData = () => {};
 </script>
 <style lang="scss" scoped>
-span {
-  text-decoration: underline;
+.table {
+  padding: 3vh;
+  margin-top: 5vh;
+  width: 80vw;
 }
 </style>

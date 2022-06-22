@@ -2,6 +2,7 @@
   <div class="card">
     <div class="bg">
       <img :src="bg" />
+      <!-- <img src="@/assets/bg/1.png" /> -->
     </div>
     <div class="main">
       <div class="head">
@@ -81,10 +82,9 @@ const handleOwner = async () => {
   const info = await userStore.getInfoById(props.course.ownerId);
   owner.value = info.name;
 };
-
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
-  bg.value = `src/assets/bg/${randomNumber}.png`;
+  bg.value = new URL(`../assets/bg/${randomNumber}.png`, import.meta.url).href;
   getStatus();
   handleOwner();
 });
@@ -170,7 +170,7 @@ const addCodeReset = () => {};
 }
 .bg {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   img {
     width: 18vw;
     height: 23vh;
@@ -182,6 +182,7 @@ const addCodeReset = () => {};
   display: flex;
   flex-flow: column;
   .head {
+    z-index: 1;
     height: 23vh;
     padding: 1.3vw;
 
