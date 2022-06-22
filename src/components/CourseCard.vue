@@ -172,7 +172,7 @@ const addCodeReset = () => {};
   position: absolute;
   z-index: 0;
   img {
-    width: 18vw;
+    width: 16vw;
     height: 23vh;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -181,6 +181,7 @@ const addCodeReset = () => {};
 .main {
   display: flex;
   flex-flow: column;
+  width:16vw;
   .head {
     z-index: 1;
     height: 23vh;
@@ -196,7 +197,7 @@ const addCodeReset = () => {};
   }
 }
 .card {
-  width: 18vw;
+  width: 16vw;
   height: 35vh;
   border: 1px solid #e2e6ed;
   border-radius: 8px;
