@@ -77,7 +77,6 @@ onMounted(() => {
 });
 //登录
 const login = async (username, password) => {
-  console.log(username, password);
   const res = await userStore.login(username, password);
   if (res) router.push("/homepage");
 };

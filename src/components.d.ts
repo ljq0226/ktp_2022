@@ -6,8 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ArchiveFile: typeof import('./components/homepage/ArchiveFile.vue')['default']
-    CourseCard: typeof import('./components/homepage/CourseCard.vue')['default']
-    Editor: typeof import('./components/utils/Editor.vue')['default']
+    CourseCard: typeof import('./components/CourseCard.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -31,11 +30,9 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     ElUpload: typeof import('element-plus/es')['ElUpload']
-    Navigation: typeof import('./components/homepage/Navigation.vue')['default']
-    PersonalDeliver: typeof import('./components/utils/PersonalDeliver.vue')['default']
+    Navigation: typeof import('./components/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TaskCommitNav: typeof import('./components/utils/TaskCommitNav.vue')['default']
   }
 }
 

@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import Navigation from "@/components/homepage/Navigation";
+import Navigation from "@/components/Navigation";
 import { ref, reactive, onMounted } from "vue";
 import storage from "@/hooks/storage";
 import { useUserStore } from "@/store/user";

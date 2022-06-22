@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup>
-import Navigation from "@/components/homepage/Navigation.vue";
+import Navigation from "@/components/Navigation.vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();

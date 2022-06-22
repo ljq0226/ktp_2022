@@ -55,7 +55,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, toRaw } from "vue";
-import Navigation from "@/components/homepage/Navigation.vue";
+import Navigation from "@/components/Navigation.vue";
 import { useRouter } from "vue-router";
 import { useCourseStore } from "@/store/course";
 const courseStore = useCourseStore();

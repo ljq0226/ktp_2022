@@ -106,6 +106,15 @@ export const useCourseStore = defineStore("course", {
         ElMessage.error(res.msg);
       }
     },
+    //编辑课程
+    async editCourse(CourseDto){
+      const res = await courseService.editCourse(CourseDto);
+      if (res.code === 200) {
+        ElMessage.success(res.msg);
+      } else if (res.code === 500) {
+        ElMessage.error(res.msg);
+      }
+    },
     //归档课程
     async archiveCourse(courseId) {
       const { userId } = storage.get("userInfo");
@@ -114,6 +123,17 @@ export const useCourseStore = defineStore("course", {
         this.getAllArchiveCourse();
         this.init();
 
+        ElMessage.success(res.msg);
+      } else if (res.code === 500) {
+        ElMessage.error(res.msg);
+      }
+    },
+    //归档全部课程
+    async archiveAllCourse(courseId){
+      const res = await courseService.archiveAllCourse(courseId);
+      if (res.code === 200) {
+        this.getAllArchiveCourse();
+        this.init();
         ElMessage.success(res.msg);
       } else if (res.code === 500) {
         ElMessage.error(res.msg);

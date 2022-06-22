@@ -23,7 +23,7 @@
       <div class="coursemoudle">
         <div class="coursemoudleSpace"></div>
         <div class="routerLink">
-          <el-button round @click="showCourseStudy">课程学习</el-button>
+          <el-button round>课程学习</el-button>
           <el-button round @click="noServer">学情分析</el-button>
           <el-button round @click="noServer">成绩管理</el-button>
           <el-button round @click="noServer">课程介绍</el-button>
@@ -40,7 +40,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import Navigation from "@/components/homePage/navigation";
+import Navigation from "@/components/navigation";
 import CourserStudy from "./CourseStudy.vue";
 import storage from "@/hooks/storage";
 import { useRouter } from "vue-router";
@@ -52,16 +52,6 @@ let status = ref(0); //当前角色为 0为学生 1为老师
 let bg = ref("");
 const currentCourse = computed(() => courseStore.currentCourse);
 const routerId = ref(""); //当前路径下的课程id
-const optionSemester = [
-  {
-    value: 1,
-    label: "第一学期",
-  },
-  {
-    value: 2,
-    label: "第二学期",
-  },
-];
 
 // 课程成员展示
 const courseMember = () => {};
@@ -87,9 +77,6 @@ const getCourseInfo = async () => {
 const getStatus = () => {
   const userInfo = storage.get("userInfo");
   status.value = userInfo.status;
-};
-const showCourseStudy = () => {
-  // router.push(`/course/${routerId.value}/courseStudy`)
 };
 const noServer = () => {
   ElMessage.warning("暂未开放，尽请期待！");

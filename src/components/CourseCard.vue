@@ -36,7 +36,7 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-if="props.status == 1"
+                <el-dropdown-item v-if="status == 1" @click="setCourse()"
                   >编辑</el-dropdown-item
                 >
                 <el-dropdown-item @click="dropOut()">退出</el-dropdown-item>
@@ -55,12 +55,14 @@
 <script setup>
 import { ref, reactive, defineProps, onMounted, computed } from "vue";
 import { More } from "@element-plus/icons-vue";
+import storage from "@/hooks/storage";
 import { useCourseStore } from "@/store/course";
 import { useUserStore } from "@/store/user";
 const userStore = useUserStore();
 const courseStore = useCourseStore();
-const props = defineProps({ course: Object, status: String });
-const emits = defineEmits(["childArchiveCourse", "childDropOutCourse"]);
+let status = ref(0); //当前角色为 0为学生 1为老师
+const props = defineProps({ course: Object });
+const emits = defineEmits(["childArchiveCourse", "childDropOutCourse","childSetCourse"]);
 const bg = ref("");
 const owner = ref("");
 //处理学期
@@ -79,9 +81,14 @@ const handleOwner = async () => {
 onMounted(() => {
   let randomNumber = Math.floor(Math.random() * 14) + 1;
   bg.value = `src/assets/bg/${randomNumber}.png`;
+  getStatus()
   handleOwner();
 });
-
+//获取当前用户的角色状态
+const getStatus = () => {
+  const userInfo = storage.get("userInfo");
+  status.value = userInfo.status;
+};
 const detailCourse = () => {};
 //退课
 const dropOut = async () => {
@@ -91,6 +98,10 @@ const dropOut = async () => {
 const archiveCourse = () => {
   emits("childArchiveCourse");
 };
+//编辑
+const setCourse = () => {
+  emits('childSetCourse');
+}
 // 退出课程
 const deleteCourse = () => {};
 // 重置加课码 启用加课码
@@ -112,18 +123,15 @@ const addCodeReset = () => {};
   font-size: 12px;
   margin: 5px 0 0 13px;
 }
-
 .teacher,
 .set {
   display: flex;
 }
-
 .bottom {
   display: flex;
   justify-content: space-between;
   padding: 7px 10px;
 }
-
 .homework {
   cursor: pointer;
   margin-top: 11px;
@@ -131,11 +139,9 @@ const addCodeReset = () => {};
   color: rgba(31, 32, 35, 1);
   font-weight: 500;
 }
-
 .homework-title {
   border-bottom: 1px solid #ffffff;
 }
-
 .homework:hover .homework-title {
   border-bottom: 1px solid #32baf0;
   color: #32baf0;

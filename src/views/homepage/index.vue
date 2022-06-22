@@ -7,7 +7,7 @@
           <div class="createCourseBtn" v-show="status == 1">
             <ElButton type="primary" @click="createCourseDialog = true"
               ><el-icon><Plus /></el-icon>创建课程</ElButton
-            >
+            > 
           </div>
           <div class="addCourseBtn">
             <ElButton type="primary" @click="joinCourseDialog = true"
@@ -18,6 +18,7 @@
 
         <div class="archiveMng">
           <div class="archiveMng-space"></div>
+          <ElButton @click="archiveAll()" v-show="status == 1">归档全部</ElButton>
           <ElButton @click="archiveDialog = true">归档管理</ElButton>
           <el-input
             v-model="input2"
@@ -36,37 +37,6 @@
         <div class="allCourses"></div>
       </div>
     </div>
-
-    <!-- 快速发布任务模态框 -->
-    <!--发布未实现-->
-    <el-dialog :visible="quickReleaseDialog" width="40%" top="30vh">
-      <p class="quickRelease">选择要发布的类型</p>
-      <div class="quickReleaseSelect">
-        <div class="quickReleaseIcon">
-          <div></div>
-          <p>公告</p>
-        </div>
-
-        <div class="quickReleaseIcon">
-          <div></div>
-          <p>话题</p>
-        </div>
-        <div class="quickReleaseIcon">
-          <div></div>
-          <p>课堂互动</p>
-        </div>
-
-        <div class="quickReleaseIcon">
-          <div></div>
-          <p>作业</p>
-        </div>
-
-        <div class="quickReleaseIcon">
-          <div></div>
-          <p>测试</p>
-        </div>
-      </div>
-    </el-dialog>
 
     <!-- 创建课程模态框 -->
     <el-dialog
@@ -127,6 +97,7 @@
         <p>警告：此操作无法撤消</p>
       </div>
       <div class="joinCourseFooter">
+        <div></div>
         <el-button @click="deleteCourseDialog = false" style="width: 100px"
           >取消
         </el-button>
@@ -155,6 +126,7 @@
         />
       </div>
       <div class="joinCourseFooter">
+        <div></div>
         <el-button @click="joinCourseDialog = false" style="width: 100px"
           >取消
         </el-button>
@@ -199,14 +171,11 @@
                       </span>
                       <template #dropdown>
                         <el-dropdown-menu>
-                          <el-dropdown-item v-if="status == 1"
-                            >编辑</el-dropdown-item
-                          >
                           <el-dropdown-item
                             @click="recoverCourse(item.courseId)"
                             >恢复</el-dropdown-item
                           >
-                          <el-dropdown-item @click="deleteCourse(item.courseId)"
+                          <el-dropdown-item @click="deleteCourse(item.courseId)" v-if="status == 1"
                             >删除</el-dropdown-item
                           >
                         </el-dropdown-menu>
@@ -224,8 +193,7 @@
 </template>
 
 <script setup>
-import Navigation from "@/components/homepage/Navigation";
-import CourseCard from "@/components/homepage/CourseCard";
+import Navigation from "@/components/Navigation";
 import CourseShow from "./CourseShow.vue";
 import { More } from "@element-plus/icons-vue";
 import hooks from "@/hooks/index.js";
@@ -237,25 +205,13 @@ import { useCourseStore } from "@/store/course";
 const router = useRouter();
 const courseStore = useCourseStore();
 let status = ref(0); //当前角色为 0为学生 1为老师
-
-let allCourses = reactive([]); // 所有课程 拿来操作
-const archiveCourses = reactive([]); // 存档课程
-const courseList = reactive([]); // 所有课程
-const fileCourses = reactive([]); // 归档文件
-const quickReleaseDialog = ref(false); //快速发布活动
+//模态框
 let createCourseDialog = ref(false); // 创建课程
-
 let joinCourseDialog = ref(false);
 let deleteCourseDialog = ref(false);
-let archiveDialog = ref(false); // 课程排序与归档
+let archiveDialog = ref(false);
 
-const recoveryTipsDialog = ref(false);
-const transferCourseDialog = ref(false);
-const dropOutDialog = ref(false);
 const joinCode = ref(""); // 加入课程的课程码
-const deleteCourseObj = reactive({}); // 要删除的课程
-const course = reactive({}); // 要恢复的课程
-const dropOutObj = reactive({}); // 要退出的课程
 let archiveSemesterArr = computed(() => courseStore.archiveSemesterArr);
 let updateArchiveCourses = computed(() => courseStore.updateArchiveCourses);
 let updateShowArchive = computed(() => courseStore.updateShowArchive);
@@ -278,8 +234,8 @@ const optionSemester = [
     label: "第二学期",
   },
 ];
-
 onMounted(() => {
+
   getStatus();
   courseStore.init();
 });
@@ -320,6 +276,11 @@ const handleCreateCourse = () => {
   createCourse.semesterYear = "";
   createCourseDialog.value = false;
 };
+//归档全部
+const archiveAll =async (courseId)=>{
+  await courseStore.archiveAllCourse(courseId)
+
+}
 </script>
 <style lang="scss" scoped>
 .container {
@@ -354,6 +315,12 @@ const handleCreateCourse = () => {
       }
     }
   }
+}
+.joinCourseFooter{
+  display:flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  margin-top:3vh;
 }
 
 ::v-deep .el-divider {
