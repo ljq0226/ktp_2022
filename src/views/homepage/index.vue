@@ -18,9 +18,7 @@
 
         <div class="archiveMng">
           <div class="archiveMng-space"></div>
-          <ElButton @click="archiveAll()" v-show="status == 1"
-            >归档全部</ElButton
-          >
+
           <ElButton @click="archiveDialog = true">归档管理</ElButton>
           <el-input
             v-model="input2"
@@ -34,7 +32,7 @@
 
       <div class="courseShow">
         <div class="demo-collapse">
-          <CourseShow :status="stauts"></CourseShow>
+          <CourseShow :status="status"></CourseShow>
         </div>
         <div class="allCourses"></div>
       </div>
@@ -278,10 +276,6 @@ const handleCreateCourse = () => {
   courseStore.createCourse(createCourse);
   createCourse.semesterYear = "";
   createCourseDialog.value = false;
-};
-//归档全部
-const archiveAll = async (courseId) => {
-  await courseStore.archiveAllCourse(courseId);
 };
 </script>
 <style lang="scss" scoped>

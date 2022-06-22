@@ -35,7 +35,12 @@
         <el-button @click="archiveCourseDialog = false" style="width: 100px"
           >取消
         </el-button>
-
+        <el-button
+          style="width: 100px"
+          v-show="props.status == 1"
+          @click="archiveAll(awaitArchiveCourse.courseId)"
+          >归档全部
+        </el-button>
         <el-button
           style="width: 100px"
           @click="courseArchive(awaitArchiveCourse.courseId)"
@@ -183,6 +188,11 @@ const handleUpdateCourse = async (courseId) => {
   toSetCourse.courseId = courseId;
   await courseStore.editCourse(toSetCourse);
   setCourseDialog.value = false;
+};
+//归档全部
+const archiveAll = async (courseId) => {
+  archiveCourseDialog.value = false;
+  await courseStore.archiveAllCourse(courseId);
 };
 
 const handleChange = (val) => {};
