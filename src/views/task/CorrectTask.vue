@@ -19,6 +19,11 @@
           <span v-else>未提交</span>
         </template>
       </vxe-column>
+      <vxe-column field="path" title="作业附件" sortable show-overflow>
+        <template #default="{ row }">
+          <a :href="row.path" v-if="row.path">作业附件</a>
+        </template>
+      </vxe-column>
       <vxe-column title="批阅" show-overflow>
         <template #default="{ row }">
           <el-button link type="primary" size="small" @click="handleClick(row)"
@@ -29,7 +34,6 @@
     </vxe-table>
   </div>
   <el-dialog v-model="correctTaskDialog" title="批改作业" width="70%">
-    <a :href="correctTask.path">进行查看</a>
     <div>分数:<el-input v-model="score" /></div>
 
     <template #footer>

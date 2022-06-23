@@ -123,7 +123,6 @@ export const useCourseStore = defineStore("course", {
       if (res.code === 200) {
         this.getAllArchiveCourse();
         this.init();
-
         ElMessage.success(res.msg);
       } else if (res.code === 500) {
         ElMessage.error(res.msg);

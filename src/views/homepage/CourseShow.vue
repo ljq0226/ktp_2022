@@ -181,12 +181,14 @@ const handleDropOut = async () => {
 };
 //课程编辑处理
 const handleUpdateCourse = async (courseId) => {
-  toSetCourse.semesterYear = toSetCourse.semesterYear
-    .toString()
-    .split(" ")[3]
-    .toString();
+  toSetCourse.semesterYear = toSetCourse.semesterYear.split(" ")[3];
+  console.log(toSetCourse.semesterYear);
+  // .toString()
+
+  // .toString();
   toSetCourse.courseId = courseId;
   await courseStore.editCourse(toSetCourse);
+  await courseStore.init();
   setCourseDialog.value = false;
 };
 //归档全部
