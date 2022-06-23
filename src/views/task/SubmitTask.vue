@@ -29,12 +29,21 @@
         >
       </p>
       <div class="buttons">
-        <ElButton type="primary" @click="submitTask">确认提交</ElButton>
-        <ElButton type="primary" @click="1">查重结果</ElButton>
-        <ElButton type="primary" @click="1">更新提交</ElButton>
+        <ElButton
+          type="primary"
+          @click="submitTask"
+          v-show="!taskStaus.isSubmit"
+          >确认提交</ElButton
+        >
+        <ElButton type="primary" @click="checkRes" v-show="taskStaus.isSubmit"
+          >查重结果</ElButton
+        >
+        <ElButton type="primary" @click="showVip" v-show="taskStaus.isSubmit"
+          >更新提交</ElButton
+        >
       </div>
     </div>
-    <div class="submitFile">
+    <div class="submitFile" v-if="!taskStaus.isSubmit">
       <p>作业附件</p>
       <el-upload
         class="upload-demo"
@@ -65,15 +74,16 @@
       />
     </div>
 
-    <div class="updateFile">
+    <div class="updateFile" v-if="taskStaus.isSubmit">
       <div class="top">
         <div class="d1">老师评语</div>
         <div class="d2">暂无<span>已提交</span></div>
       </div>
       <div class="d3">作业附件<span>1个</span></div>
       <div class="d4">
-        <img src="@/assets/fileicons/doc.png" alt="" />
-        <a href="">下载</a>
+        <!-- <img src="@/assets/fileicons/doc.png" alt="" /> -->
+
+        <a :href="taskStaus.path">下载作业</a>
       </div>
     </div>
   </div>
@@ -114,13 +124,16 @@ const submitTask = async () => {
   let param = new FormData();
   param.append("file", toSubmitFile);
   await taskStore.submitTask(taskId, remarks.value, param);
+  getTaskStatus();
 };
 //获取该作业下的提交情况
 const getTaskStatus = async () => {
   const { userId } = storage.get("userInfo");
   await taskStore.getSubmitStatus(taskStore.currentTask.taskId, userId);
 };
-
+const checkRes = () => {
+  ElMessage.success("请充值VIP后再试！！！");
+};
 const showVip = () => {
   ElMessage.success("请充值SVIP!");
 };
@@ -195,17 +208,29 @@ const showVip = () => {
     background-color: rgb(248, 249, 250);
     padding: 3vh;
     .d1 {
-      margin: 1vh 0;
+      margin: 2.5vh 0;
     }
     .d2 {
       line-height: 20px;
       width: 35vw;
-      padding: 1vh 0;
+      padding: 2.5vh 0;
       padding-right: 20vw;
-      background-color: red;
+      background-color: rgb(255, 255, 255);
       span {
         float: right;
+        color: $ktp-color;
+        font: 34px;
       }
+    }
+  }
+  .d3 {
+    margin: 4vh 0;
+  }
+  .d4 {
+    border: 1px solid $border;
+    img {
+      width: 10vw;
+      height: 10vh;
     }
   }
 }

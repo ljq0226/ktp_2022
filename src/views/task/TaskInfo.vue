@@ -23,6 +23,12 @@
         placeholder="说点什么吧"
       />
     </div>
+    <div class="fileDownload">
+      <div v-if="task.path">
+        <a :href="task.path">点击下载附件</a>
+      </div>
+      <div v-else>老师暂未发布附件📎</div>
+    </div>
     <div class="commentBtn">
       <div class="d1">
         <el-radio>实名发表</el-radio>
@@ -46,7 +52,7 @@ import { useTaskStore } from "@/store/task";
 import moment from "moment";
 const taskStore = useTaskStore();
 const route = useRoute();
-let task = computed(() => taskStore.currentTask);
+let task = computed(() => taskStore.currentTask); //当前作业详情
 let startAndEndTime = ref("");
 onMounted(() => {
   init();

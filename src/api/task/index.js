@@ -31,7 +31,7 @@ const taskService = {
   //获取指定id学生 指定作业 的提交情况
   async getSubmitStatus(taskId, studentId) {
     return await get(
-      `task/getSubmitStatus?taskId=${taskId}&studentId${studentId}`
+      `task/getSubmitStatus?taskId=${taskId}&studentId=${studentId}`
     );
   },
 };
