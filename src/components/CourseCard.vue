@@ -181,7 +181,7 @@ const addCodeReset = () => {};
 .main {
   display: flex;
   flex-flow: column;
-  width:16vw;
+  width: 16vw;
   .head {
     z-index: 1;
     height: 23vh;
