@@ -198,7 +198,6 @@
 import Navigation from "@/components/Navigation";
 import CourseShow from "./CourseShow.vue";
 import { More } from "@element-plus/icons-vue";
-import hooks from "@/hooks/index.js";
 import { Plus, Search } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted, computed, toRaw } from "vue";
 import storage from "@/hooks/storage";

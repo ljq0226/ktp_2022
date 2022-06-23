@@ -28,7 +28,11 @@
           ><el-icon><Clock /></el-icon>提交历史</span
         >
       </p>
-      <ElButton type="primary" @click="submitTask">确认提交</ElButton>
+      <div class="buttons">
+        <ElButton type="primary" @click="submitTask">确认提交</ElButton>
+        <ElButton type="primary" @click="1">查重结果</ElButton>
+        <ElButton type="primary" @click="1">更新提交</ElButton>
+      </div>
     </div>
     <div class="submitFile">
       <p>作业附件</p>
@@ -60,6 +64,18 @@
         placeholder="作业以附件形式提交，留言仅作备注使用哦！"
       />
     </div>
+
+    <div class="updateFile">
+      <div class="top">
+        <div class="d1">老师评语</div>
+        <div class="d2">暂无<span>已提交</span></div>
+      </div>
+      <div class="d3">作业附件<span>1个</span></div>
+      <div class="d4">
+        <img src="@/assets/fileicons/doc.png" alt="" />
+        <a href="">下载</a>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -72,18 +88,22 @@ import storage from "@/hooks/storage";
 const taskStore = useTaskStore();
 const router = useRouter();
 const { userId } = storage.get("userInfo");
-let startAndEndTime = ref("");
-let toSubmitFile;
-let remarks = ref("");
+let startAndEndTime = ref(""); //格式化时间
+let toSubmitFile; //提交文件
+let remarks = ref(""); //提交留言
+let task = computed(() => taskStore.currentTask); //当前作业信息
+let taskStaus = computed(() => taskStore.submitStatus); //当前作业信息
+
 //上传附件
 const uploadAction = async (option) => {
   toSubmitFile = option.file;
 };
-let task = computed(() => taskStore.currentTask);
 onMounted(() => {
   init();
+  getTaskStatus();
 });
 const init = () => {
+  //格式化时间
   startAndEndTime.value = `${moment(task.releaseTime).format(
     "YY/MM/DD HH:mm"
   )}~ ${moment(task.cutOffTime).format("YY/MM/DD HH:mm")}`;
@@ -95,6 +115,12 @@ const submitTask = async () => {
   param.append("file", toSubmitFile);
   await taskStore.submitTask(taskId, remarks.value, param);
 };
+//获取该作业下的提交情况
+const getTaskStatus = async () => {
+  const { userId } = storage.get("userInfo");
+  await taskStore.getSubmitStatus(taskStore.currentTask.taskId, userId);
+};
+
 const showVip = () => {
   ElMessage.success("请充值SVIP!");
 };
@@ -149,15 +175,38 @@ const showVip = () => {
 }
 .submitWord {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin: 2vh 0;
+  .buttons {
+    flex: 1;
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+  }
   p {
     font-size: 19px;
   }
 }
-.submitFile {
-  .upload-demo {
+.updateFile {
+  display: flex;
+  flex-flow: column;
+  .top {
+    background-color: rgb(248, 249, 250);
+    padding: 3vh;
+    .d1 {
+      margin: 1vh 0;
+    }
+    .d2 {
+      line-height: 20px;
+      width: 35vw;
+      padding: 1vh 0;
+      padding-right: 20vw;
+      background-color: red;
+      span {
+        float: right;
+      }
+    }
   }
 }
 </style>

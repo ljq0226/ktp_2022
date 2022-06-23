@@ -19,7 +19,6 @@
           </p>
         </div>
       </div>
-
       <div class="coursemoudle">
         <div class="coursemoudleSpace"></div>
         <div class="routerLink">

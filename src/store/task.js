@@ -7,6 +7,7 @@ export const useTaskStore = defineStore("task", {
       courseTask: [], //某一课程所有作业
       currentTask: {}, //当前作业详情
       taskGrades: [], //当前作业所有学生数据
+      submitStatus: {}, //当前学生当前作业提交情况
     };
   },
   getters: {},
@@ -63,6 +64,15 @@ export const useTaskStore = defineStore("task", {
       const res = await gradeService.correct(correctDto);
       if (res.code === 200) {
         ElMessage.success("批改成功");
+      } else {
+        ElMessage.error(res.msg);
+      }
+    },
+    //获取指定学生否一作业的提交情况
+    async getSubmitStatus(taskId, userId) {
+      const res = await taskService.getSubmitStatus(taskId, userId);
+      if (res.code === 200) {
+        this.submitStatus = res.data;
       } else {
         ElMessage.error(res.msg);
       }

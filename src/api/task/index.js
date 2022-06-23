@@ -6,7 +6,7 @@ const taskService = {
   },
   //发布作业
   async createTask(taskInfo, file) {
-    console.log(file);
+    console.log(taskInfo);
     return await post(
       `task/createTask?courseId=${taskInfo.courseId}&taskName=${taskInfo.taskName}
     &releaseTime=${taskInfo.releaseTime}&cutOffTime=${taskInfo.cutOffTime}&remarks=${taskInfo.remarks}`,
@@ -27,6 +27,12 @@ const taskService = {
   //通过作业id获取所有学生提交情况
   async getAllGrades(taskId) {
     return await get(`task/getAllGrades?taskId=${taskId}`);
+  },
+  //获取指定id学生 指定作业 的提交情况
+  async getSubmitStatus(taskId, studentId) {
+    return await get(
+      `task/getSubmitStatus?taskId=${taskId}&studentId${studentId}`
+    );
   },
 };
 export default taskService;
