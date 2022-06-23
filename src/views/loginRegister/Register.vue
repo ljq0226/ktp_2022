@@ -66,7 +66,7 @@
           placeholder="姓名"
         />
         <el-input
-          v-model="regAccount.id"
+          v-model="regAccount.stno"
           v-if="state === 2"
           class="el-input"
           placeholder="学号"
@@ -182,7 +182,6 @@ const checkAccount = async () => {
 //检测两次输入密码是否一致
 const checkPassword = () => {
   const flag = regAccount.password == againPassword.value;
-  console.log(flag);
   if (!flag) {
     ElMessage.warning("两次输入密码不相同，请重新输入！");
     againPassword.value = "";

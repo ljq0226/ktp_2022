@@ -35,7 +35,6 @@
   </div>
   <el-dialog v-model="correctTaskDialog" title="批改作业" width="70%">
     <div>分数:<el-input v-model="score" /></div>
-
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="correctTaskDialog = false">返回</el-button>

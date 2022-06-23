@@ -22,6 +22,7 @@ export const useUserStore = defineStore("user", {
       }
     },
     async register(regAccount) {
+      console.log(regAccount);
       const res = await userService.register(regAccount);
       if (res.code === 200) {
         ElMessage.success(res.msg);
