@@ -62,7 +62,7 @@ export const useTaskStore = defineStore("task", {
       console.log(correctDto);
       const res = await gradeService.correct(correctDto);
       if (res.code === 200) {
-        // this.getAllGrades()
+        ElMessage.success("批改成功");
       } else {
         ElMessage.error(res.msg);
       }

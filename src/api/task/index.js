@@ -13,13 +13,6 @@ const taskService = {
       file
     );
   },
-  //上传附件
-  async uploadAnnex(taskId, userId, file) {
-    return await post(
-      `annex/uploadAnnex?taskId=${taskId}&userId=${userId}`,
-      file
-    );
-  },
   //提交作业
   async submit(taskId, userId, remarks, file) {
     return await post(

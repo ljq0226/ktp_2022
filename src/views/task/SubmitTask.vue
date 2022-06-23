@@ -67,7 +67,6 @@ import { Clock } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTaskStore } from "@/store/task";
-import { annexService } from "@/api";
 import moment from "moment";
 import storage from "@/hooks/storage";
 const taskStore = useTaskStore();
@@ -79,18 +78,8 @@ let remarks = ref("");
 //上传附件
 const uploadAction = async (option) => {
   toSubmitFile = option.file;
-  let param = new FormData();
-  param.append("file", option.file);
-  const taskId = taskStore.currentTask.taskId;
-  const res = await annexService.uploadAnnex(taskId, userId, param);
-  if (res.code === 200) {
-  } else {
-    ElMessage.error(res.msg);
-  }
 };
-
 let task = computed(() => taskStore.currentTask);
-
 onMounted(() => {
   init();
 });
@@ -102,7 +91,6 @@ const init = () => {
 //提交作业
 const submitTask = async () => {
   const taskId = taskStore.currentTask.taskId;
-  console.log(toSubmitFile);
   let param = new FormData();
   param.append("file", toSubmitFile);
   await taskStore.submitTask(taskId, remarks.value, param);

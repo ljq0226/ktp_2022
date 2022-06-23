@@ -13,7 +13,7 @@
           /100
         </template>
       </vxe-column>
-      <vxe-column field="summitTime" title="提交时间" show-overflow>
+      <vxe-column field="summitTime" title="提交时间" sortable show-overflow>
         <template #default="{ row }">
           <span v-if="row.summitTime">{{ row.summitTime }}</span>
           <span v-else>未提交</span>
@@ -49,7 +49,7 @@ const route = useRoute();
 const taskStore = useTaskStore();
 let taskId = ref("");
 let score = ref("");
-let tableData = ref([]);
+let tableData = computed(() => taskStore.taskGrades);
 let correctTask = reactive({});
 let correctTaskDialog = ref(false);
 const handleClick = (row) => {
@@ -62,18 +62,18 @@ onMounted(() => {
 });
 const getData = async () => {
   await taskStore.getAllGrades(taskId.value);
-  tableData.value = taskStore.taskGrades;
 };
 //确认提交
-const handleCorrect = () => {
+const handleCorrect = async () => {
   let correctDto = {
     taskId: taskId.value,
     studentId: correctTask.studentId,
     score: score.value,
   };
-  correctTaskDialog = false;
   taskStore.correct(correctDto);
-  taskStore.getAllGrades(taskId.value);
+  await taskStore.getAllGrades(taskId.value);
+  correctTaskDialog.value = false;
+  score.value = "";
 };
 </script>
 <style lang="scss" scoped>

@@ -52,13 +52,14 @@ onMounted(() => {
   init();
 });
 const init = async () => {
+  //获取作业详情
   await taskStore.selectById(route.query.taskId);
+  //格式化作业提交截止时间
   startAndEndTime.value = `${moment(task.releaseTime).format(
     "YY/MM/DD HH:mm"
   )}~ ${moment(task.cutOffTime).format("YY/MM/DD HH:mm")}`;
 };
 </script>
-
 <style lang="scss" scoped>
 .allInfo {
   display: flex;
