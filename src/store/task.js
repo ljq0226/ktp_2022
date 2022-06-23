@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import storage from "@/hooks/storage";
-import { taskService } from "@/api";
+import { taskService, gradeService } from "@/api";
 export const useTaskStore = defineStore("task", {
   state() {
     return {
@@ -53,6 +53,16 @@ export const useTaskStore = defineStore("task", {
       const res = await taskService.getAllGrades(taskId);
       if (res.code === 200) {
         this.taskGrades = res.data;
+      } else {
+        ElMessage.error(res.msg);
+      }
+    },
+    //批改作业
+    async correct(correctDto) {
+      console.log(correctDto);
+      const res = await gradeService.correct(correctDto);
+      if (res.code === 200) {
+        // this.getAllGrades()
       } else {
         ElMessage.error(res.msg);
       }

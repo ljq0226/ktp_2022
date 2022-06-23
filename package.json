@@ -14,7 +14,9 @@
     "pinia": "^2.0.14",
     "qs": "^6.10.5",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "vxe-table": "^4.2.8",
+    "xe-utils": "^3.5.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
@@ -25,6 +27,7 @@
     "unplugin-auto-import": "^0.8.8",
     "unplugin-icons": "^0.14.5",
     "unplugin-vue-components": "^0.19.6",
-    "vite": "^2.9.9"
+    "vite": "^2.9.9",
+    "vite-plugin-style-import": "^2.0.0"
   }
 }

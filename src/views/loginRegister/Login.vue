@@ -71,9 +71,9 @@ const user = reactive({
 let autoLogin = ref(false);
 
 onMounted(() => {
-  const { username, password } = storage.get("userInfo");
-  user.username = username;
-  user.password = password;
+  const userInfo = storage.get("userInfo");
+  user.username = userInfo.username;
+  user.password = userInfo.password;
 });
 //登录
 const login = async (username, password) => {
