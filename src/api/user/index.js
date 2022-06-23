@@ -7,10 +7,11 @@ const userService = {
   },
   //注册
   async register(registerDto) {
-    const res = await post("/user/register", registerDto);
-    if (res.code === 200) {
-      return res.msg;
-    }
+    // const res = await post("/user/register", registerDto);
+    // if (res.code === 200) {
+    //   return res.msg;
+    // }
+    return await post("/user/register", registerDto)
   },
   //检测用户名是否已经存在
   async isRepeat(username) {

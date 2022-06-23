@@ -182,7 +182,7 @@ const handleDropOut = async () => {
 //课程编辑处理
 const handleUpdateCourse = async (courseId) => {
   toSetCourse.semesterYear = toSetCourse.semesterYear.split(" ")[3];
-  console.log(toSetCourse.semesterYear);
+
   // .toString()
 
   // .toString();

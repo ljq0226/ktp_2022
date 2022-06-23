@@ -39,7 +39,7 @@
             </div>
             <div class="item-space"></div>
           </div>
-          <div class="info-item">
+          <div class="info-item" v-show="state.userInfo.status==0">
             <div class="item-type">学号</div>
             <div class="item-value">
               <el-input v-model="state.userInfo.stno" />
@@ -49,7 +49,7 @@
           <div class="info-item">
             <div class="item-type">学校</div>
             <div class="item-value">
-              <el-input v-model="state.userInfo.schoolId" />
+              <el-input v-model="state.userInfo.schoolId" disabled/>
             </div>
             <div class="item-space"></div>
           </div>
@@ -82,7 +82,7 @@
             <div class="item-type">所属角色</div>
             <div class="item-value">
               <el-input
-                :value="state.userInfo.status ? '老师' : '学生'"
+                :value="state.userInfo.status==0 ? '学生' : '老师'"
                 disabled
               />
             </div>
